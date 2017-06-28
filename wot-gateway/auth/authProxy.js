@@ -90,7 +90,7 @@ app.use(cookieParser());
 app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(cors());
 app.use(require('express-session')({ secret: 'Jozin z Bazin', resave: false, saveUninitialized: false }));
-app.use(express.static(__dirname + '/views/css'));
+app.use(express.static(__dirname + '/views'));
 
 // Initialize Passport and restore authentication state, if any, from the session
 app.use(passport.initialize());
