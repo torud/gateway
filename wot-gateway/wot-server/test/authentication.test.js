@@ -388,7 +388,7 @@ describe('Authentication:', function () {
       expect(res.statusCode).to.equal(status.OK);
       expect(html).to.be.a('string');
       expect(html).to.have.string('<!DOCTYPE html>');
-      expect(html).to.have.string('Edit Your Profile');
+      expect(html).to.have.string('Edit your profile');
 
       done();
     });
