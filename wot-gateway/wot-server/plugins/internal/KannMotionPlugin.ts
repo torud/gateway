@@ -202,6 +202,10 @@ function processAnswer() {
         console.log('Answer received: ' + answer);
         try {
             var antwort = JSON.parse(answer.trim());
+            if (!antwort.com && antwort.com.id != 'state') {
+                // don't shot (N)ACKs in last response, they have a seperate property
+                properties.lastResponse = answer;
+            }
             if (antwort.info) {
                 /** Variante 1: Antwort auf sys:2-Befehl
                  * {"info":[
@@ -213,7 +217,7 @@ function processAnswer() {
                  * {"id":"Seq. Version","val":"0.0"}
                  * ]}
                  */
-                properties.lastResponse = answer;
+
                 antwort.info.forEach(function (element, index) {
                     switch (element.id) {
                         case 'Position': properties.position = element.val; break;
@@ -251,7 +255,7 @@ function processAnswer() {
                  * {"par":{"id":7,"cmd":0,"val":0}}
                  * {"com":{"id":"state","val":"ACK"}}
                  */
-                properties.lastResponse = answer;
+
                 switch (antwort.par.id) {
                     case 0: properties.maxSpeed = antwort.par.val; break;
                     case 1: properties.maxAccel = antwort.par.val; break;
@@ -265,12 +269,6 @@ function processAnswer() {
                 }
                 myself.addValue(properties);
             } // antwort.par
-            if (antwort.rom) {
-                /** Variante 4: Antwort auf Sequenz-Befehl:
-                 * {"rom":{"frm":[1,1],"val":"{r:[0,30,0,0],wt:3000,g:[900,0]}"}}
-                 */
-                properties.lastResponse = answer;
-            }
         } catch (e) {
             // Could not parse answer from motor, i.e. it wasn't a JSON object (happens after sys:1 command)
             properties.lastResponse = answer;
