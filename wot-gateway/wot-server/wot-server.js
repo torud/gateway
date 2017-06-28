@@ -3,6 +3,9 @@ var restApp = require('./servers/http'),
   resources = require('./resources/model'),
   fs = require('fs');
 var ip = require('ip');
+const debug = require('debug')('my-namespace')
+const name = 'my-app'
+debug('booting %s', name);
 
 var KannMotionPlugin;
 var SaunaPlugin;
