@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Authentication</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<!-- load bootstrap css -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<!-- load fontawesome -->
+</head>
+
+<body>
+	<div class="container">
+		<div class="page-header text-center">
+			<h1><span class="fa fa-anchor"></span> Edit Your Profile</h1>
+			<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+			<a href="/profile" class="btn btn-default btn-sm">Your profile</a>
+			<a href="/" class="btn btn-default btn-sm">Root page</a>
+		</div>
+
+		<div class="well">
+			<% if (user) { %>
+				<h3><span class="fa fa-user"></span> Your ID:
+					<%= user.id %>
+				</h3>
+				<% } %>
+
+					<h4>
+						The password has to be at least 8 characters long, with at least 1 upper case, 1 lower case and 1 number!
+					</h4>
+					<p>
+						<!-- show any messages that come back with authentication -->
+						<% if (message.length > 0) { %>
+							<div class="alert alert-danger">
+								<%= message %>
+							</div>
+							<% } %>
+
+								<form action="/editProfile" method="post">
+									<div>
+										<label>Old password:</label>
+										<input type="password" name="oldPassword" />
+									</div>
+									<div>
+										<label>New password:</label>
+										<input type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required name="newPassword" />
+									</div>
+									<div>
+										<label>Confirm new password:</label>
+										<input type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required name="confirmPassword" />
+									</div>
+									<div>
+										<input type="submit" value="Submit" />
+									</div>
+								</form>
+
+		</div>
+	</div>
+</body>
+
+</html>
