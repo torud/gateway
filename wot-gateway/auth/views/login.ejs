@@ -6,6 +6,7 @@
 	<!--<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/font-awesome.min.css">-->
 	<link rel="stylesheet" href="/css/docs.min.css">
+	<style class="anchorjs"></style>
 </head>
 
 <body>
@@ -15,27 +16,36 @@
 			<div class="container bs-docs-container">
 				<h1> Login</h1>
 			</div>
-			<!-- show any messages that come back with authentication -->
-			<% if (message.length > 0) { %>
-				<div class="alert alert-danger">
-					<%= message %>
-				</div>
-				<% } %>
-					<form action="/login" method="post">
-						<div hidden>
-							<label>Username:</label>
-							<input type="text" name="username" value="Thor" /><br/>
-						</div>
-						<div>
-							<label>Password:</label>
-							<input type="password" name="password" />
-						</div>
-						<div>
-							<input type="submit" value="Submit" />
-						</div>
-					</form>
-					<a href="/reset" onclick="return confirm('Are you sure you want to reset all passwords to factory settings?')" class="btn btn-default btn-sm">Reset to factory settings</a>
 		</div>
+	</div>
+	<div class="container bs-docs-container">
+		<div class="row">
+			<div class="col-md-9" role="main">
+				<div class="bs-docs-section">
+					<!-- show any messages that come back with authentication -->
+					<% if (message.length > 0) { %>
+						<div class="alert alert-danger">
+							<%= message %>
+						</div>
+						<% } %>
+							<form action="/login" method="post">
+								<div hidden>
+									<label>Username:</label>
+									<input type="text" name="username" value="Thor" /><br/>
+								</div>
+								<div>
+									<label>Password:</label>
+									<input type="password" name="password" />
+								</div>
+								<div>
+									<input type="submit" value="Submit" />
+								</div>
+							</form>
+							<a href="/reset" onclick="return confirm('Are you sure you want to reset all passwords to factory settings?')" class="btn btn-default btn-sm">Reset to factory settings</a>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </body>
 

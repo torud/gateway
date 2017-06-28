@@ -6,35 +6,45 @@
     <!--<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/font-awesome.min.css">-->
     <link rel="stylesheet" href="/css/docs.min.css">
+    <style class="anchorjs"></style>
 </head>
 
 <body>
     <div class="bs-docs-header" id="content" tabindex="-1">
         <div class="container">
-            <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-            <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-            <a href="/editProfile" class="btn btn-default btn-sm">Edit your profile</a>
-            <a href="/" class="btn btn-default btn-sm">Root page</a>
+            <h1>Profile Page</h1>
         </div>
-        <div class="container bs-docs-container">
-            <div class="row">
-                <!-- show any messages that come back with authentication -->
-                <% if (message.length > 0) { %>
-                    <div class="alert alert-success">
-                        <%= message %>
-                    </div>
-                    <% } %>
+    </div>
+    <div class="container bs-docs-container">
+        <div class="row">
+            <div class="col-md-9" role="main">
+                <div class="bs-docs-section">
+                    <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+                    <a href="/editProfile" class="btn btn-default btn-sm">Edit your profile</a>
+                    <a href="/" class="btn btn-default btn-sm">Root page</a>
+                </div>
 
-                        <% if (user) { %>
-                            <h3><span class="fa fa-user"></span> Your ID:
-                                <%= user.id %>
-                            </h3>
-                            <% } %>
-                                <p>
-                                    Access granted!<br/> You can now interact with the Web Thing<br/>
-                                    <br/>
-                                </p>
             </div>
+        </div>
+    </div>
+    <div class="container bs-docs-container">
+        <div class="row">
+            <!-- show any messages that come back with authentication -->
+            <% if (message.length > 0) { %>
+                <div class="alert alert-success">
+                    <%= message %>
+                </div>
+                <% } %>
+
+                    <% if (user) { %>
+                        <h3><span class="fa fa-user"></span> Your ID:
+                            <%= user.id %>
+                        </h3>
+                        <% } %>
+                            <p>
+                                Access granted!<br/> You can now interact with the Web Thing<br/>
+                                <br/>
+                            </p>
         </div>
     </div>
 </body>
