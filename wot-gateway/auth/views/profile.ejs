@@ -9,15 +9,15 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="page-header text-center">
+    <div class="bs-docs-header" id="content" tabindex="-1">
+        <div class="container">
             <h1><span class="fa fa-anchor"></span> Profile Page</h1>
             <a href="/logout" class="btn btn-default btn-sm">Logout</a>
             <a href="/editProfile" class="btn btn-default btn-sm">Edit your profile</a>
             <a href="/" class="btn btn-default btn-sm">Root page</a>
         </div>
-        <div class="col-sm-6">
-            <div class="well">
+        <div class="container bs-docs-container">
+            <div class="row">
                 <!-- show any messages that come back with authentication -->
                 <% if (message.length > 0) { %>
                     <div class="alert alert-success">
