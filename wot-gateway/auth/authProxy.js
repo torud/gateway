@@ -176,26 +176,20 @@ app.post('/connectWLAN',
     var ssid = req.body.ssid;
 
     console.log('Trying to connect to WLAN ' + ssid + ' with password ' + password);
-    var foldername = 'testordner' + ssid;
-    shell.exec('sudo nmcli dev wifi connect "' + ssid + '" password "' + password + '"', function (code, stdout, stderr) {
+    shell.exec('sudo nmcli dev wifi connect ' + ssid + ' password ' + password + '', function (code, stdout, stderr) {
       console.log('Exit code:', code);
       console.log('Program output:', stdout);
       console.log('Program stderr:', stderr);
       if (code !== 0) {
-        console.log('failed to make folder');
+        console.log('failed to connect to WiFi ' + ssid);
         req.flash('WLANMessage', stderr);
       } else {
-        console.log('created folder ' + foldername);
+        console.log('connected to WiFi ' + ssid);
         req.flash('WLANMessage', stdout);
       }
 
       res.render('connectWLAN', { message: req.flash('WLANMessage') });
     });
-
-    // shell.exec('sudo nmcli r wifi on');
-    // shell.exec('sudo nmcli dev wifi');
-    // shell.exec('sudo nmcli dev wifi connect "' + ssid + '" password "' + password + '"');
-
   }); // POST /connectWLAN
 
 
