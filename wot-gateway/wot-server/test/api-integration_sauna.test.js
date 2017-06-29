@@ -194,6 +194,46 @@ describe('Sauna:', function () {
       });
   });
 
+  // TODO: array of commands
+  it('sends a array of commands', function (done) {
+    var uri = '/actions/sendCommand';
+    req.post(rootUrl + uri,
+      {
+        body: [{ "sys": 2 },
+        { "par": { "cmd": 0, "id": 1 } },
+        { "rom": { "frm": [1, 1], "val": "{r:[0,30,0,0],wt:3000,g:[900,0]}" } },
+        { "par": { "cmd": 1, "id": 6, "val": 45000 } }]
+      },
+      function (err, res, body) {
+        var id = res.headers.location.split('/').pop();
+        req.get(rootUrl + uri, function (err, res, actions) {
+
+          expect(err).to.be.null;
+          expect(res.statusCode).to.equal(status.OK);
+          expect(actions).to.be.an('array');
+          expect(actions[0].id).to.equal(id);
+
+          req.get(rootUrl + uri + '/' + id, function (err, res, action) {
+            expect(err).to.be.null;
+            expect(res.statusCode).to.equal(status.OK);
+            expect(action).to.be.a('object');
+            expect(action.command).to.be.a('array');
+            expect(action.command).to.have.length(4);
+            expect(action.command[0]).to.be.a('object');
+            expect(action.command[0].sys).to.be.a('number');
+            expect(action.command[0].sys).to.be.equal(2);
+            expect(action.command[1]).to.be.a('object');
+            expect(action.command[1].par).to.be.a('object');
+            expect(action.command[1].par.cmd).to.equal(0);
+            expect(action.status).to.be.a('string');
+            expect(action.timestamp).to.be.a('string');
+            expect(action.status).to.equal('completed');
+            done();
+          });
+        });
+      });
+  });
+
 
   it('returns the sendCommand actions', function (done) {
     req.get(rootUrl + '/actions/sendCommand', function (err, res, commands) {
@@ -496,6 +536,7 @@ describe('Sauna:', function () {
 
 
   // Wrong/Bad Commands
+  // TODO
   it('sends a wrong spelled command which gets sent anyway', function (done) {
     var uri = '/actions/sendCommand';
     req.post(rootUrl + uri,
