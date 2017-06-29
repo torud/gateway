@@ -14,6 +14,8 @@ var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var shell = require('shelljs');
 
+// let the authorisation server use redirects or just plain status codes
+// if an error or a user fault (e.g. a wrong password) occurs
 var useRedirects = false;
 
 var keyFilePath = path.join(__dirname, 'config', 'privateKey.pem');
@@ -287,8 +289,8 @@ app.post('/editProfile',
         } else {
           console.log('successfully changed password');
           req.flash('pwChangedMessage', message);
-          res.redirect('/profile');
-          // res.render('profile', { user: req.user, message: req.flash('pwChangedMessage') });
+          if (useRedirects) res.redirect('/profile');
+          else res.render('profile', { user: req.user, message: req.flash('pwChangedMessage') });
         }
       }); // changePassword
   }); // POST /editProfile
