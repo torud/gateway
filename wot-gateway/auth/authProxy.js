@@ -100,7 +100,6 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // Define routes
 app.get('/login',
   function (req, res) {
-    //console.log('Cookies: ', req.cookies);
     res.render('login.ejs', { message: req.flash('loginMessage') });
   }); // GET /login
 
@@ -108,40 +107,40 @@ app.get('/login',
  * Authentication if user interacts via browser
  * (uses redirects and flash messages)
  */
-// app.post('/login',
-//   passport.authenticate('local', {
-//     successRedirect: '/profile', // redirect to the secure profile section
-//     failureRedirect: '/login',
-//     failureFlash: true // allow flash messages
-//   })); // POST /login
+app.post('/login',
+  passport.authenticate('local', {
+    successRedirect: '/profile', // redirect to the secure profile section
+    failureRedirect: '/login',
+    failureFlash: true // allow flash messages
+  })); // POST /login
 
 /**
  * Authentication if user interacts via Web App
  * (uses only HTTP status codes)
  */
-app.post('/login', function (req, res, next) {
-  //console.log('Cookies: ', req.cookies);
-  passport.authenticate('local', function (err, user, info) {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.sendStatus(401);
-    }
-    // log in the user
-    req.logIn(user, function (err) {
-      if (err) {
-        return next(err);
-      }
-      // once login succeeded, return the current API token along with the profile page
-      res.setHeader('Access-Control-Expose-Headers', ['Token', 'User']);
-      res.setHeader('Token', token);
-      // also send the user object, so the user of the web app can be identified
-      res.setHeader('User', JSON.stringify(user));
-      return res.render('profile', { user: req.user, message: req.flash('pwChangedMessage') });
-    });
-  })(req, res, next);
-}); // POST /login
+// app.post('/login', function (req, res, next) {
+//   //console.log('Cookies: ', req.cookies);
+//   passport.authenticate('local', function (err, user, info) {
+//     if (err) {
+//       return next(err);
+//     }
+//     if (!user) {
+//       return res.sendStatus(401);
+//     }
+//     // log in the user
+//     req.logIn(user, function (err) {
+//       if (err) {
+//         return next(err);
+//       }
+//       // once login succeeded, return the current API token along with the profile page
+//       res.setHeader('Access-Control-Expose-Headers', ['Token', 'User']);
+//       res.setHeader('Token', token);
+//       // also send the user object, so the user of the web app can be identified
+//       res.setHeader('User', JSON.stringify(user));
+//       return res.render('profile', { user: req.user, message: req.flash('pwChangedMessage') });
+//     });
+//   })(req, res, next);
+// }); // POST /login
 
 app.get('/logout',
   function (req, res) {
@@ -193,15 +192,16 @@ app.post('/connectWLAN',
   }); // POST /connectWLAN
 
 
-/**
+/** NOT USED ANYMORE, function also implemented in the custom authorisation middleware
  * npm middleware, uses redirects to /login if user isn't authenticated
  * use this when client interacts with a browser
  */
-//app.use(require('connect-ensure-login').ensureLoggedIn());
+// app.use(require('connect-ensure-login').ensureLoggedIn());
 
 /**
- * custom middleware, uses only status code 401 if user isn't authenticated
- * use this when client interacts via the Web App
+ * custom authorisation middleware, checks if user is authenticated.
+ * Uses either only status code 401 (if client interacts via a Web App)
+ * or redirects to login (when client interacts with a browser)
  */
 app.use(function (req, res, next) {
   // if the request is neither authorized via cookie
@@ -214,11 +214,16 @@ app.use(function (req, res, next) {
     // console.log('Request is not authenticated!');
     // console.log('Token is valid: ' + isTokenValid(req));
     // console.log('User header is present: ' + hasUserHeader(req));
-    return res.sendStatus(401);
+
+    // without redirect, only plain status code
+    // return res.sendStatus(401);
+
+    // with redirect to /login
+    return res.redirect('/login');
   }
   // console.log('Request is authenticated!');
   next();
-}); // isAuthorized
+}); // authorisation middleware
 
 function isTokenValid(req) {
   var reqToken = req.body.token || req.get('authorization') ||
@@ -279,21 +284,27 @@ app.post('/editProfile',
           console.log('did not change password');
           req.flash('pwChangeFailedMessage', message);
           res.status(420);  // Policy Not Fulfilled
-          // res.redirect('/editProfile');
-          res.render('editProfile', { user: req.user, message: req.flash('pwChangeFailedMessage') });
+          res.redirect('/editProfile');
+          // res.render('editProfile', { user: req.user, message: req.flash('pwChangeFailedMessage') });
         } else {
           console.log('successfully changed password');
           req.flash('pwChangedMessage', message);
-          // res.redirect('/profile');
-          res.render('profile', { user: req.user, message: req.flash('pwChangedMessage') });
+          res.redirect('/profile');
+          // res.render('profile', { user: req.user, message: req.flash('pwChangedMessage') });
         }
       }); // changePassword
   }); // POST /editProfile
+
+app.get('/application',
+  function (req, res) {
+    res.render('application');
+  }); // GET /application
 
 app.get('/error',
   function (req, res) {
     res.render('error', { user: req.user, message: req.flash('errorMessage') });
   }); // GET /error
+
 
 // add the proxy server middleware, which adds the API-Token of the
 // WoT-Server to the request and proxy all requests and responses
