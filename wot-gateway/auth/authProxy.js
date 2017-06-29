@@ -189,6 +189,8 @@ app.post('/connectWLAN',
         console.log('created folder ' + foldername);
         req.flash('WLANMessage', 'Created a folder!');
       }
+
+      res.render('connectWLAN', { message: req.flash('WLANMessage') });
     });
 
 
@@ -198,7 +200,7 @@ app.post('/connectWLAN',
     // shell.exec('sudo nmcli dev wifi connect "' + ssid + '" password "' + password + '"');
 
 
-    res.render('connectWLAN', { message: req.flash('WLANMessage') });
+
   }); // POST /connectWLAN
 
 
