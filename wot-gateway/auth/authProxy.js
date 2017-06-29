@@ -12,6 +12,7 @@ var cors = require('cors');
 var flash = require('connect-flash');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
+var shell = require('shelljs');
 
 var keyFilePath = path.join(__dirname, 'config', 'privateKey.pem');
 var key_file = fs.readFileSync(keyFilePath, 'utf8');
