@@ -16,7 +16,7 @@ var shell = require('shelljs');
 
 // let the authorisation server use redirects or just plain status codes
 // if an error or a user fault (e.g. a wrong password) occurs
-var useRedirects = false;
+var useRedirects = true;
 
 var keyFilePath = path.join(__dirname, 'config', 'privateKey.pem');
 var key_file = fs.readFileSync(keyFilePath, 'utf8');
