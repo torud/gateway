@@ -180,15 +180,17 @@ app.post('/connectWLAN',
     var foldername = 'testordner' + ssid;
     if (shell.mkdir(foldername).code !== 0) {
       console.log('failed to make folder');
+      req.flash('WLANMessage', 'Could not make the directory');
     } else {
       console.log('created folder ' + foldername);
+      req.flash('WLANMessage', 'Created a folder!');
     }
 
     // shell.exec('sudo nmcli r wifi on');
     // shell.exec('sudo nmcli dev wifi');
     // shell.exec('sudo nmcli dev wifi connect "' + ssid + '" password "' + password + '"');
 
-    // req.flash('WLANMessage', 'Test.');
+
     res.render('connectWLAN', { message: req.flash('WLANMessage') });
   }); // POST /connectWLAN
 
