@@ -4,6 +4,7 @@ var Strategy = require('passport-local').Strategy;
 var db = require('./db');
 var https = require('https');
 var proxy = require('./middleware/proxy.js');
+var proxyUseRedirects = require('./middleware/proxy.js').useRedirects;
 var fs = require('fs');
 var config = require('./config/config.json').config;
 var token = require('./config/config.json').things[0].token;
@@ -24,7 +25,7 @@ var shell = require('shelljs');
  * (e.g. afer login, the profile page is shown, but the url line still contains /login)
  */
 var useRedirects = false;
-proxy.useRedirects = useRedirects;
+proxyUseRedirects = useRedirects;
 
 var keyFilePath = path.join(__dirname, 'config', 'privateKey.pem');
 var key_file = fs.readFileSync(keyFilePath, 'utf8');
