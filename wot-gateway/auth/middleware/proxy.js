@@ -4,8 +4,7 @@ var https = require('https'),
   httpProxy = require('http-proxy');
 var path = require('path');
 
-// var useRedirects = true;
-exports.useRedirects = true;
+var useRedirects = true;
 
 var keyFilePath = path.join(__dirname, '..', 'config', 'privateKey.pem');
 var key_file = fs.readFileSync(keyFilePath, 'utf8');

@@ -4,7 +4,6 @@ var Strategy = require('passport-local').Strategy;
 var db = require('./db');
 var https = require('https');
 var proxy = require('./middleware/proxy.js');
-var proxyUseRedirects = require('./middleware/proxy.js').useRedirects;
 var fs = require('fs');
 var config = require('./config/config.json').config;
 var token = require('./config/config.json').things[0].token;
@@ -23,9 +22,10 @@ var shell = require('shelljs');
  * the page is sometimes just a plain status code (after a POST /login with a wrong password),
  * the page you see in the browser is not always the one shown in the url line
  * (e.g. afer login, the profile page is shown, but the url line still contains /login)
+ * Change the same variable in middleware/proxy.js (used for error when WoT-Server is offline)
+ * (can not be accessed from here, despite being exported there)
  */
-var useRedirects = false;
-proxyUseRedirects = useRedirects;
+var useRedirects = true;
 
 var keyFilePath = path.join(__dirname, 'config', 'privateKey.pem');
 var key_file = fs.readFileSync(keyFilePath, 'utf8');
