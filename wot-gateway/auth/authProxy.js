@@ -257,7 +257,7 @@ app.post('/editProfile',
           console.log('successfully changed password');
           req.flash('pwChangedMessage', message);
           // res.redirect('/profile');
-          res.render('editProfile', { user: req.user, message: req.flash('pwChangedMessage') });
+          res.render('profile', { user: req.user, message: req.flash('pwChangedMessage') });
         }
       }); // changePassword
   }); // POST /editProfile
