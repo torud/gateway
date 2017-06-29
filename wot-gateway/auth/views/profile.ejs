@@ -30,23 +30,24 @@
                     <a href="/editProfile" class="btn btn-default btn-sm">Edit your profile</a>
                     <a href="/" class="btn btn-default btn-sm">Root page</a>
 
+                    <p>
+                        <!-- show any messages that come back with authentication -->
+                        <% if (message.length > 0) { %>
+                            <div class="alert alert-success">
+                                <%= message %>
+                            </div>
+                            <% } %>
+                    </p>
 
-                    <!-- show any messages that come back with authentication -->
-                    <% if (message.length > 0) { %>
-                        <div class="alert alert-success">
-                            <%= message %>
-                        </div>
+                    <% if (user) { %>
+                        <h3><span class="fa fa-user"></span> Your ID:
+                            <%= user.id %>
+                        </h3>
                         <% } %>
-
-                            <% if (user) { %>
-                                <h3><span class="fa fa-user"></span> Your ID:
-                                    <%= user.id %>
-                                </h3>
-                                <% } %>
-                                    <p>
-                                        Access granted!<br/> You can now interact with the Web Thing<br/>
-                                        <br/>
-                                    </p>
+                            <p>
+                                Access granted!<br/> You can now interact with the Web Thing<br/>
+                                <br/>
+                            </p>
                 </div>
 
             </div>
