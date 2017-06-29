@@ -30,13 +30,14 @@
                     <a href="/profile" class="btn btn-default btn-sm">Your profile</a>
                     <a href="/" class="btn btn-default btn-sm">Root page</a>
 
-
-                    <!-- show any messages that come back with authentication -->
-                    <% if (message.length > 0) { %>
-                        <div class="alert alert-danger">
-                            <%= message %>
-                        </div>
-                        <% } %>
+                    <p>
+                        <!-- show any messages that come back with authentication -->
+                        <% if (message.length > 0) { %>
+                            <div class="alert alert-danger">
+                                <%= message %>
+                            </div>
+                            <% } %>
+                    </p>
                 </div>
 
             </div>
