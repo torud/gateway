@@ -191,7 +191,7 @@ app.post('/connectWLAN',
     // shell.exec('sudo nmcli dev wifi connect "' + ssid + '" password "' + password + '"');
 
 
-    res.render('connectWLAN', { messageFail: req.flash('WLANMessage') });
+    res.render('connectWLAN', { message: req.flash('WLANMessage') });
   }); // POST /connectWLAN
 
 
