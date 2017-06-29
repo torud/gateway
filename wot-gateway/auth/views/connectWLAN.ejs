@@ -40,11 +40,12 @@
 					<form action="/connectWLAN" method="post" autocomplete="on">
 						<div class="form-group">
 							<label>SSID:</label>
-							<input type="text" class="form-control" name="ssid" placeholder="The name of the WiFi" />
+							<input type="text" class="form-control" name="ssid" placeholder="The name of the WiFi" required="required" />
 						</div>
 						<div class="form-group">
 							<label>Password:</label>
-							<input type="password" class="form-control" name="password" placeholder="The password (PSK) to the WiFi" />
+							<input type="password" class="form-control" name="password" placeholder="The password (PSK) to the WiFi" required="required"
+							/>
 						</div>
 						<div>
 							<input type="submit" value="Submit" />
