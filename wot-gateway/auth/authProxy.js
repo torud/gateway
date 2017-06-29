@@ -77,15 +77,14 @@ var app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-// Use application-level middleware for common functionality, including
-// logging, parsing, and session handling
-
 morgan.token('date', function () {
   var date = new Date();
   //date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
   return date.toString();
 });
 
+// Use application-level middleware for common functionality, including
+// logging, parsing, and session handling
 app.use(morgan(':date :method :url :status :res[content-length] - :response-time ms'));
 app.use(cookieParser());
 app.use(require('body-parser').urlencoded({ extended: true }));
@@ -193,13 +192,9 @@ app.post('/connectWLAN',
       res.render('connectWLAN', { message: req.flash('WLANMessage') });
     });
 
-
-
     // shell.exec('sudo nmcli r wifi on');
     // shell.exec('sudo nmcli dev wifi');
     // shell.exec('sudo nmcli dev wifi connect "' + ssid + '" password "' + password + '"');
-
-
 
   }); // POST /connectWLAN
 
