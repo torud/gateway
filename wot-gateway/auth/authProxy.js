@@ -23,7 +23,7 @@ var shell = require('shelljs');
  * the page you see in the browser is not always the one shown in the url line
  * (e.g. afer login, the profile page is shown, but the url line still contains /login)
  */
-var useRedirects = true;
+var useRedirects = false;
 proxy.useRedirects = useRedirects;
 
 var keyFilePath = path.join(__dirname, 'config', 'privateKey.pem');
