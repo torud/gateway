@@ -142,7 +142,7 @@ app.post('/login', function (req, res, next) {
       return res.render('profile', { user: req.user, message: req.flash('pwChangedMessage') });
     });
   })(req, res, next);
-});
+}); // POST /login
 
 app.get('/logout',
   function (req, res) {
@@ -164,6 +164,33 @@ app.get('/reset',
       }
     });
   }); // GET /reset
+
+app.get('/connectWLAN',
+  function (req, res) {
+    // req.flash('WLANMessage', 'Test.');
+    res.render('connectWLAN', { message: req.flash('WLANMessage') });
+  }); // GET /connectWLAN
+
+app.post('/connectWLAN',
+  function (req, res, next) {
+    var password = req.body.password;
+    var ssid = req.body.ssid;
+
+    console.log('Trying to connect to WLAN ' + ssid + ' with password ' + password);
+    var foldername = 'testordner' + ssid;
+    if (shell.mkdir(foldername).code !== 0) {
+      console.log('failed to make folder');
+    } else {
+      console.log('created folder ' + foldername);
+    }
+
+    // shell.exec('sudo nmcli r wifi on');
+    // shell.exec('sudo nmcli dev wifi');
+    // shell.exec('sudo nmcli dev wifi connect "' + ssid + '" password "' + password + '"');
+
+    // req.flash('WLANMessage', 'Test.');
+    res.render('connectWLAN', { message: req.flash('WLANMessage') });
+  }); // POST /connectWLAN
 
 
 /**
