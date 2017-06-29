@@ -74,7 +74,7 @@ if (resources.customFields.secure === true) {
   fs.writeFile(configFilePath, JSON.stringify(authServerConfig), 'utf8');
   console.info('current API Token is: ' + keys.apiToken);
   app.use(auth()); // enable the auth middleware
-}
+} // if
 
 // Create Routes
 app.use('/', routesCreator.create(resources));

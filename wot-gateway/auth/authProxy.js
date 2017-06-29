@@ -177,7 +177,7 @@ app.post('/connectWLAN',
 
     console.log('Trying to connect to WLAN ' + ssid + ' with password ' + password);
     var foldername = 'testordner' + ssid;
-    shell.exec('sudo nmcli dev wifi', function (code, stdout, stderr) {
+    shell.exec('sudo nmcli dev wifi connect "' + ssid + '" password "' + password + '"', function (code, stdout, stderr) {
       console.log('Exit code:', code);
       console.log('Program output:', stdout);
       console.log('Program stderr:', stderr);
