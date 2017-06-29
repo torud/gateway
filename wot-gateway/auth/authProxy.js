@@ -14,7 +14,7 @@ var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var shell = require('shelljs');
 
-var useRedirects = true;
+var useRedirects = false;
 
 var keyFilePath = path.join(__dirname, 'config', 'privateKey.pem');
 var key_file = fs.readFileSync(keyFilePath, 'utf8');
