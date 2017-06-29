@@ -4,6 +4,9 @@ var https = require('https'),
   httpProxy = require('http-proxy');
 var path = require('path');
 
+var useRedirects = true;
+exports.useRedirects = useRedirects;
+
 var keyFilePath = path.join(__dirname, '..', 'config', 'privateKey.pem');
 var key_file = fs.readFileSync(keyFilePath, 'utf8');
 
@@ -51,9 +54,12 @@ module.exports = function () {
       // an error occurred
       console.log(e);
       req.flash('errorMessage', 'The server of the Web Thing is offline!');
-      //res.redirect('/error');
-      res.status(502);  // Bad Gateway
-      res.render('error', { message: req.flash('errorMessage') });
+      if (useRedirects) {
+        res.redirect('/error');
+      } else {
+        res.status(502);  // Bad Gateway
+        res.render('error', { message: req.flash('errorMessage') });
+      }
     }); //#E
   }
 };

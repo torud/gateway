@@ -14,9 +14,17 @@ var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var shell = require('shelljs');
 
-// let the authorisation server use redirects or just plain status codes
-// if an error or a user fault (e.g. a wrong password) occurs
+/**
+ * Changes behaviour if an error or a user fault (e.g. a wrong password) occurs
+ * true: let the authorisation server use redirects (all pages have status code 200,
+ * error messages are shown in text, the page you see in the browser is shown in the url line)
+ * false: directly render the pages with a specific status code (e.g. 401, 420, 500 etc.),
+ * the page is sometimes just a plain status code (after a POST /login with a wrong password),
+ * the page you see in the browser is not always the one shown in the url line
+ * (e.g. afer login, the profile page is shown, but the url line still contains /login)
+ */
 var useRedirects = true;
+proxy.useRedirects = useRedirects;
 
 var keyFilePath = path.join(__dirname, 'config', 'privateKey.pem');
 var key_file = fs.readFileSync(keyFilePath, 'utf8');
@@ -284,7 +292,7 @@ app.post('/editProfile',
           console.log('did not change password');
           req.flash('pwChangeFailedMessage', message);
           res.status(420);  // Policy Not Fulfilled
-          if (useRedirects) res.redirect(420, '/editProfile');
+          if (useRedirects) res.redirect('/editProfile');
           else res.render('editProfile', { user: req.user, message: req.flash('pwChangeFailedMessage') });
         } else {
           console.log('successfully changed password');
@@ -316,7 +324,7 @@ app.use(function (error, req, res, next) {
     console.log(error);
     if (useRedirects) {
       req.flash('errorMessage', 'Internal Server Error');
-      res.redirect(500, '/error');
+      res.redirect('/error');
     } else {
       res.sendStatus(500);    // Internal Server Error
     }
