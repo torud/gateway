@@ -178,7 +178,7 @@ app.post('/connectWLAN',
 
     console.log('Trying to connect to WLAN ' + ssid + ' with password ' + password);
     var foldername = 'testordner' + ssid;
-    shell.mkdir(foldername, function (code, stdout, stderr) {
+    shell.exec('mkdir ' + foldername, function (code, stdout, stderr) {
       console.log('Exit code:', code);
       console.log('Program output:', stdout);
       console.log('Program stderr:', stderr);
