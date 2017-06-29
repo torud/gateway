@@ -14,6 +14,8 @@ var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var shell = require('shelljs');
 
+var useRedirects = true;
+
 var keyFilePath = path.join(__dirname, 'config', 'privateKey.pem');
 var key_file = fs.readFileSync(keyFilePath, 'utf8');
 
@@ -103,44 +105,46 @@ app.get('/login',
     res.render('login.ejs', { message: req.flash('loginMessage') });
   }); // GET /login
 
-/**
+if (useRedirects) {
+  /**
  * Authentication if user interacts via browser
  * (uses redirects and flash messages)
  */
-app.post('/login',
-  passport.authenticate('local', {
-    successRedirect: '/profile', // redirect to the secure profile section
-    failureRedirect: '/login',
-    failureFlash: true // allow flash messages
-  })); // POST /login
-
-/**
- * Authentication if user interacts via Web App
- * (uses only HTTP status codes)
- */
-// app.post('/login', function (req, res, next) {
-//   //console.log('Cookies: ', req.cookies);
-//   passport.authenticate('local', function (err, user, info) {
-//     if (err) {
-//       return next(err);
-//     }
-//     if (!user) {
-//       return res.sendStatus(401);
-//     }
-//     // log in the user
-//     req.logIn(user, function (err) {
-//       if (err) {
-//         return next(err);
-//       }
-//       // once login succeeded, return the current API token along with the profile page
-//       res.setHeader('Access-Control-Expose-Headers', ['Token', 'User']);
-//       res.setHeader('Token', token);
-//       // also send the user object, so the user of the web app can be identified
-//       res.setHeader('User', JSON.stringify(user));
-//       return res.render('profile', { user: req.user, message: req.flash('pwChangedMessage') });
-//     });
-//   })(req, res, next);
-// }); // POST /login
+  app.post('/login',
+    passport.authenticate('local', {
+      successRedirect: '/profile', // redirect to the secure profile section
+      failureRedirect: '/login',
+      failureFlash: true // allow flash messages
+    })); // POST /login
+} else {
+  /**
+   * Authentication if user interacts via Web App
+   * (uses only HTTP status codes)
+   */
+  app.post('/login', function (req, res, next) {
+    //console.log('Cookies: ', req.cookies);
+    passport.authenticate('local', function (err, user, info) {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return res.sendStatus(401);
+      }
+      // log in the user
+      req.logIn(user, function (err) {
+        if (err) {
+          return next(err);
+        }
+        // once login succeeded, return the current API token along with the profile page
+        res.setHeader('Access-Control-Expose-Headers', ['Token', 'User']);
+        res.setHeader('Token', token);
+        // also send the user object, so the user of the web app can be identified
+        res.setHeader('User', JSON.stringify(user));
+        return res.render('profile', { user: req.user, message: req.flash('pwChangedMessage') });
+      });
+    })(req, res, next);
+  }); // POST /login
+}
 
 app.get('/logout',
   function (req, res) {
@@ -153,13 +157,11 @@ app.get('/reset',
     db.users.reset(function (err) {
       if (err) {
         req.flash('loginMessage', 'failed to reset password');
-        // res.redirect('/login');
-        res.render('login', { message: req.flash('loginMessage') });
       } else {
         req.flash('loginMessage', 'Password reseted to factory settings. Please enter the password found in the operation manual.');
-        // res.redirect('/login');
-        res.render('login', { message: req.flash('loginMessage') });
       }
+      if (useRedirects) res.redirect('/login');
+      else res.render('login', { message: req.flash('loginMessage') });
     });
   }); // GET /reset
 
@@ -214,12 +216,8 @@ app.use(function (req, res, next) {
     // console.log('Request is not authenticated!');
     // console.log('Token is valid: ' + isTokenValid(req));
     // console.log('User header is present: ' + hasUserHeader(req));
-
-    // without redirect, only plain status code
-    // return res.sendStatus(401);
-
-    // with redirect to /login
-    return res.redirect('/login');
+    if (useRedirects) return res.redirect('/login');
+    else return res.sendStatus(401);
   }
   // console.log('Request is authenticated!');
   next();
@@ -266,7 +264,7 @@ app.get('/profile',
 
 app.get('/editProfile',
   function (req, res) {
-    console.log('user: ' + JSON.stringify(req.user));
+    // console.log('user: ' + JSON.stringify(req.user));
     res.render('editProfile', { user: req.user, message: req.flash('pwChangeFailedMessage') });
   }); // GET /editProfile
 
@@ -284,8 +282,8 @@ app.post('/editProfile',
           console.log('did not change password');
           req.flash('pwChangeFailedMessage', message);
           res.status(420);  // Policy Not Fulfilled
-          res.redirect('/editProfile');
-          // res.render('editProfile', { user: req.user, message: req.flash('pwChangeFailedMessage') });
+          if (useRedirects) res.redirect('/editProfile');
+          else res.render('editProfile', { user: req.user, message: req.flash('pwChangeFailedMessage') });
         } else {
           console.log('successfully changed password');
           req.flash('pwChangedMessage', message);
@@ -314,7 +312,12 @@ app.use(proxy());
 app.use(function (error, req, res, next) {
   if (error) {
     console.log(error);
-    res.sendStatus(500);    // Internal Server Error
+    if (useRedirects) {
+      req.flash('errorMessage', 'Internal Server Error');
+      res.redirect('/error');
+    } else {
+      res.sendStatus(500);    // Internal Server Error
+    }
   } else {
     next();
   }
