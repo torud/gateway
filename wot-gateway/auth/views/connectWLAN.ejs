@@ -30,18 +30,9 @@
 
 					<p>
 						<!-- show any messages that come back with authentication -->
-						<% if (messageFail.length > 0) { %>
+						<% if (message.length > 0) { %>
 							<div class="alert alert-danger">
-								<%= messageFail %>
-							</div>
-							<% } %>
-					</p>
-
-					<p>
-						<!-- show any messages that come back with authentication -->
-						<% if (messageSuccess.length > 0) { %>
-							<div class="alert alert-success">
-								<%= messageSuccess %>
+								<%= message %>
 							</div>
 							<% } %>
 					</p>
