@@ -284,7 +284,7 @@ app.post('/editProfile',
           console.log('did not change password');
           req.flash('pwChangeFailedMessage', message);
           res.status(420);  // Policy Not Fulfilled
-          if (useRedirects) res.redirect('/editProfile');
+          if (useRedirects) res.redirect(420, '/editProfile');
           else res.render('editProfile', { user: req.user, message: req.flash('pwChangeFailedMessage') });
         } else {
           console.log('successfully changed password');
@@ -316,7 +316,7 @@ app.use(function (error, req, res, next) {
     console.log(error);
     if (useRedirects) {
       req.flash('errorMessage', 'Internal Server Error');
-      res.redirect('/error');
+      res.redirect(500, '/error');
     } else {
       res.sendStatus(500);    // Internal Server Error
     }
