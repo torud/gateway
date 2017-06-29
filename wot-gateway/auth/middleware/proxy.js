@@ -55,8 +55,10 @@ module.exports = function () {
       console.log(e);
       req.flash('errorMessage', 'The server of the Web Thing is offline!');
       if (useRedirects) {
+        console.log('proxy: using redirect to /error');
         res.redirect('/error');
       } else {
+        console.log('proxy: render /error directly');
         res.status(502);  // Bad Gateway
         res.render('error', { message: req.flash('errorMessage') });
       }
