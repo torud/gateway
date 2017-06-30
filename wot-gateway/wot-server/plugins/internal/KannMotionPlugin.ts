@@ -203,7 +203,7 @@ function processAnswer() {
         try {
             var antwort = JSON.parse(answer.trim());
             console.log(antwort.com);
-            if (!antwort.com && antwort.com.id != 'state') {
+            if (!antwort.com) {
                 // don't shot (N)ACKs in last response, they have a seperate property
                 properties.lastResponse = answer;
             }
