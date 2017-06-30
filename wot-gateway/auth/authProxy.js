@@ -312,14 +312,14 @@ app.get('/application',
   isAuthenticated(),
   function (req, res) {
     console.log('Client wants a /application Ressource');
-    res.sendFile(path.join(__dirname + '/views/application/index.html'));
+    res.sendFile(path.join(__dirname + '/application/index.html'));
   }); // GET /application
 
 app.get('/application/*',
   isAuthenticated(),
   function (req, res) {
     console.log('GET application/*: ' + req.url);
-    res.sendFile(path.join(__dirname + '/views/application' + req.url));
+    res.sendFile(path.join(__dirname + '/application' + req.url));
   }); // GET /application/*
 
 app.get('/error',
