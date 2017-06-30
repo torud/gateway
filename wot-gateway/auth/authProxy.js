@@ -319,6 +319,13 @@ app.get('/application/*',
   isAuthenticated(),
   function (req, res) {
     console.log('GET application/*: ' + req.url);
+    res.sendFile(path.join(__dirname + req.url));
+  }); // GET /application/*
+
+app.get('/assets/*',
+  isAuthenticated(),
+  function (req, res) {
+    console.log('GET assets/*: ' + req.url);
     res.sendFile(path.join(__dirname + '/application' + req.url));
   }); // GET /application/*
 
