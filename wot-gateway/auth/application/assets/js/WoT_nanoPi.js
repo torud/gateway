@@ -33,8 +33,8 @@ function postSendCommand(command, callback) {
 
     request.onreadystatechange = function () {
         if (request.readyState === XMLHttpRequest.DONE && callback) {
-            console.log('request successful? ' + request.readyState);
-            callback(request.readyState === postActionStatus, request);
+            console.log('request successful? ' + request.status === postActionStatus);
+            callback(request.status === postActionStatus, request);
         }
     }
     if (command) {
