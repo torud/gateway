@@ -116,7 +116,9 @@ $("#buttonSendSeq").on("click", function () {
             }
         }
     }
-    request.send(command);
+    if (command) {
+        request.send(command);
+    }
 });
 
 // send the command to delete the current sequence on the motor
