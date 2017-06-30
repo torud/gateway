@@ -105,7 +105,7 @@ $("#buttonSendSeq").on("click", function () {
         console.log('buttonSendSeq in Tab Befehle');
         console.log('plainJSONSeq innerHTML: ' + document.getElementById('plainJSONSeq').innerHTML);
         if (document.getElementById('plainJSONSeq').innerHTML.trim() !== '') {
-
+            console.log('yay!');
             command = td.getElementById('plainJSONSeq').value;
         }
     }
