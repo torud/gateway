@@ -71,13 +71,14 @@ $("#buttonSendSeq").on("click", function () {
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     var command;
     var comSeq;
-    if ((document.getElementById('curSeq').innerHTML === "") != true) {
-        command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
-        comArray[i] = ' - GESENDET';
-        $('#curSeq').html(comArray.join(', '));
-        comArray = [];
-        i = 0;
-    } else if ((document.getElementById('wholeComSeq').innerHTML === "") != true) {
+    // if ((document.getElementById('curSeq').innerHTML === "") != true) {
+    //     command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
+    //     comArray[i] = ' - GESENDET';
+    //     $('#curSeq').html(comArray.join(', '));
+    //     comArray = [];
+    //     i = 0;
+    // } else
+    if (document.getElementById('wholeComSeq').innerHTML !== '') {
         command = td.getElementById('wholeComSeq').value;
     } else {
         $('#AnswerReceived pre').html('No sequence existing');
