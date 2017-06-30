@@ -3,10 +3,6 @@
  * 
  */
 
-var ip = 'wotgateway';
-//var ipWiFi = '192.168.2.1';
-var ipWiFi = 'wotgateway';
-var rootUrl = 'https://' + ip;
 var td = top.document;
 var comArray = new Array;       // Array for sequence
 var i = 0;                      // position in comArray
@@ -15,8 +11,6 @@ var logArray = new Array('Log');       // Array for logs
 var logString;
 var j = 0;                      // position in logArray
 var answArray = new Array;      // Array with answers
-var token = 'jozin';
-var user = 'spazin';
 
 //--------------------------------------------------MOTOR-----------------------------------------------------
 
@@ -24,12 +18,8 @@ var user = 'spazin';
 // sends the command to config the motor either Kann Motion 17 or 24
 $("#buttonConfig").on("click", function () {
     var request = new XMLHttpRequest();
-    token = sessionStorage.getItem('token');
-    user = sessionStorage.getItem('user');
     request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    // request.setRequestHeader('Authorization', token);
-    // request.setRequestHeader('User', user);
     $('#textArea').html('');
     var command;
     if (td.getElementById('mArt').options[document.getElementById('mArt').selectedIndex].value == 'c17') {
@@ -75,12 +65,8 @@ $("#buttonAddSeq").on("click", function () {
 // sends a whole sequence to the motor
 $("#buttonSendSeq").on("click", function () {
     var request = new XMLHttpRequest();
-    token = sessionStorage.getItem('token');
-    user = sessionStorage.getItem('user');
-    request.open("POST", rootUrl + '/actions/sendCommand');
+    request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    request.setRequestHeader('Authorization', token);
-    request.setRequestHeader('User', user);
     var command;
     var comSeq;
     if ((document.getElementById('curSeq').innerHTML === "") != true) {
@@ -109,12 +95,8 @@ $("#buttonSendSeq").on("click", function () {
 // send the command to delete the current sequence on the motor
 $("#buttonDelSeq").on("click", function () {
     var request = new XMLHttpRequest();
-    token = sessionStorage.getItem('token');
-    user = sessionStorage.getItem('user');
-    request.open("POST", rootUrl + '/actions/sendCommand');
+    request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    request.setRequestHeader('Authorization', token);
-    request.setRequestHeader('User', user);
     var command = '[{"rom":{"frm":[1,1],"val":" "}},\n'
         + '{"sys":1}]\n';
     request.onreadystatechange = function () {
@@ -132,12 +114,8 @@ $("#buttonDelSeq").on("click", function () {
 // sends a command to start the sequenz which is currently on the motor
 $("#buttonReset").on("click", function () {
     var request = new XMLHttpRequest();
-    token = sessionStorage.getItem('token');
-    user = sessionStorage.getItem('user');
-    request.open("POST", rootUrl + '/actions/sendCommand');
+    request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    request.setRequestHeader('Authorization', token);
-    request.setRequestHeader('User', user);
     var command = '{"sys":1}\n';
     request.onreadystatechange = function () {
         console.log('RESET status: ' + request.status);
