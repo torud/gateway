@@ -306,7 +306,7 @@ app.post('/editProfile',
 
 app.get('/application',
   function (req, res) {
-    res.render('application');
+    res.render('index');
   }); // GET /application
 
 app.get('/error',
