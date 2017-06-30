@@ -305,7 +305,7 @@ app.get('/application',
   isAuthenticated(),
   function (req, res) {
     console.log('Client wants a /application Ressource');
-    res.render('index', { filename: path.join(__dirname + '/application/index.html') });
+    res.render({ filename: path.join(__dirname + '/application/index.html') });
   }); // GET /application
 
 // only use this if application has multiple html pages
