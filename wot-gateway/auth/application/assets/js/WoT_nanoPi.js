@@ -22,7 +22,10 @@ var configKM24 = [{ "par": { "cmd": 1, "id": 0, "val": 2500 } },
 { "par": { "cmd": 1, "id": 5, "val": 389 } },
 { "par": { "cmd": 1, "id": 6, "val": 45000 } }];
 
+var deleteSequence = [{ "rom": { "frm": [1, 1], "val": " " } }, { "sys": 1 }];
+var resetCommand = { "sys": 1 };
 
+// --------------------- Konfiguration ---------------------
 // sends the command to config the motor either Kann Motion 17 or 24
 $("#buttonConfig").on("click", function () {
     var request = new XMLHttpRequest();
@@ -48,22 +51,28 @@ $("#buttonConfig").on("click", function () {
     request.send(command);
 });
 
+// --------------------- Sequenzen ---------------------
 // adds a command to your sequence and displays it in curSeq
 $("#buttonAddSeq").on("click", function () {
     var actVal = td.getElementById('valueSeq').value;
-    var comSeq;
-    if ($('#seqCom :selected').val() == 's1') {  // GEHE ZU POSITION
-        comSeq = 'g:[' + actVal + ',0]';
-    } else if ($('#seqCom :selected').val() == 's4') {    // DREHEN
-        comSeq = 'r:[0,' + actVal + ',0,0]';
-    } else if ($('#seqCom :selected').val() == 's12') {    // WARTE
-        comSeq = 'wt:' + actVal;
+    if (actVal != '') {
+        var comSeq;
+        if ($('#seqCom :selected').val() == 's1') {  // GEHE ZU POSITION
+            comSeq = 'g:[' + actVal + ',0]';
+        } else if ($('#seqCom :selected').val() == 's4') {    // DREHEN
+            comSeq = 'r:[0,' + actVal + ',0,0]';
+        } else if ($('#seqCom :selected').val() == 's12') {    // WARTE
+            comSeq = 'wt:' + actVal;
+        }
+        comArray[i] = comSeq;
+        i++;
+        $('#curSeq').html(comArray.join(', '));
+    } else {
+        console.log('actVal ist leer!')
     }
-    comArray[i] = comSeq;
-    i++;
-    $('#curSeq').html(comArray.join(', '));
 });
 
+// --------------------- Sequenzen & Befehle ---------------------
 // sends a whole sequence to the motor
 $("#buttonSendSeq").on("click", function () {
     var request = new XMLHttpRequest();
@@ -71,16 +80,20 @@ $("#buttonSendSeq").on("click", function () {
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     var command;
     var comSeq;
-    // if ((document.getElementById('curSeq').innerHTML === "") != true) {
-    //     command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
-    //     comArray[i] = ' - GESENDET';
-    //     $('#curSeq').html(comArray.join(', '));
-    //     comArray = [];
-    //     i = 0;
-    // } else
-    if (document.getElementById('wholeComSeq').innerHTML !== '') {
+    if ((document.getElementById('curSeq').innerHTML === "") != true) {
+        // Tab Sequenzen
+        console.log('buttonSendSeq in Tab Sequenzen');
+        command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
+        comArray[i] = ' - GESENDET';
+        $('#curSeq').html(comArray.join(', '));
+        comArray = [];
+        i = 0;
+    } else if (document.getElementById('wholeComSeq').innerHTML !== '') {
+        // Tab Befehle
+        console.log('buttonSendSeq in Tab Befehle');
         command = td.getElementById('wholeComSeq').value;
     } else {
+        console.log('buttonSendSeq in Tab ????');
         $('#AnswerReceived pre').html('No sequence existing');
     }
     request.onreadystatechange = function () {
@@ -100,8 +113,7 @@ $("#buttonDelSeq").on("click", function () {
     var request = new XMLHttpRequest();
     request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    var command = '[{"rom":{"frm":[1,1],"val":" "}},\n'
-        + '{"sys":1}]\n';
+    var command = JSON.stringify(deleteSequence);
     request.onreadystatechange = function () {
         console.log('DELSEQ status: ' + request.status);
         if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
@@ -110,7 +122,6 @@ $("#buttonDelSeq").on("click", function () {
             $('#communicationCommand').html('deleting current sequence failed: ' + request.status + ' ' + request.statusText);
         }
     }
-    console.log('Command: ' + command);
     request.send(command);
 });
 
@@ -119,22 +130,25 @@ $("#buttonReset").on("click", function () {
     var request = new XMLHttpRequest();
     request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    var command = '{"sys":1}\n';
+    var command = JSON.stringify(resetCommand);
     request.onreadystatechange = function () {
         console.log('RESET status: ' + request.status);
-        if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
-            console.log('current sequence started\n');
-            //console.log(request.responseURL);
-            //logCommand('current sequence started\n');
-        } else if (request.readyState === XMLHttpRequest.DONE && request.status != 200) {
-            console.log('starting current sequence failed: ' + request.status + ' ' + request.statusText);
-            //console.log(request.responseURL);
-            //logCommand('starting current sequence failed: ' + request.status + ' ' + request.statusText);
+        if (request.readyState === XMLHttpRequest.DONE) {
+            if (request.status === 204) {
+                console.log('current sequence started\n');
+                //console.log(request.responseURL);
+                //logCommand('current sequence started\n');
+            } else {
+                console.log('starting current sequence failed: ' + request.status + ' ' + request.statusText);
+                //console.log(request.responseURL);
+                //logCommand('starting current sequence failed: ' + request.status + ' ' + request.statusText);
+            }
         }
     }
     request.send(command);
 });
 
+// --------------------- Logging ---------------------
 //log commands in Logging html
 // function logCommand(mes) {
 //     logMessage = mes;
