@@ -84,8 +84,9 @@ $("#buttonSendSeq").on("click", function () {
     var command;
     if (document.getElementById('curSeq')) {
         // Tab Sequenzen
+        console.log('buttonSendSeq in Tab Sequenzen');
         if (document.getElementById('curSeq').innerHTML !== '') {
-            console.log('buttonSendSeq in Tab Sequenzen');
+            console.log('curSeq innerHTML: ' + document.getElementById('curSeq').innerHTML);
             command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
             comArray[i] = ' - GESENDET';
             $('#curSeq').html(comArray.join(', '));
@@ -94,8 +95,9 @@ $("#buttonSendSeq").on("click", function () {
         }
     } else if (document.getElementById('wholeComSeq')) {
         // Tab Befehle
+        console.log('buttonSendSeq in Tab Befehle');
         if (document.getElementById('wholeComSeq').innerHTML !== '') {
-            console.log('buttonSendSeq in Tab Befehle');
+            console.log('wholeComSeq innerHTML: ' + document.getElementById('wholeComSeq').innerHTML);
             command = td.getElementById('wholeComSeq').value;
         }
     }
