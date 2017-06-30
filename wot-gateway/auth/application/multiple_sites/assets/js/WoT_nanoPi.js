@@ -189,11 +189,11 @@ $("#buttonReset").on("click", function () {
         if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
             console.log('current sequence started\n');
             //console.log(request.responseURL);
-            //logCommand('current sequence started\n');
+            logCommand('current sequence started\n');
         } else if (request.readyState === XMLHttpRequest.DONE && request.status != 200) {
             console.log('starting current sequence failed: ' + request.status + ' ' + request.statusText);
             //console.log(request.responseURL);
-            //logCommand('starting current sequence failed: ' + request.status + ' ' + request.statusText);
+            logCommand('starting current sequence failed: ' + request.status + ' ' + request.statusText);
         }
     }
     request.send(command);
@@ -220,22 +220,22 @@ $("#buttonReset").on("click", function () {
 //     $('#communicationCommand').html(logArray.join(', '));
 // }
 
-// function logCommand(mes) {
-//     logMessage = mes;
-//     console.log('logMessage: ' + logMessage);
-//     logArray = sessionStorage.getObject('logArray');
-//     logArray.push(logMessage);
-//     console.log('logArray: ' + logArray);
-//     for (a = 0; a <= logArray.length; a++) {
-//         console.log("logArray ausgeben: " + logArray[a]);
-//     }
-//     sessionStorage.setObject('logArray', logArray);
-//     if (logArray.length > 10) {
-//         logArray.shift();
-//     }
+function logCommand(mes) {
+    logMessage = mes;
+    console.log('logMessage: ' + logMessage);
+    logArray = sessionStorage.getObject('logArray');
+    logArray.push(logMessage);
+    console.log('logArray: ' + logArray);
+    for (a = 0; a <= logArray.length; a++) {
+        console.log("logArray ausgeben: " + logArray[a]);
+    }
+    sessionStorage.setObject('logArray', logArray);
+    if (logArray.length > 10) {
+        logArray.shift();
+    }
 
-//     $('#communicationCommand').html(logArray.join(', '));
-// }
+    $('#communicationCommand').html(logArray.join(', '));
+}
 
 // function logCommand(mes) {
 //     logMessage = mes;
