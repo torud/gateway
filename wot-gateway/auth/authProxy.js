@@ -204,13 +204,11 @@ app.post('/connectWLAN',
     });
   }); // POST /connectWLAN
 
-
-/** NOT USED ANYMORE, function also implemented in the custom authorisation middleware
- * npm middleware, uses redirects to /login if user isn't authenticated
- * use this when client interacts with a browser
+/**
+ * custom authorisation middleware, checks if user is authenticated.
+ * Uses either only status code 401 (if client interacts via a Web App)
+ * or redirects to login (when client interacts with a browser)
  */
-// app.use(require('connect-ensure-login').ensureLoggedIn());
-
 function isAuthenticated() {
   return function (req, res, next) {
     // if the request is neither authorized via cookie
@@ -231,11 +229,6 @@ function isAuthenticated() {
   }
 } // isAuthenticated
 
-/**
- * custom authorisation middleware, checks if user is authenticated.
- * Uses either only status code 401 (if client interacts via a Web App)
- * or redirects to login (when client interacts with a browser)
- */
 app.use(isAuthenticated()); // authorisation middleware
 
 function isTokenValid(req) {
@@ -312,7 +305,7 @@ app.get('/application',
   isAuthenticated(),
   function (req, res) {
     console.log('Client wants a /application Ressource');
-    res.render('index', { filename: '/../application/index.html' });
+    res.render('index', { filename: path.join(__dirname + '/application/index.html') });
   }); // GET /application
 
 // only use this if application has multiple html pages
