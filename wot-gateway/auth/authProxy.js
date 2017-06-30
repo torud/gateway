@@ -309,7 +309,7 @@ app.get('/application',
     // res.render('application');
 
     // application has mulitple html pages
-    res.sendFile(path.join(__dirname + '/application/index.html'));
+    res.sendFile(path.join(__dirname + '/application/config.html'));
   }); // GET /application
 
 // only use this if application has multiple html pages

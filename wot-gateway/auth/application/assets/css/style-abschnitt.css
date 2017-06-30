@@ -77,7 +77,13 @@
 }
 
 @media (min-width:789px) {
-  #abschnGrau {
+  #abschnGrau1 {
+    max-width:690px;
+  }
+    #abschnGrau2 {
+    max-width:690px;
+  }
+    #abschnGrau3 {
     max-width:690px;
   }
 }
