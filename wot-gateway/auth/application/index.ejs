@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KannMotion</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
+    <link rel="stylesheet" href="assets/css/style-abschnitt.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand navbar-link" href="#"> <img src="assets/img/adlos_kannmotion.jpg" style="height:20px;"></a>
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            </div>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li role="presentation"><a href="profile">Profile Page</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container" style="background-color:#e1e1e1">
+        <form>
+            <div class="form-group">
+                <form method="post" id="abschnGrau">
+                    <h2>Konfiguration </h2>
+                    <p>Zur Konfiguration kann hier der gewünschte Motor ausgewählt werden, dabei werden die richtigen Daten
+                        automatisch geladen.
+                    </p>
+                    <select class="form-control" id="mArt">
+                        <option value="c17" selected="">Kann Motion 17</option>
+                        <option value="c24">Kann Motion 24</option>
+                    </select>
+                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonConfig" style="margin-top:10px;">Konfigurieren </button>
+                    <p id="actualConfigCommand" style="margin: 10px 0;background-color:#cccbcb;min-height:100px;font-family:Courier New;padding:10px;border-radius:5px;">
+                    </p>
+                </form>
+            </div>
+            <div class="form-group">
+                <form method="post" id="abschnGrau">
+                    <h2>Sequenzen </h2>
+                    <p>Hier können Sequenzen für den Motor zusammengestellt werden. Aktion auswählen, value eintragen und dann
+                        hinzufügen. Wenn alle gewünschten Aktionen hinzugefügt sind kann die Sequenz an den Motor gesendet
+                        werden.
+                    </p>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select class="form-control" id="seqCom" style="margin:10px;margin-top:10px;">
+                        <option value="s1" selected="">Gehe zu Position</option>
+                        <option value="s4">Drehen</option>
+                        <option value="s12">Warte</option>
+                    </select>
+                        </div>
+                        <div class="col-md-4">
+                            <input class="form-control" type="text" placeholder="values" autofocus="" id="valueSeq" style="margin:10px;">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button class="btn btn-default btn-block-xs-only" type="button" id="buttonAddSeq" style="margin:10px;">Add </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSendSeq" style="margin:10px;">sende Sequenz</button>
+                        </div>
+                    </div>
+                    <p id="curSeq" style="margin:10px;background-color:#cccbcb;min-height:100px;font-family:Courier New;padding:10px;border-radius:5px;">
+                    </p>
+                </form>
+            </div>
+            <div class="form-group">
+                <form method="post" id="abschnGrau3">
+                    <h2>Befehle </h2>
+                    <p>Foglende Befehle können gleich ausgeführt werden. Zum einen um eine Sequenz vom Motor zu löschen, zum
+                        Ausführen der aktuellen Sequenz und um Geräte zu suchen.</p>
+                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonDelSeq" style="margin:5px;">Sequenz löschen</button>
+                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonReset" style="margin:5px;">Reset </button>
+                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSearchDev" style="margin:5px;">Gerät suchen</button>
+                    <p style="margin-top:20px;">Hier können komplette, syntaktisch korrekte Befehle eingetragen werden:</p>
+                    <input class="form-control" type="text" placeholder="Befehl" id="wholeComSeq" style="max-width:100%;">
+                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSendSeq" style="margin-top:10px;">Sende Befehl</button>
+                </form>
+            </div>
+        </form>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/WoT_nanoPi.js"></script>
+</body>
+
+</html>
