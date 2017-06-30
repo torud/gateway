@@ -12,7 +12,7 @@ var sequenzArray = [];
 var initialCommands = [{ "sys": 2 }, { "par": { "cmd": 2 } }];
 var properties = {};
 var model;
-// variable to indicate whether a timeout has occurred
+// timer to check if motor sends an answer within a specified time
 var timer;
 // time in ms after which the motor has to respond,
 // otherwise properties.isOnline will be set to false
@@ -26,7 +26,7 @@ var KannMotionPlugin = exports.KannMotionPlugin = function (params) {
     // model = links.properties.resources.motor;
     model = this.model;
     myself = this;
-};
+}; // KannMotionPlugin
 util.inherits(KannMotionPlugin, CorePlugin);
 /**
  * Opens the serial port and initializes the property values
@@ -159,7 +159,7 @@ function sendCommand(value) {
 function createValue(data) {
     //console.log('Properties updated!');
     return Object.assign(data, { "timestamp": utils.isoTimestamp() });
-}
+} // createValue
 /**
  * Adds a value to the model.data array (i.e. links.properties.resources.motor.data array)
  * @param data  the data to add the model.data array
@@ -168,7 +168,7 @@ KannMotionPlugin.prototype.addValue = function (data) {
     // clone the data object, otherwise all model.data-array entries are the same
     var clonedData = JSON.parse(JSON.stringify(data));
     utils.cappedPush(model.data, createValue(clonedData));
-};
+}; // addValue
 /**
  * Sets the isOnline-property to true if an answer from the
  * KannMotion control is received within the specified time
@@ -337,10 +337,10 @@ port.on('data', function (data) {
 // open errors will be emitted as an error event 
 port.on('error', function (err) {
     console.log('Error: ', err.message);
-});
+}); // port on error
 /**
  * Closes the serial port
  */
 function stop() {
     port.close();
-}
+} // stop

@@ -16,7 +16,7 @@ var sequenzArray = [];
 var initialCommands = [{ "sys": 2 }, { "par": { "cmd": 2 } }];
 var properties = {};
 var model: JSON;
-// variable to indicate whether a timeout has occurred
+// timer to check if motor sends an answer within a specified time
 var timer;
 // time in ms after which the motor has to respond,
 // otherwise properties.isOnline will be set to false
@@ -31,7 +31,7 @@ var KannMotionPlugin = exports.KannMotionPlugin = function (params: JSON) {
     // model = links.properties.resources.motor;
     model = this.model;
     myself = this;
-};
+} // KannMotionPlugin
 
 util.inherits(KannMotionPlugin, CorePlugin);
 
@@ -153,7 +153,7 @@ function sendCommand(value) {
 function createValue(data) {
     //console.log('Properties updated!');
     return Object.assign(data, { "timestamp": utils.isoTimestamp() });
-}
+} // createValue
 
 
 /**
@@ -164,7 +164,7 @@ KannMotionPlugin.prototype.addValue = function (data) {
     // clone the data object, otherwise all model.data-array entries are the same
     var clonedData = JSON.parse(JSON.stringify(data));
     utils.cappedPush(model.data, createValue(clonedData));
-}
+} // addValue
 
 
 /**
@@ -217,7 +217,6 @@ function processAnswer() {
                  * {"id":"Seq. Version","val":"0.0"}
                  * ]}
                  */
-
                 antwort.info.forEach(function (element, index) {
                     switch (element.id) {
                         case 'Position': properties.position = element.val; break;
@@ -255,7 +254,6 @@ function processAnswer() {
                  * {"par":{"id":7,"cmd":0,"val":0}}
                  * {"com":{"id":"state","val":"ACK"}}
                  */
-
                 switch (antwort.par.id) {
                     case 0: properties.maxSpeed = antwort.par.val; break;
                     case 1: properties.maxAccel = antwort.par.val; break;
@@ -311,11 +309,11 @@ port.on('data', function (data) {
 // open errors will be emitted as an error event 
 port.on('error', function (err) {
     console.log('Error: ', err.message);
-});
+}); // port on error
 
 /**
  * Closes the serial port
  */
 function stop() {
     port.close();
-}
+} // stop
