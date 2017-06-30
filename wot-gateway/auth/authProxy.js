@@ -305,7 +305,7 @@ app.get('/application',
   isAuthenticated(),
   function (req, res) {
     console.log('Client wants a /application Ressource');
-    res.render({ filename: path.join(__dirname + '/application/index.html') });
+    res.render('application');
   }); // GET /application
 
 // only use this if application has multiple html pages
@@ -316,12 +316,12 @@ app.get('/application',
 //     res.sendFile(path.join(__dirname + req.url));
 //   }); // GET /application/*
 
-app.get('/assets/*',
-  isAuthenticated(),
-  function (req, res) {
-    console.log('GET assets/*: ' + req.url);
-    res.sendFile(path.join(__dirname + '/application' + req.url));
-  }); // GET /application/*
+// app.get('/assets/*',
+//   isAuthenticated(),
+//   function (req, res) {
+//     console.log('GET assets/*: ' + req.url);
+//     res.sendFile(path.join(__dirname + '/application' + req.url));
+//   }); // GET /application/*
 
 app.get('/error',
   function (req, res) {
