@@ -304,7 +304,7 @@ app.post('/editProfile',
       }); // changePassword
   }); // POST /editProfile
 
-app.get('/application/*',
+app.get('/application',
   function (req, res) {
     res.render('application/index');
   }); // GET /application
@@ -313,6 +313,11 @@ app.get('/error',
   function (req, res) {
     res.render('error', { user: req.user, message: req.flash('errorMessage') });
   }); // GET /error
+
+app.get('*',
+  function (req, res) {
+    console.log('GET *: ' + req.url);
+  }); // GET /application
 
 
 // add the proxy server middleware, which adds the API-Token of the
