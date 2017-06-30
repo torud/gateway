@@ -218,13 +218,13 @@ function isAuthenticated() {
     // console.log('user: ' + req.get('user'));
     if ((!req.isAuthenticated || !req.isAuthenticated()) &&
       (!isTokenValid(req) || !hasUserHeader(req))) {
-      console.log('Request is NOT authenticated!');
+      // console.log('Request is NOT authenticated!');
       // console.log('Token is valid: ' + isTokenValid(req));
       // console.log('User header is present: ' + hasUserHeader(req));
       if (useRedirects) return res.redirect('/login');
       else return res.sendStatus(401);
     }
-    console.log('Request is authenticated!');
+    // console.log('Request is authenticated!');
     next();
   }
 } // isAuthenticated
@@ -303,7 +303,6 @@ app.post('/editProfile',
 
 if (useRedirects) {
   app.get('/application',
-    isAuthenticated(),
     function (req, res) {
       console.log('Client wants a /application Ressource');
       // application is a single html page
@@ -315,9 +314,8 @@ if (useRedirects) {
 
   // only use this if application has multiple html pages
   app.get('/*.html',
-    isAuthenticated(),
     function (req, res) {
-      console.log('GET *.html: ' + req.url);
+      // console.log('GET *.html: ' + req.url);
       res.sendFile(path.join(__dirname + '/application' + req.url));
     }); // GET /application/*
 
@@ -325,7 +323,7 @@ if (useRedirects) {
   app.get('/assets/*',
     isAuthenticated(),
     function (req, res) {
-      console.log('GET assets/*: ' + req.url);
+      // console.log('GET assets/*: ' + req.url);
       res.sendFile(path.join(__dirname + '/application' + req.url));
     }); // GET /application/*
 }

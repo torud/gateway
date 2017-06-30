@@ -32,14 +32,14 @@
     </nav>
     <div class="abschnitt">
         <form method="post" id="abschnGrau">
-            <h2>Befehle </h2>
-            <p>Foglende Befehle können gleich ausgeführt werden. Zum einen um eine Sequenz vom Motor zu löschen, zum Ausführen
-                der aktuellen Sequenz und um Geräte zu suchen.</p>
+            <h2>Befehle</h2>
+            <p>Hier können die sich auf dem Motor befindliche Sequenz gelöscht werden oder die KannMotion Steuerung zurückgesetzt
+                werden, was die aktuell auf dem Motor gespeicherte Sequenz ausführen lässt.</p>
             <button class="btn btn-default btn-block-xs-only" type="button" id="buttonDelSeq" style="margin:5px;">Sequenz löschen</button>
             <button class="btn btn-default btn-block-xs-only" type="button" id="buttonReset" style="margin:5px;">Reset </button>
-            <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSearchDev" style="margin:5px;">Gerät suchen</button>
-            <p style="margin-top:20px;">Hier können komplette, syntaktisch korrekte Befehle eingetragen werden:</p>
-            <input class="form-control" type="text" placeholder="Befehl" id="wholeComSeq" style="max-width:100%;">
+            <!--<button class="btn btn-default btn-block-xs-only" type="button" id="buttonSearchDev" style="margin:5px;">Gerät suchen</button>-->
+            <p style="margin-top:20px;">Hier können komplette, syntaktisch korrekte Befehle im JSON Format eingegeben und gesendet werden:</p>
+            <input class="form-control" type="text" placeholder="JSON-Befehl" id="wholeComSeq" style="max-width:100%;">
             <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSendSeq" style="margin-top:10px;">Sende Befehl</button>
         </form>
     </div>

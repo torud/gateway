@@ -33,8 +33,9 @@
     <div class="abschnitt">
         <form method="post" id="abschnGrau">
             <h2>Sequenzen </h2>
-            <p>Hier können Sequenzen für den Motor zusammengestellt werden. Aktion auswählen, value eintragen und dann hinzufügen.
-                Wenn alle gewünschten Aktionen hinzugefügt sind kann die Sequenz an den Motor gesendet werden.</p>
+            <p>Hier können Sequenzen für den Motor zusammengestellt werden. Aktion auswählen, Werte eintragen und dann hinzufügen.
+                Wenn alle gewünschten Aktionen hinzugefügt sind, kann die Sequenz an den Motor gesendet werden. Wenn die
+                Sequenz auf den Motor geladen wurde, kann die Sequenz ausgeführt werden.</p>
             <div class="row">
                 <div class="col-md-4">
                     <select class="form-control" id="seqCom" style="margin:10px;margin-top:10px;">
@@ -49,10 +50,13 @@
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonAddSeq" style="margin:10px;">Add </button>
+                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonAddSeq" style="margin:10px;">Hinzufügen</button>
                 </div>
                 <div class="col-md-4">
-                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSendSeq" style="margin:10px;">sende Sequenz</button>
+                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSendSeq" style="margin:10px;">Sequenz auf Motor laden</button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonReset" style="margin:10px;">Ausführen</button>
                 </div>
             </div>
             <p id="curSeq" style="margin:10px;background-color:#cccbcb;min-height:100px;font-family:Courier New;padding:10px;border-radius:5px;">
