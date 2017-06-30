@@ -304,7 +304,7 @@ app.post('/editProfile',
       }); // changePassword
   }); // POST /editProfile
 
-app.get('/application',
+app.get('/application/*',
   function (req, res) {
     res.render('application/index');
   }); // GET /application
