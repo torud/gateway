@@ -103,7 +103,7 @@ $("#buttonSendSeq").on("click", function () {
     } else if (td.getElementById('plainJSONSeq')) {
         // Tab Befehle
         console.log('buttonSendSeq in Tab Befehle');
-        var plainJSONSeq = td.getElementById('plainJSONSeq');
+        var plainJSONSeq = td.getElementById('plainJSONSeq').value;
         console.log('plainJSONSeq: ' + plainJSONSeq);
         if (plainJSONSeq !== '') {
             console.log('yay!');
