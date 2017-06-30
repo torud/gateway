@@ -1,6 +1,5 @@
 /**
  * Javascript Code für Website KannMotion WoT-Gateway
- * 
  */
 
 var td = top.document;
@@ -12,7 +11,16 @@ var logString;
 var j = 0;                      // position in logArray
 var answArray = new Array;      // Array with answers
 
-//--------------------------------------------------MOTOR-----------------------------------------------------
+// ------------------------------------------ MOTOR ------------------------------------------
+var configKM17 = [{}];
+
+var configKM24 = [{ "par": { "cmd": 1, "id": 0, "val": 2500 } },
+{ "par": { "cmd": 1, "id": 1, "val": 10000 } },
+{ "par": { "cmd": 1, "id": 2, "val": 10000 } },
+{ "par": { "cmd": 1, "id": 3, "val": 152000 } },
+{ "par": { "cmd": 1, "id": 4, "val": 162 } },
+{ "par": { "cmd": 1, "id": 5, "val": 389 } },
+{ "par": { "cmd": 1, "id": 6, "val": 45000 } }];
 
 
 // sends the command to config the motor either Kann Motion 17 or 24
@@ -20,18 +28,12 @@ $("#buttonConfig").on("click", function () {
     var request = new XMLHttpRequest();
     request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    $('#textArea').html('');
+    // $('#textArea').html('');
     var command;
     if (td.getElementById('mArt').options[document.getElementById('mArt').selectedIndex].value == 'c17') {
-        command = 'Keine Vorgaben vorhanden';
+        command = JSON.stringify(configKM24);
     } else if (td.getElementById('mArt').options[document.getElementById('mArt').selectedIndex].value == 'c24') {
-        command = '[{"par":{"cmd":1,"id":0,"val":2500}},\n'
-            + '{"par":{"cmd":1,"id":1,"val":10000}},\n'
-            + '{"par":{"cmd":1,"id":2,"val":10000}},\n'
-            + '{"par":{"cmd":1,"id":3,"val":152000}},\n'
-            + '{"par":{"cmd":1,"id":4,"val":162}},\n'
-            + '{"par":{"cmd":1,"id":5,"val":389}},\n'
-            + '{"par":{"cmd":1,"id":6,"val":45000}}]\n';
+        command = JSON.stringify(configKM24);
     }
     $('#actualConfigCommand').html(command);
 
