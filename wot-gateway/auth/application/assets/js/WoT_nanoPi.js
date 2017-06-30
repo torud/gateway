@@ -33,7 +33,7 @@ function postSendCommand(command, callback) {
 
     request.onreadystatechange = function () {
         if (request.readyState === XMLHttpRequest.DONE && callback) {
-            console.log('request successful? ' + request.readyState === postActionStatus);
+            console.log('request successful? ' + request.readyState);
             callback(request.readyState === postActionStatus, request);
         }
     }
@@ -59,6 +59,7 @@ $("#buttonConfig").on("click", function () {
             $('#communicationCommand').html('config sendt\n');
         } else {
             console.log('postSendCommand callback NOT successful');
+            console.log('configuration failed: ' + request.status + ' ' + request.statusText);
             $('#communicationCommand').html('configuration failed: ' + request.status + ' ' + request.statusText);
         }
     });
