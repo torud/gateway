@@ -96,6 +96,11 @@ morgan.token('date', function () {
   return date.toString();
 });
 
+// don't log the /assets/* requests (is used when interacting with the device specific application)
+morgan('combined', {
+  skip: function (req, res) { return res.url.startsWith('/assets'); }
+})
+
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling
 app.use(morgan(':date :method :url :status :res[content-length] - :response-time ms'));
