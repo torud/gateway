@@ -28,7 +28,7 @@ $("#buttonConfig").on("click", function () {
     var request = new XMLHttpRequest();
     request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    // $('#textArea').html('');
+    $('#textArea').html('');
     var command;
     if (td.getElementById('mArt').options[document.getElementById('mArt').selectedIndex].value == 'c17') {
         command = JSON.stringify(configKM24);
