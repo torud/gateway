@@ -28,32 +28,32 @@ module.exports = function () {
       }
 
       if (req.accepts('application/x-msgpack')) {
-        console.info('MessagePack representation selected!');
+        // console.info('MessagePack representation selected!');
         res.type('application/x-msgpack');
         res.send(encode(req.result));
         return;
       }
 
       if (req.accepts('application/ld+json')) {
-        console.info('JSON-ld representation selected!');
+        // console.info('JSON-ld representation selected!');
         res.send(jsonld);
         return;
       }
 
       if (req.accepts('application/json')) {
-        console.info('JSON representation selected!');
+        // console.info('JSON representation selected!');
         res.type('application/json');
         res.send(req.result);
         return;
       }
 
-      console.info('Defaulting to JSON representation!');
+      // console.info('Defaulting to JSON representation!');
       res.send(req.result);
       return;
 
     }
     else if (res.location) {
-      res.status(204).send();
+      res.status(404).send();
       return;
     } else {
       next();
