@@ -10,6 +10,7 @@ var logArray = new Array('Log');       // Array for logs
 var logString;
 var j = 0;                      // position in logArray
 var answArray = new Array;      // Array with answers
+var postActionStatus = 204;
 
 // ------------------------------------------ MOTOR ------------------------------------------
 var configKM17 = [{}];
@@ -42,10 +43,12 @@ $("#buttonConfig").on("click", function () {
 
     request.onreadystatechange = function () {
         console.log('CONFIG status: ' + request.status);
-        if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
-            $('#communicationCommand').html('config sendt\n');
-        } else if (request.readyState === XMLHttpRequest.DONE && request.status != 200) {
-            $('#communicationCommand').html('configuration failed: ' + request.status + ' ' + request.statusText);
+        if (request.readyState === XMLHttpRequest.DONE) {
+            if (request.status === postActionStatus) {
+                $('#communicationCommand').html('config sendt\n');
+            } else {
+                $('#communicationCommand').html('configuration failed: ' + request.status + ' ' + request.statusText);
+            }
         }
     }
     request.send(command);
@@ -79,30 +82,36 @@ $("#buttonSendSeq").on("click", function () {
     request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     var command;
-    var comSeq;
-    if ((document.getElementById('curSeq').innerHTML === "") != true) {
+    if (document.getElementById('curSeq')) {
         // Tab Sequenzen
-        console.log('buttonSendSeq in Tab Sequenzen');
-        command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
-        comArray[i] = ' - GESENDET';
-        $('#curSeq').html(comArray.join(', '));
-        comArray = [];
-        i = 0;
-    } else if (document.getElementById('wholeComSeq').innerHTML !== '') {
+        if (document.getElementById('curSeq').innerHTML !== '') {
+            console.log('buttonSendSeq in Tab Sequenzen');
+            command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
+            comArray[i] = ' - GESENDET';
+            $('#curSeq').html(comArray.join(', '));
+            comArray = [];
+            i = 0;
+        }
+    } else if (document.getElementById('wholeComSeq')) {
         // Tab Befehle
-        console.log('buttonSendSeq in Tab Befehle');
-        command = td.getElementById('wholeComSeq').value;
-    } else {
-        console.log('buttonSendSeq in Tab ????');
-        $('#AnswerReceived pre').html('No sequence existing');
+        if (document.getElementById('wholeComSeq').innerHTML !== '') {
+            console.log('buttonSendSeq in Tab Befehle');
+            command = td.getElementById('wholeComSeq').value;
+        }
     }
+    // else {
+    //     console.log('buttonSendSeq in Tab ????');
+    //     $('#AnswerReceived pre').html('No sequence existing');
+    // }
     request.onreadystatechange = function () {
         console.log('SENDSEQ status: ' + request.status);
-        if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
-            $('#CommandSent pre').html(command);
-            $('#communicationCommand').html('sequence sendt\n');
-        } else if (request.readyState === XMLHttpRequest.DONE && request.status != 200) {
-            $('#communicationCommand').html('sending sequence failed: ' + request.status + ' ' + request.statusText);
+        if (request.readyState === XMLHttpRequest.DONE) {
+            if (request.status === postActionStatus) {
+                $('#CommandSent pre').html(command);
+                $('#communicationCommand').html('sequence sendt\n');
+            } else {
+                $('#communicationCommand').html('sending sequence failed: ' + request.status + ' ' + request.statusText);
+            }
         }
     }
     request.send(command);
@@ -116,10 +125,12 @@ $("#buttonDelSeq").on("click", function () {
     var command = JSON.stringify(deleteSequence);
     request.onreadystatechange = function () {
         console.log('DELSEQ status: ' + request.status);
-        if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
-            $('#communicationCommand').html('current sequence deleted\n');
-        } else if (request.readyState === XMLHttpRequest.DONE && request.status != 200) {
-            $('#communicationCommand').html('deleting current sequence failed: ' + request.status + ' ' + request.statusText);
+        if (request.readyState === XMLHttpRequest.DONE) {
+            if (request.status === postActionStatus) {
+                $('#communicationCommand').html('current sequence deleted\n');
+            } else {
+                $('#communicationCommand').html('deleting current sequence failed: ' + request.status + ' ' + request.statusText);
+            }
         }
     }
     request.send(command);
@@ -134,7 +145,7 @@ $("#buttonReset").on("click", function () {
     request.onreadystatechange = function () {
         console.log('RESET status: ' + request.status);
         if (request.readyState === XMLHttpRequest.DONE) {
-            if (request.status === 204) {
+            if (request.status === postActionStatus) {
                 console.log('current sequence started\n');
                 //console.log(request.responseURL);
                 //logCommand('current sequence started\n');
