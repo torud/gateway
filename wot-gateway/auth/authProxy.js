@@ -301,32 +301,34 @@ app.post('/editProfile',
       }); // changePassword
   }); // POST /editProfile
 
-app.get('/application',
-  isAuthenticated(),
-  function (req, res) {
-    console.log('Client wants a /application Ressource');
-    // application is a single html page
-    // res.render('application');
+if (useRedirects) {
+  app.get('/application',
+    isAuthenticated(),
+    function (req, res) {
+      console.log('Client wants a /application Ressource');
+      // application is a single html page
+      // res.render('application');
 
-    // application has mulitple html pages
-    res.sendFile(path.join(__dirname + '/application/config.html'));
-  }); // GET /application
+      // application has mulitple html pages
+      res.sendFile(path.join(__dirname + '/application/config.html'));
+    }); // GET /application
 
-// only use this if application has multiple html pages
-app.get('/*.html',
-  isAuthenticated(),
-  function (req, res) {
-    console.log('GET *.html: ' + req.url);
-    res.sendFile(path.join(__dirname + '/application' + req.url));
-  }); // GET /application/*
+  // only use this if application has multiple html pages
+  app.get('/*.html',
+    isAuthenticated(),
+    function (req, res) {
+      console.log('GET *.html: ' + req.url);
+      res.sendFile(path.join(__dirname + '/application' + req.url));
+    }); // GET /application/*
 
-// only use this if application has multiple html pages
-app.get('/assets/*',
-  isAuthenticated(),
-  function (req, res) {
-    console.log('GET assets/*: ' + req.url);
-    res.sendFile(path.join(__dirname + '/application' + req.url));
-  }); // GET /application/*
+  // only use this if application has multiple html pages
+  app.get('/assets/*',
+    isAuthenticated(),
+    function (req, res) {
+      console.log('GET assets/*: ' + req.url);
+      res.sendFile(path.join(__dirname + '/application' + req.url));
+    }); // GET /application/*
+}
 
 app.get('/error',
   function (req, res) {
