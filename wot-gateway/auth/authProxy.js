@@ -98,7 +98,10 @@ morgan.token('date', function () {
 
 // don't log the /assets/* requests (is used when interacting with the device specific application)
 morgan('combined', {
-  skip: function (req, res) { return req.url.startsWith('/assets'); }
+  skip: function (req, res) {
+    console.log('Skip this log?' + req.url.contains('/assets'));
+    return req.url.contains('/assets');
+  }
 })
 
 // Use application-level middleware for common functionality, including
