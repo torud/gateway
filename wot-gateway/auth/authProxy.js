@@ -98,7 +98,7 @@ morgan.token('date', function () {
 
 // don't log the /assets/* requests (is used when interacting with the device specific application)
 morgan('combined', {
-  skip: function (req, res) { return res.url.startsWith('/assets'); }
+  skip: function (req, res) { return req.url.startsWith('/assets'); }
 })
 
 // Use application-level middleware for common functionality, including
@@ -309,7 +309,7 @@ app.post('/editProfile',
 if (useRedirects) {
   app.get('/application',
     function (req, res) {
-      console.log('Client wants a /application Ressource');
+      // console.log('Client wants a /application Ressource');
       // application is a single html page
       // res.render('application');
 
