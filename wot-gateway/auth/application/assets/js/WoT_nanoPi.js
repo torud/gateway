@@ -75,6 +75,12 @@ $("#buttonAddSeq").on("click", function () {
     }
 });
 
+$("#buttonClearSequence").on("click", function () {
+    comArray = [];
+    i = 0;
+    $('#curSeq').html(comArray.join(', '));
+});
+
 // --------------------- Sequenzen & Befehle ---------------------
 // sends a whole sequence to the motor
 $("#buttonSendSeq").on("click", function () {
