@@ -26,13 +26,25 @@ var configKM24 = [{ "par": { "cmd": 1, "id": 0, "val": 2500 } },
 var deleteSequence = [{ "rom": { "frm": [1, 1], "val": " " } }, { "sys": 1 }];
 var resetCommand = { "sys": 1 };
 
-// --------------------- Konfiguration ---------------------
-// sends the command to config the motor either Kann Motion 17 or 24
-$("#buttonConfig").on("click", function () {
+function postSendCommand(command, callback) {
     var request = new XMLHttpRequest();
     request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    $('#textArea').html('');
+
+    request.onreadystatechange = function () {
+        if (request.readyState === XMLHttpRequest.DONE && callback) {
+            callback(request.readyState === postActionStatus, request);
+        }
+    }
+    if (command) {
+        request.send(command);
+    }
+} // postSendCommand
+
+// --------------------- Konfiguration ---------------------
+// sends the command to config the motor either Kann Motion 17 or 24
+$("#buttonConfig").on("click", function () {
+    $('#textArea').html('');        // nötig?
     var command;
     if (td.getElementById('mArt').options[document.getElementById('mArt').selectedIndex].value == 'c17') {
         command = JSON.stringify(configKM17);
@@ -40,24 +52,20 @@ $("#buttonConfig").on("click", function () {
         command = JSON.stringify(configKM24);
     }
     $('#actualConfigCommand').html(command);
-
-    request.onreadystatechange = function () {
-        console.log('CONFIG status: ' + request.status);
-        if (request.readyState === XMLHttpRequest.DONE) {
-            if (request.status === postActionStatus) {
-                $('#communicationCommand').html('config sendt\n');
-            } else {
-                $('#communicationCommand').html('configuration failed: ' + request.status + ' ' + request.statusText);
-            }
+    postSendCommand(command, function (success, request) {
+        if (success) {
+            console.log('postSendCommand callback successful');
+            $('#communicationCommand').html('config sendt\n');
+        } else {
+            console.log('postSendCommand callback NOT successful');
+            $('#communicationCommand').html('configuration failed: ' + request.status + ' ' + request.statusText);
         }
-    }
-    request.send(command);
+    });
 });
 
 // --------------------- Sequenzen ---------------------
 // adds a command to your sequence and displays it in curSeq
 $("#buttonAddSeq").on("click", function () {
-    console.log(comArray);
     var actVal = td.getElementById('valueSeq').value;
     if (actVal != '') {
         var comSeq;
@@ -72,7 +80,7 @@ $("#buttonAddSeq").on("click", function () {
         i++;
         $('#curSeq').html(comArray.join(', '));
     } else {
-        console.log('actVal ist leer!')
+        // console.log('actVal ist leer!')
     }
 });
 
@@ -91,7 +99,7 @@ $("#buttonSendSeq").on("click", function () {
     var command;
     if (document.getElementById('curSeq')) {
         // Tab Sequenzen
-        console.log('buttonSendSeq in Tab Sequenzen');
+        // console.log('buttonSendSeq in Tab Sequenzen');
         if (document.getElementById('curSeq').innerHTML.trim() !== '' && comArray.length > 0) {
             console.log('curSeq innerHTML: ' + document.getElementById('curSeq').innerHTML);
             command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
@@ -102,11 +110,9 @@ $("#buttonSendSeq").on("click", function () {
         }
     } else if (td.getElementById('plainJSONSeq')) {
         // Tab Befehle
-        console.log('buttonSendSeq in Tab Befehle');
+        // console.log('buttonSendSeq in Tab Befehle');
         var plainJSONSeq = td.getElementById('plainJSONSeq').value;
-        console.log('plainJSONSeq: ' + plainJSONSeq);
         if (plainJSONSeq !== '') {
-            console.log('yay!');
             command = plainJSONSeq;
         }
     }
