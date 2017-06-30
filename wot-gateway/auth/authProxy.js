@@ -312,7 +312,7 @@ app.get('/application',
   isAuthenticated(),
   function (req, res) {
     console.log('Client wants a /application Ressource');
-    res.render('/../application/index.html');
+    res.render('index', { filename: '/../application/index.html' });
   }); // GET /application
 
 // only use this if application has multiple html pages
