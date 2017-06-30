@@ -211,28 +211,32 @@ app.post('/connectWLAN',
  */
 // app.use(require('connect-ensure-login').ensureLoggedIn());
 
+function isAuthenticated() {
+  return function (req, res, next) {
+    // if the request is neither authorized via cookie
+    // nor the right token and user-object in the header, send a plain 401 status
+    // console.log('Authorization: ' + req.get('authorization'));
+    // console.log('isAuthenticated: ' + req.isAuthenticated());
+    // console.log('user: ' + req.get('user'));
+    if ((!req.isAuthenticated || !req.isAuthenticated()) &&
+      (!isTokenValid(req) || !hasUserHeader(req))) {
+      // console.log('Request is not authenticated!');
+      // console.log('Token is valid: ' + isTokenValid(req));
+      // console.log('User header is present: ' + hasUserHeader(req));
+      if (useRedirects) return res.redirect('/login');
+      else return res.sendStatus(401);
+    }
+    console.log('Request is authenticated!');
+    next();
+  }
+} // isAuthenticated
+
 /**
  * custom authorisation middleware, checks if user is authenticated.
  * Uses either only status code 401 (if client interacts via a Web App)
  * or redirects to login (when client interacts with a browser)
  */
-app.use(function (req, res, next) {
-  // if the request is neither authorized via cookie
-  // nor the right token and user-object in the header, send a plain 401 status
-  // console.log('Authorization: ' + req.get('authorization'));
-  // console.log('isAuthenticated: ' + req.isAuthenticated());
-  // console.log('user: ' + req.get('user'));
-  if ((!req.isAuthenticated || !req.isAuthenticated()) &&
-    (!isTokenValid(req) || !hasUserHeader(req))) {
-    // console.log('Request is not authenticated!');
-    // console.log('Token is valid: ' + isTokenValid(req));
-    // console.log('User header is present: ' + hasUserHeader(req));
-    if (useRedirects) return res.redirect('/login');
-    else return res.sendStatus(401);
-  }
-  console.log('Request is authenticated!');
-  next();
-}); // authorisation middleware
+app.use(isAuthenticated()); // authorisation middleware
 
 function isTokenValid(req) {
   var reqToken = req.body.token || req.get('authorization') ||
