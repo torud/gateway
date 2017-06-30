@@ -312,8 +312,8 @@ app.get('/application',
 app.get('/application/*',
   function (req, res) {
     console.log('GET application/*: ' + req.url);
-    res.render('application/*');
-  }); // GET /application
+    res.render('application/');
+  }); // GET /application/*
 
 app.get('/error',
   function (req, res) {
