@@ -21,7 +21,7 @@
             </div>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li role="presentation"><a href="loggedin.html">Logout </a></li>
+                    <li role="presentation"><a href="profile">Profile Page</a></li>
                     <li class="active" role="presentation"><a href="#">Konfiguration</a></li>
                     <li role="presentation"><a href="sequence.html">Sequenzen</a></li>
                     <li role="presentation"><a href="commands.html">Befehle</a></li>
@@ -33,13 +33,15 @@
     <div class="abschnitt">
         <form method="post" id="abschnGrau">
             <h2>Konfiguration </h2>
-            <p>Zur Konfiguration kann hier der gewünschte Motor ausgewählt werden, dabei werden die richtigen Daten automatisch geladen.</p>
+            <p>Zur Konfiguration kann hier der gewünschte Motor ausgewählt werden, dabei werden die richtigen Daten automatisch
+                geladen.</p>
             <select class="form-control" id="mArt">
                 <option value="c17" selected="">Kann Motion 17</option>
                 <option value="c24">Kann Motion 24</option>
             </select>
             <button class="btn btn-default btn-block-xs-only" type="button" id="buttonConfig" style="margin-top:10px;">Konfigurieren </button>
-            <p id="actualConfigCommand" style="margin: 10px 0;background-color:#cccbcb;min-height:100px;font-family:Courier New;padding:10px;border-radius:5px;"> </p>
+            <p id="actualConfigCommand" style="margin: 10px 0;background-color:#cccbcb;min-height:100px;font-family:Courier New;padding:10px;border-radius:5px;">
+            </p>
         </form>
     </div>
     <script src="assets/js/jquery.min.js"></script>
