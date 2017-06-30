@@ -100,13 +100,14 @@ $("#buttonSendSeq").on("click", function () {
             comArray = [];
             i = 0;
         }
-    } else if (document.getElementById('plainJSONSeq')) {
+    } else if (td.getElementById('plainJSONSeq')) {
         // Tab Befehle
         console.log('buttonSendSeq in Tab Befehle');
-        console.log('plainJSONSeq innerHTML: ' + document.getElementById('plainJSONSeq').innerHTML);
-        if (document.getElementById('plainJSONSeq').innerHTML.trim() !== '') {
+        var plainJSONSeq = td.getElementById('plainJSONSeq');
+        console.log('plainJSONSeq: ' + plainJSONSeq);
+        if (plainJSONSeq !== '') {
             console.log('yay!');
-            command = td.getElementById('plainJSONSeq').value;
+            command = plainJSONSeq;
         }
     }
     // else {
