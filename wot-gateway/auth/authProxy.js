@@ -313,11 +313,11 @@ app.get('/application',
   }); // GET /application
 
 // only use this if application has multiple html pages
-app.get('/application/*',
+app.get('/*.html',
   isAuthenticated(),
   function (req, res) {
-    console.log('GET application/*: ' + req.url);
-    res.sendFile(path.join(__dirname + req.url));
+    console.log('GET *.html: ' + req.url);
+    res.sendFile(path.join(__dirname + '/application' + req.url));
   }); // GET /application/*
 
 // only use this if application has multiple html pages
