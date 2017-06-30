@@ -57,6 +57,7 @@ $("#buttonConfig").on("click", function () {
 // --------------------- Sequenzen ---------------------
 // adds a command to your sequence and displays it in curSeq
 $("#buttonAddSeq").on("click", function () {
+    console.log(comArray);
     var actVal = td.getElementById('valueSeq').value;
     if (actVal != '') {
         var comSeq;
