@@ -98,13 +98,9 @@ morgan.token('date', function () {
 
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling
-// app.use(morgan(':date :method :url :status :res[content-length] - :response-time ms'));
 // don't log the /assets/* requests (is used when interacting with the device specific application)
 app.use(morgan(':date :method :url :status :res[content-length] - :response-time ms', {
-  skip: function (req, res) {
-    console.log('Skip this log?' + req.url.startsWith('/assets'));
-    return req.url.startsWith('/assets');
-  }
+  skip: function (req, res) { return req.url.startsWith('/assets'); }
 }));
 app.use(cookieParser());
 app.use(require('body-parser').urlencoded({ extended: true }));
