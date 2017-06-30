@@ -92,7 +92,7 @@ $("#buttonSendSeq").on("click", function () {
     if (document.getElementById('curSeq')) {
         // Tab Sequenzen
         console.log('buttonSendSeq in Tab Sequenzen');
-        if (document.getElementById('curSeq').innerHTML.trim() !== '') {
+        if (document.getElementById('curSeq').innerHTML.trim() !== '' && comArray.length > 0) {
             console.log('curSeq innerHTML: ' + document.getElementById('curSeq').innerHTML);
             command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
             comArray[i] = ' - GESENDET';
