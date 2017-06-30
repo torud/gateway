@@ -220,7 +220,7 @@ function isAuthenticated() {
     // console.log('user: ' + req.get('user'));
     if ((!req.isAuthenticated || !req.isAuthenticated()) &&
       (!isTokenValid(req) || !hasUserHeader(req))) {
-      // console.log('Request is not authenticated!');
+      console.log('Request is NOT authenticated!');
       // console.log('Token is valid: ' + isTokenValid(req));
       // console.log('User header is present: ' + hasUserHeader(req));
       if (useRedirects) return res.redirect('/login');
@@ -309,11 +309,13 @@ app.post('/editProfile',
   }); // POST /editProfile
 
 app.get('/application',
+  isAuthenticated(),
   function (req, res) {
     res.sendFile(path.join(__dirname + '/views/application/index.html'));
   }); // GET /application
 
 app.get('/application/*',
+  isAuthenticated(),
   function (req, res) {
     console.log('GET application/*: ' + req.url);
     res.sendFile(path.join(__dirname + '/views/application' + req.url));
