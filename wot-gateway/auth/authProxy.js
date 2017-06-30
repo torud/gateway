@@ -230,7 +230,7 @@ app.use(function (req, res, next) {
     if (useRedirects) return res.redirect('/login');
     else return res.sendStatus(401);
   }
-  // console.log('Request is authenticated!');
+  console.log('Request is authenticated!');
   next();
 }); // authorisation middleware
 
