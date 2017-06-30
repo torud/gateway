@@ -26,6 +26,13 @@ var configKM24 = [{ "par": { "cmd": 1, "id": 0, "val": 2500 } },
 var deleteSequence = [{ "rom": { "frm": [1, 1], "val": " " } }, { "sys": 1 }];
 var resetCommand = { "sys": 1 };
 
+/**
+ * Sends a HTTP-POST to /actions/sendCommand if the command isn't undefined.
+ * Runs the callback with success = true if the desired answer from the WoT-Gateway (204)
+ * is received, along with the request object.
+ * @param {*} command   The command to send as a string
+ * @param {*} callback  Gets called after an answer is received
+ */
 function postSendCommand(command, callback) {
     var request = new XMLHttpRequest();
     request.open("POST", '/actions/sendCommand');
@@ -33,7 +40,6 @@ function postSendCommand(command, callback) {
 
     request.onreadystatechange = function () {
         if (request.readyState === XMLHttpRequest.DONE && callback) {
-            console.log(request.status === postActionStatus);
             callback(request.status === postActionStatus, request);
         }
     }
@@ -54,12 +60,10 @@ $("#buttonConfig").on("click", function () {
     }
     $('#actualConfigCommand').html(command);
     postSendCommand(command, function (success, request) {
+        console.log('CONFIG status: ' + request.status);
         if (success) {
-            console.log('postSendCommand callback successful');
             $('#communicationCommand').html('config sendt\n');
         } else {
-            console.log('postSendCommand callback NOT successful');
-            console.log('configuration failed: ' + request.status + ' ' + request.statusText);
             $('#communicationCommand').html('configuration failed: ' + request.status + ' ' + request.statusText);
         }
     });
@@ -95,9 +99,6 @@ $("#buttonClearSequence").on("click", function () {
 // --------------------- Sequenzen & Befehle ---------------------
 // sends a whole sequence to the motor
 $("#buttonSendSeq").on("click", function () {
-    var request = new XMLHttpRequest();
-    request.open("POST", '/actions/sendCommand');
-    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     var command;
     if (document.getElementById('curSeq')) {
         // Tab Sequenzen
@@ -122,62 +123,45 @@ $("#buttonSendSeq").on("click", function () {
     //     console.log('buttonSendSeq in Tab ????');
     //     $('#AnswerReceived pre').html('No sequence existing');
     // }
-    request.onreadystatechange = function () {
+    postSendCommand(command, function (success, request) {
         console.log('SENDSEQ status: ' + request.status);
-        if (request.readyState === XMLHttpRequest.DONE) {
-            if (request.status === postActionStatus) {
-                $('#CommandSent pre').html(command);
-                $('#communicationCommand').html('sequence sendt\n');
-            } else {
-                $('#communicationCommand').html('sending sequence failed: ' + request.status + ' ' + request.statusText);
-            }
+        if (success) {
+            $('#CommandSent pre').html(command);
+            $('#communicationCommand').html('sequence sendt\n');
+        } else {
+            $('#communicationCommand').html('sending sequence failed: ' + request.status + ' ' + request.statusText);
         }
-    }
-    if (command) {
-        request.send(command);
-    }
+    });
 });
 
 // send the command to delete the current sequence on the motor
 $("#buttonDelSeq").on("click", function () {
-    var request = new XMLHttpRequest();
-    request.open("POST", '/actions/sendCommand');
-    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     var command = JSON.stringify(deleteSequence);
-    request.onreadystatechange = function () {
+    postSendCommand(command, function (success, request) {
         console.log('DELSEQ status: ' + request.status);
-        if (request.readyState === XMLHttpRequest.DONE) {
-            if (request.status === postActionStatus) {
-                $('#communicationCommand').html('current sequence deleted\n');
-            } else {
-                $('#communicationCommand').html('deleting current sequence failed: ' + request.status + ' ' + request.statusText);
-            }
+        if (success) {
+            $('#communicationCommand').html('current sequence deleted\n');
+        } else {
+            $('#communicationCommand').html('deleting current sequence failed: ' + request.status + ' ' + request.statusText);
         }
-    }
-    request.send(command);
+    });
 });
 
 // sends a command to start the sequenz which is currently on the motor
 $("#buttonReset").on("click", function () {
-    var request = new XMLHttpRequest();
-    request.open("POST", '/actions/sendCommand');
-    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     var command = JSON.stringify(resetCommand);
-    request.onreadystatechange = function () {
+    postSendCommand(command, function (success, request) {
         console.log('RESET status: ' + request.status);
-        if (request.readyState === XMLHttpRequest.DONE) {
-            if (request.status === postActionStatus) {
-                console.log('current sequence started\n');
-                //console.log(request.responseURL);
-                //logCommand('current sequence started\n');
-            } else {
-                console.log('starting current sequence failed: ' + request.status + ' ' + request.statusText);
-                //console.log(request.responseURL);
-                //logCommand('starting current sequence failed: ' + request.status + ' ' + request.statusText);
-            }
+        if (success) {
+            console.log('current sequence started\n');
+            //console.log(request.responseURL);
+            //logCommand('current sequence started\n');
+        } else {
+            console.log('starting current sequence failed: ' + request.status + ' ' + request.statusText);
+            //console.log(request.responseURL);
+            //logCommand('starting current sequence failed: ' + request.status + ' ' + request.statusText);
         }
-    }
-    request.send(command);
+    });
 });
 
 // --------------------- Logging ---------------------
