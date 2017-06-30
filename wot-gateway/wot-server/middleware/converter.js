@@ -53,7 +53,7 @@ module.exports = function () {
 
     }
     else if (res.location) {
-      res.status(404).send();
+      res.status(204).send();
       return;
     } else {
       next();
