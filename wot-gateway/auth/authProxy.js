@@ -311,6 +311,7 @@ app.post('/editProfile',
 app.get('/application',
   isAuthenticated(),
   function (req, res) {
+    console.log('Client wants a /application Ressource');
     res.sendFile(path.join(__dirname + '/views/application/index.html'));
   }); // GET /application
 
