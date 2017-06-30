@@ -103,8 +103,9 @@ $("#buttonSendSeq").on("click", function () {
     } else if (document.getElementById('wholeComSeq')) {
         // Tab Befehle
         console.log('buttonSendSeq in Tab Befehle');
+        console.log('wholeComSeq innerHTML: ' + document.getElementById('wholeComSeq').innerHTML);
         if (document.getElementById('wholeComSeq').innerHTML.trim() !== '') {
-            console.log('wholeComSeq innerHTML: ' + document.getElementById('wholeComSeq').innerHTML);
+
             command = td.getElementById('wholeComSeq').value;
         }
     }
