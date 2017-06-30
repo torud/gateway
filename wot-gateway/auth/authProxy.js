@@ -306,13 +306,13 @@ app.post('/editProfile',
 
 app.get('/application',
   function (req, res) {
-    res.render('application/index');
+    res.sendFile(path.join(__dirname + '/views/application/index.html'));
   }); // GET /application
 
 app.get('/application/*',
   function (req, res) {
     console.log('GET application/*: ' + req.url);
-    res.render('application/');
+    res.sendFile(path.join(__dirname + '/views/application' + req.url));
   }); // GET /application/*
 
 app.get('/error',
