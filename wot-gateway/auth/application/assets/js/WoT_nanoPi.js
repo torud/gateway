@@ -26,10 +26,10 @@ $("#buttonConfig").on("click", function () {
     var request = new XMLHttpRequest();
     token = sessionStorage.getItem('token');
     user = sessionStorage.getItem('user');
-    request.open("POST", rootUrl + '/actions/sendCommand');
+    request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    request.setRequestHeader('Authorization', token);
-    request.setRequestHeader('User', user);
+    // request.setRequestHeader('Authorization', token);
+    // request.setRequestHeader('User', user);
     $('#textArea').html('');
     var command;
     if (td.getElementById('mArt').options[document.getElementById('mArt').selectedIndex].value == 'c17') {
