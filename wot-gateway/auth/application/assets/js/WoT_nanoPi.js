@@ -31,7 +31,7 @@ $("#buttonConfig").on("click", function () {
     $('#textArea').html('');
     var command;
     if (td.getElementById('mArt').options[document.getElementById('mArt').selectedIndex].value == 'c17') {
-        command = JSON.stringify(configKM24);
+        command = JSON.stringify(configKM17);
     } else if (td.getElementById('mArt').options[document.getElementById('mArt').selectedIndex].value == 'c24') {
         command = JSON.stringify(configKM24);
     }
