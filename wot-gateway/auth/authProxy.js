@@ -102,8 +102,8 @@ morgan.token('date', function () {
 // don't log the /assets/* requests (is used when interacting with the device specific application)
 app.use(morgan(':date :method :url :status :res[content-length] - :response-time ms', {
   skip: function (req, res) {
-    console.log('Skip this log?' + req.url.contains('/assets'));
-    return req.url.contains('/assets');
+    console.log('Skip this log?' + req.url.startsWith('/assets'));
+    return req.url.startsWith('/assets');
   }
 }));
 app.use(cookieParser());
