@@ -204,6 +204,7 @@ function processAnswer() {
         console.log('Answer received: ' + answer);
         try {
             var antwort = JSON.parse(answer.trim());
+            console.log(antwort.com);
             if (!antwort.com && antwort.com.id != 'state') {
                 // don't shot (N)ACKs in last response, they have a seperate property
                 properties.lastResponse = answer;
