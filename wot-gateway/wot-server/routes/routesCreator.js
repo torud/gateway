@@ -130,11 +130,11 @@ function createActionsRoutes(model) {
   router.route(actions.link + '/:actionType').post(function (req, res, next) {
     // Auszuführende Action aus dem Request-Body entnehmen und Zusatzinfos hinzufügen
     var action = { command: req.body };
-    if (typeof action.command !== 'string') {
-      console.log('Action-Command JSON received: ' + JSON.stringify(action.command));
-    } else {
-      console.log('Action-Command String received: ' + action.command);
-    }
+    // if (typeof action.command !== 'string') {
+    //   console.log('Action-Command JSON received: ' + JSON.stringify(action.command));
+    // } else {
+    //   console.log('Action-Command String received: ' + action.command);
+    // }
 
     action.id = uuid.v1();
     action.status = "pending";
@@ -144,8 +144,8 @@ function createActionsRoutes(model) {
     // console.log(req.params);
     // console.log('Actions-Array:');
     // console.log(actions.resources[req.params.actionType]);
-    console.log('Füge folgende action hinzu:');
-    console.log(JSON.stringify(action));
+    // console.log('Füge folgende action hinzu:');
+    // console.log(JSON.stringify(action));
     utils.cappedPush(actions.resources[req.params.actionType].data, action);
     res.location(req.originalUrl + '/' + action.id);
     next();

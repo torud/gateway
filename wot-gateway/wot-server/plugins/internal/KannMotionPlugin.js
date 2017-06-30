@@ -78,7 +78,7 @@ function initPropertyValues() {
  *              /model.links.actions.resources.sendCommand.data),
  */
 function sendCommand(value) {
-    console.log('value = ' + JSON.stringify(value));
+    // console.log('value = ' + JSON.stringify(value));
     var action;
     if (value.command) {
         action = value.command;
@@ -121,7 +121,7 @@ function sendCommand(value) {
             myself.addValue(properties);
         }
         if (action.constructor === Array) {
-            console.log('Payload is an array');
+            // console.log('Payload is an array');
             // action is an array of commands
             action.forEach(function (element) {
                 sequenzArray.push(JSON.stringify(element));
@@ -133,7 +133,7 @@ function sendCommand(value) {
         }
     }
     else {
-        console.log('Payload is a string');
+        // console.log('Payload is a string');
         // the command is a string
         var stringAction = action.trim().replace(/ /g, '');
         sequenzArray.push(stringAction);
@@ -144,8 +144,8 @@ function sendCommand(value) {
     processAnswer();
     // Update the status of the value object
     value.status = 'completed';
-    console.log('Action after completion:');
-    console.log(JSON.stringify(value));
+    // console.log('Action after completion:');
+    // console.log(JSON.stringify(value));
 } // sendCommand
 /**
  * Adds a timestamp to the data from the parameter
