@@ -6,7 +6,7 @@ var td = top.document;
 var sequenceCommands = new Array;       // Array for sequence commands (JSON)
 var sequenceButtons = new Array;        // Array for sequence commands (radio buttons)
 var i = 0;                              // position in comArray
-var selectedCommandIndex = 0;
+var selectedCommandIndex = -1;
 var sequenceCommandSelected = false;
 var serverLocation = window.location;
 var postActionStatus = 204;
@@ -166,16 +166,20 @@ $('#abschnGrauSeq').on('change', function () {
         sequenceCommandSelected = true;
         console.log('sequence command nr. ' + selectedCommandIndex + ' selected');
     } else {
+        selectedCommandIndex = -1;
         sequenceCommandSelected = false;
         console.log('no sequence command selected');
     }
 });
 
 $("#buttonRemoveSequence").on("click", function () {
-    if (sequenceCommandSelected) {
+    if (sequenceCommandSelected && selectedCommandIndex >= 0) {
         sequenceButtons.splice(selectedCommandIndex, 1);
         sequenceCommands.splice(selectedCommandIndex, 1);
         $('#curSeq').html(sequenceButtons.join('\n'));
+        selectedCommandIndex = -1;
+        sequenceCommandSelected = false;
+        console.log('no sequence command selected');
     }
 });
 
