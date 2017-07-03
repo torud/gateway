@@ -6,7 +6,6 @@ var td = top.document;
 var comArray = new Array;       // Array for sequence
 var i = 0;                      // position in comArray
 var serverLocation = window.location;
-console.log('serverLocation: ' + serverLocation);
 var postActionStatus = 204;
 
 // ------------------------------------------ MOTOR ------------------------------------------
@@ -209,16 +208,26 @@ function logCommand(command) {
 
 // --------------------- Eigenschaften (mit WebSockets) ---------------------
 
-var wsURL = 'wss://' + serverLocation.host + ':8484/properties/motor?token=fRfLNLe9aBix0mHyeCdI0PSzNeLpPPgu';
+var wsURL = 'wss://' + serverLocation.host + ':8484/properties?token=fRfLNLe9aBix0mHyeCdI0PSzNeLpPPgu';
 var webSocket = new WebSocket(wsURL);
 
 webSocket.onmessage = function (event) {
     var result = JSON.parse(event.data);
     console.log('WebSocket message:');
     console.log(JSON.stringify(result));
-};
+    updateProperties(result);
+}
 
 webSocket.onerror = function (error) {
     console.log('WebSocket error!');
     console.log(error);
-};
+}
+
+function updateProperties(properties) {
+    var htmlString = '';
+    Object.keys(properties).forEach(function (propName) {
+        var propValue = properties[propName];
+        htmlString = htmlString.concat('<pair><key>' + propName + '</key><value>' + propValue + '</value></pair>');
+    });
+    $('properties').innerHTML = htmlString;
+} // updateProperties
