@@ -218,7 +218,7 @@ webSocket.onmessage = function (event) {
     console.log(JSON.stringify(result));
 };
 
-socketHum.onerror = function (error) {
+webSocket.onerror = function (error) {
     console.log('WebSocket error!');
     console.log(error);
 };
