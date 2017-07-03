@@ -184,7 +184,7 @@ function logCommand(command) {
     var previousCommands = $('#sentCommands').text();
     console.log('Previous commands: ' + JSON.stringify(previousCommands));
     console.log(previousCommands);
-    previousCommands.append(command);
+    previousCommands += command;
     console.log('Logging commands: ' + JSON.stringify(previousCommands));
     $('#sentCommands').html(previousCommands);
 
