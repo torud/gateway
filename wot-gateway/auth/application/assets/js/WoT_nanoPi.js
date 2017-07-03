@@ -210,7 +210,7 @@ function logCommand(command) {
 // --------------------- Eigenschaften (mit WebSockets) ---------------------
 $(document).ready(function () {
     var request = new XMLHttpRequest();
-    request.open("GET", rootUrl + '/token', true);
+    request.open("GET", '/token', true);
     request.setRequestHeader("Accept", "application/json; charset=utf-8");
     request.onreadystatechange = function () {
         if (request.readyState === XMLHttpRequest.DONE) {
