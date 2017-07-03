@@ -210,33 +210,19 @@ function logCommand(command) {
 
 
 // --------------------- Eigenschaften (mit WebSockets) ---------------------
-$(document).ready(function () {
-    var request = new XMLHttpRequest();
-    request.open("GET", '/token', true);
-    request.setRequestHeader("Accept", "application/json; charset=utf-8");
-    request.onreadystatechange = function () {
-        if (request.readyState === XMLHttpRequest.DONE) {
-            token = JSON.parse(request.responseText).token;
-            connectWebSocket();
-        }
-    }
-    request.send(null);
-}); // document ready
 
-function connectWebSocket() {
-    wsURL = 'wss://' + serverLocation.host + '/properties/motor'; //?token=' + token;
-    webSocket = new WebSocket(wsURL);
+wsURL = 'wss://' + serverLocation.host + '/properties/motor';
+webSocket = new WebSocket(wsURL);
 
-    webSocket.onmessage = function (event) {
-        var result = JSON.parse(event.data);
-        updateProperties(result);
-    }
+webSocket.onmessage = function (event) {
+    var result = JSON.parse(event.data);
+    updateProperties(result);
+}
 
-    webSocket.onerror = function (error) {
-        console.log('WebSocket error!');
-        console.log(error);
-    }
-} // connectWebSocket
+webSocket.onerror = function (error) {
+    console.log('WebSocket error!');
+    console.log(error);
+}
 
 function updateProperties(properties) {
     var htmlString = '';

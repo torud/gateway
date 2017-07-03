@@ -338,15 +338,23 @@ app.get('/error',
     res.render('error', { user: req.user, message: req.flash('errorMessage') });
   }); // GET /error
 
-app.get('/token',
-  function (req, res) {
-    res.send({ token: token });
-  }); // GET /token
-
-
 // add the proxy server middleware, which adds the API-Token of the
 // WoT-Server to the request and proxy all requests and responses
 app.use(proxy());
+
+// add support for websockets (had to be done here and not in middleware/proxy.js
+// because of the httpServer object)
+var proxyServer = proxyWebSockets.createProxyServer({ //#B
+  tlsConfig,
+  target: configURL,
+  ws: true,
+  secure: false //#C
+});
+
+httpServer.on('upgrade', function (req, socket, head) {
+  req.url += '?token=' + token;
+  proxyServer.ws(req, socket, head);
+});
 
 // Don't show the whole call stack in the response if there's an error
 app.use(function (error, req, res, next) {
@@ -364,20 +372,6 @@ app.use(function (error, req, res, next) {
 });
 
 var httpServer = https.createServer(tlsConfig, app);
-
-var proxyServer = proxyWebSockets.createProxyServer({ //#B
-  tlsConfig,
-  target: configURL,
-  ws: true,
-  secure: false //#C
-});
-
-httpServer.on('upgrade', function (req, socket, head) {
-  console.log('Proxying WebSockets!');
-  req.url += '?token=' + token;
-  console.log(req.url);
-  proxyServer.ws(req, socket, head);
-});
 
 httpServer.listen(config.sourcePort, function () {
   console.log('WoT Authentication Proxy started on port: %d', config.sourcePort);
