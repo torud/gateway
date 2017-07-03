@@ -336,6 +336,11 @@ app.get('/error',
     res.render('error', { user: req.user, message: req.flash('errorMessage') });
   }); // GET /error
 
+app.get('/token',
+  function (req, res) {
+    res.send({ token: token });
+  }); // GET /token
+
 
 // add the proxy server middleware, which adds the API-Token of the
 // WoT-Server to the request and proxy all requests and responses

@@ -7,6 +7,7 @@ var comArray = new Array;       // Array for sequence
 var i = 0;                      // position in comArray
 var serverLocation = window.location;
 var postActionStatus = 204;
+var token = '';
 
 // ------------------------------------------ MOTOR ------------------------------------------
 var configKM17 = [{}];
@@ -207,15 +208,21 @@ function logCommand(command) {
 
 
 // --------------------- Eigenschaften (mit WebSockets) ---------------------
-// $(document).ready(function () {
-//     request.open("GET", rootUrl + '/properties/leds', true);
-//     request.setRequestHeader("Accept", "application/json; charset=utf-8");
-//     request.onreadystatechange = updatePageLED;
-//     request.send(null);
-// } // document ready
+$(document).ready(function () {
+    var request = new XMLHttpRequest();
+    request.open("GET", rootUrl + '/token', true);
+    request.setRequestHeader("Accept", "application/json; charset=utf-8");
+    request.onreadystatechange = function () {
+        if (request.readyState === XMLHttpRequest.DONE) {
+            token = request.responseText;
+            console.log('Token: ' + token);
+        }
+    }
+    request.send(null);
+}); // document ready
 
 
-var wsURL = 'ws://' + serverLocation.host + ':8484/properties/motor';
+var wsURL = 'wss://' + serverLocation.host + ':8484/properties/motor?token=' + token;
 var webSocket = new WebSocket(wsURL);
 
 webSocket.onmessage = function (event) {
