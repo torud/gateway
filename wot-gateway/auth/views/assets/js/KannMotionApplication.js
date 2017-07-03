@@ -3,8 +3,9 @@
  */
 
 var td = top.document;
-var comArray = new Array;       // Array for sequence
-var i = 0;                      // position in comArray
+var sequenceCommands = new Array;       // Array for sequence commands (JSON)
+var sequenceButtons = new Array;        // Array for sequence commands (radio buttons)
+var i = 0;                              // position in comArray
 var serverLocation = window.location;
 var postActionStatus = 204;
 var token = '';
@@ -131,40 +132,46 @@ $("#buttonReset").on("click", function () {
 // --------------------- Sequenzen ---------------------
 // adds a command to your sequence and displays it in curSeq
 $("#buttonAddSeq").on("click", function () {
-    var actVal = td.getElementById('valueSeq').value;
-    if (actVal != '') {
-        var comSeq;
-        if ($('#seqCom :selected').val() == 's1') {  // GEHE ZU POSITION
-            comSeq = 'g:[' + actVal + ',0]';
-        } else if ($('#seqCom :selected').val() == 's4') {    // DREHEN
-            comSeq = 'r:[0,' + actVal + ',0,0]';
-        } else if ($('#seqCom :selected').val() == 's12') {    // WARTE
-            comSeq = 'wt:' + actVal;
+    var commandValue = td.getElementById('valueSeq').value;
+    if (commandValue != '') {
+        var sequenceCommand;
+        var sequenceButton = '<input type="radio" name="sequence" value="male"> ';
+        var selectedCommand = $('#seqCom :selected').val();
+        if (selectedCommand == 's1') {             // GEHE ZU POSITION
+            sequenceCommand = 'g:[' + commandValue + ',0]';
+            sequenceButton += 'GEHE ZU POSITION (' + commandValue + ')';
+        } else if (selectedCommand == 's4') {      // DREHEN
+            sequenceCommand = 'r:[0,' + commandValue + ',0,0]';
+            sequenceButton += 'DREHEN (' + commandValue + '%)';
+        } else if (selectedCommand == 's12') {     // WARTE
+            sequenceCommand = 'wt:' + commandValue;
+            sequenceButton += 'WARTE (' + commandValue + 'ms)';
         }
-        comArray[i] = comSeq;
+        sequenceButton += '<br>';
+        sequenceButtons[i] = sequenceButton;
+        sequenceCommands[i] = sequenceCommand;
         i++;
-        $('#curSeq').html(comArray.join(', '));
-    } else {
-        // console.log('actVal ist leer!')
+        // $('#curSeq').html(sequenceCommands.join(', '));
+        $('#curSeq').html(sequenceButtons.join('\n'));
     }
 });
 
 // clears the curSeq
 $("#buttonClearSequence").on("click", function () {
-    comArray = [];
+    sequenceCommands = [];
     i = 0;
-    $('#curSeq').html(comArray.join(', '));
+    $('#curSeq').html(sequenceCommands.join(', '));
 });
 
 // sends a whole sequence to the motor
 $("#buttonSendSeq").on("click", function () {
     var command;
     if (document.getElementById('curSeq')) {
-        if (document.getElementById('curSeq').innerHTML.trim() !== '' && comArray.length > 0) {
-            command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
-            comArray[i] = ' - GESENDET';
-            $('#curSeq').html(comArray.join(', '));
-            comArray = [];
+        if (document.getElementById('curSeq').innerHTML.trim() !== '' && sequenceCommands.length > 0) {
+            command = '{"rom":{"frm":[1,1],"val":"{' + sequenceCommands.toString() + '}"}}';
+            sequenceCommands[i] = ' - GESENDET';
+            $('#curSeq').html(sequenceCommands.join(', '));
+            sequenceCommands = [];
             i = 0;
         }
     }
