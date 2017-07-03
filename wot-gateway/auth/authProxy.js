@@ -374,6 +374,12 @@ var proxyServer = proxyWebSockets.createProxyServer({ //#B
 
 httpServer.on('upgrade', function (req, socket, head) {
   console.log('Proxying WebSockets!');
+  console.log('---------- req ----------');
+  console.log(req);
+  console.log('---------- socket ----------');
+  console.log(socket);
+  console.log('---------- head ----------');
+  console.log(head);
   proxyServer.ws(req, socket, head);
 });
 
