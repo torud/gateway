@@ -372,7 +372,7 @@ var proxyServer = proxyWebSockets.createProxyServer({ //#B
 
 httpServer.on('upgrade', function (req, socket, head) {
   console.log('Proxying WebSockets!');
-  proxyWebSockets.ws(req, socket, head);
+  proxyServer.ws(req, socket, head);
 });
 
 httpServer.listen(config.sourcePort, function () {
