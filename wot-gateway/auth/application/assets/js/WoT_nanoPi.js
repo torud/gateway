@@ -230,7 +230,7 @@ function updateProperties(properties) {
         var propValue = properties[propName];
         // console.log(htmlString);
         htmlString = htmlString.concat('<pair><key>' + propName + '</key><value>' + propValue + '</value></pair>');
-        $('properties').html(htmlString);
+        $('#properties').html(htmlString);
     });
 
 } // updateProperties
