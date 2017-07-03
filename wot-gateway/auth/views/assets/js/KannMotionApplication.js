@@ -172,8 +172,8 @@ $("#buttonSendSeq").on("click", function () {
     if (document.getElementById('curSeq')) {
         if (document.getElementById('curSeq').innerHTML.trim() !== '' && sequenceCommands.length > 0) {
             command = '{"rom":{"frm":[1,1],"val":"{' + sequenceCommands.toString() + '}"}}';
-            sequenceCommands[i] = ' - GESENDET';
-            $('#curSeq').html(sequenceCommands.join(', '));
+            sequenceButtons[i] = ' - GESENDET';
+            $('#curSeq').html(sequenceButtons.join());
             sequenceCommands = [];
             sequenceButtons = [];
             i = 0;
