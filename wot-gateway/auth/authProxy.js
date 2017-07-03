@@ -311,26 +311,25 @@ if (useRedirects) {
     function (req, res) {
       // console.log('Client wants a /application Ressource');
       // application is a single html page
-      // res.render('application');
+      res.render('application');
 
       // application has mulitple html pages
-      res.sendFile(path.join(__dirname + '/application/config.html'));
+      // res.sendFile(path.join(__dirname + '/application/config.html'));
     }); // GET /application
 
   // only use this if application has multiple html pages
-  app.get('/*.html',
-    function (req, res) {
-      // console.log('GET *.html: ' + req.url);
-      res.sendFile(path.join(__dirname + '/application' + req.url));
-    }); // GET /application/*
+  // app.get('/*.html',
+  //   function (req, res) {
+  //     // console.log('GET *.html: ' + req.url);
+  //     res.sendFile(path.join(__dirname + '/application' + req.url));
+  //   }); // GET /*.html
 
-  // only use this if application has multiple html pages
-  app.get('/assets/*',
-    isAuthenticated(),
-    function (req, res) {
-      // console.log('GET assets/*: ' + req.url);
-      res.sendFile(path.join(__dirname + '/application' + req.url));
-    }); // GET /application/*
+  // // only use this if application has multiple html pages
+  // app.get('/assets/*',
+  //   function (req, res) {
+  //     // console.log('GET assets/*: ' + req.url);
+  //     res.sendFile(path.join(__dirname + '/application' + req.url));
+  //   }); // GET /assets/*
 }
 
 app.get('/error',
