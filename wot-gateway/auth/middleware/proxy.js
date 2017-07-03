@@ -65,6 +65,10 @@ module.exports = function () {
   }
 };
 
+proxyServer.on('upgrade', function (req, socket, head) {
+  proxy.ws(req, socket, head);
+});
+
 //#A Load the Thing that can be proxied (there’s just one here)
 //#B Initialize the proxy server, making it an HTTPS proxy to ensure end-to-end encryption
 //#C Do not verify the certificate (true would refuse local certificate)

@@ -217,7 +217,6 @@ $(document).ready(function () {
     request.onreadystatechange = function () {
         if (request.readyState === XMLHttpRequest.DONE) {
             token = JSON.parse(request.responseText).token;
-            console.log('Token: ' + token);
             connectWebSocket();
         }
     }
@@ -225,7 +224,7 @@ $(document).ready(function () {
 }); // document ready
 
 function connectWebSocket() {
-    wsURL = 'wss://' + serverLocation.host + ':8484/properties/motor?token=' + token;
+    wsURL = 'wss://' + serverLocation.host + '/properties/motor'; //?token=' + token;
     webSocket = new WebSocket(wsURL);
 
     webSocket.onmessage = function (event) {
