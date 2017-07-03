@@ -52,7 +52,6 @@ function postSendCommand(command, callback) {
 // --------------------- Konfiguration ---------------------
 // sends the command to config the motor either Kann Motion 17 or 24
 $("#buttonConfig").on("click", function () {
-    // $('#textArea').html('');        // nötig?
     var command;
     var selectedOption = td.getElementById('configOptions').options[document.getElementById('configOptions').selectedIndex].value;
     if (selectedOption == 'c17') {
@@ -70,84 +69,7 @@ $("#buttonConfig").on("click", function () {
     });
 });
 
-// --------------------- Sequenzen ---------------------
-// adds a command to your sequence and displays it in curSeq
-$("#buttonAddSeq").on("click", function () {
-    var actVal = td.getElementById('valueSeq').value;
-    if (actVal != '') {
-        var comSeq;
-        if ($('#seqCom :selected').val() == 's1') {  // GEHE ZU POSITION
-            comSeq = 'g:[' + actVal + ',0]';
-        } else if ($('#seqCom :selected').val() == 's4') {    // DREHEN
-            comSeq = 'r:[0,' + actVal + ',0,0]';
-        } else if ($('#seqCom :selected').val() == 's12') {    // WARTE
-            comSeq = 'wt:' + actVal;
-        }
-        comArray[i] = comSeq;
-        i++;
-        $('#curSeq').html(comArray.join(', '));
-    } else {
-        // console.log('actVal ist leer!')
-    }
-});
-
-$("#buttonClearSequence").on("click", function () {
-    comArray = [];
-    i = 0;
-    $('#curSeq').html(comArray.join(', '));
-});
-
-// --------------------- Sequenzen & Befehle ---------------------
-// sends a whole sequence to the motor
-$("#buttonSendSeq").on("click", function () {
-    var command;
-    if (document.getElementById('curSeq')) {
-        // Tab Sequenzen
-        console.log('buttonSendSeq in Tab Sequenzen');
-        if (document.getElementById('curSeq').innerHTML.trim() !== '' && comArray.length > 0) {
-            console.log('curSeq innerHTML: ' + document.getElementById('curSeq').innerHTML);
-            command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
-            comArray[i] = ' - GESENDET';
-            $('#curSeq').html(comArray.join(', '));
-            comArray = [];
-            i = 0;
-        }
-    }
-    // else {
-    //     console.log('buttonSendSeq in Tab ????');
-    //     $('#AnswerReceived pre').html('No sequence existing');
-    // }
-    postSendCommand(command, function (success, request) {
-        console.log('SENDSEQ status: ' + request.status);
-        if (success) {
-            // $('#CommandSent pre').html(command);    // ???
-            $('#answerStatus').html('Sequenz erfolgreich gesendet\n');
-        } else {
-            $('#answerStatus').html('Sequenz senden fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
-        }
-    });
-});
-
-
-$("#buttonSendJSONCommand").on("click", function () {
-    var command;
-    if (td.getElementById('plainJSONSeq')) {
-        console.log('buttonSendSeq in Tab Befehle');
-        var plainJSONSeq = td.getElementById('plainJSONSeq').value;
-        if (plainJSONSeq !== '') {
-            command = plainJSONSeq;
-        }
-    }
-    postSendCommand(command, function (success, request) {
-        console.log('SENDJSONCOM status: ' + request.status);
-        if (success) {
-            $('#answerStatus').html('Sequenz erfolgreich gesendet\n');
-        } else {
-            $('#answerStatus').html('Sequenz senden fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
-        }
-    });
-});
-
+// --------------------- Befehle ---------------------
 
 // send the command to delete the current sequence on the motor
 $("#buttonDelSeq").on("click", function () {
@@ -184,6 +106,75 @@ $("#buttonUpdateInfo").on("click", function () {
             $('#answerStatus').html('Aktualisiere-Infos-Befehl erfolgreich gesendet\n');
         } else {
             $('#answerStatus').html('Aktualisiere-Infos-Befehl fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
+        }
+    });
+});
+
+$("#buttonSendJSONCommand").on("click", function () {
+    var command;
+    if (td.getElementById('plainJSONSeq')) {
+        var plainJSONSeq = td.getElementById('plainJSONSeq').value;
+        if (plainJSONSeq !== '') {
+            command = plainJSONSeq;
+        }
+    }
+    postSendCommand(command, function (success, request) {
+        console.log('SENDJSONCOM status: ' + request.status);
+        if (success) {
+            $('#answerStatus').html('JSON-Befehl erfolgreich gesendet\n');
+        } else {
+            $('#answerStatus').html('JSON-Befehl senden fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
+        }
+    });
+});
+
+// --------------------- Sequenzen ---------------------
+// adds a command to your sequence and displays it in curSeq
+$("#buttonAddSeq").on("click", function () {
+    var actVal = td.getElementById('valueSeq').value;
+    if (actVal != '') {
+        var comSeq;
+        if ($('#seqCom :selected').val() == 's1') {  // GEHE ZU POSITION
+            comSeq = 'g:[' + actVal + ',0]';
+        } else if ($('#seqCom :selected').val() == 's4') {    // DREHEN
+            comSeq = 'r:[0,' + actVal + ',0,0]';
+        } else if ($('#seqCom :selected').val() == 's12') {    // WARTE
+            comSeq = 'wt:' + actVal;
+        }
+        comArray[i] = comSeq;
+        i++;
+        $('#curSeq').html(comArray.join(', '));
+    } else {
+        // console.log('actVal ist leer!')
+    }
+});
+
+$("#buttonClearSequence").on("click", function () {
+    comArray = [];
+    i = 0;
+    $('#curSeq').html(comArray.join(', '));
+});
+
+// sends a whole sequence to the motor
+$("#buttonSendSeq").on("click", function () {
+    var command;
+    if (document.getElementById('curSeq')) {
+        if (document.getElementById('curSeq').innerHTML.trim() !== '' && comArray.length > 0) {
+            console.log('curSeq innerHTML: ' + document.getElementById('curSeq').innerHTML);
+            command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
+            comArray[i] = ' - GESENDET';
+            $('#curSeq').html(comArray.join(', '));
+            comArray = [];
+            i = 0;
+        }
+    }
+    postSendCommand(command, function (success, request) {
+        console.log('SENDSEQ status: ' + request.status);
+        if (success) {
+            // $('#CommandSent pre').html(command);    // ???
+            $('#answerStatus').html('Sequenz erfolgreich gesendet\n');
+        } else {
+            $('#answerStatus').html('Sequenz senden fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
         }
     });
 });
