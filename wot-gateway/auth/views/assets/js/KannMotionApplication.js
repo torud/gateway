@@ -132,10 +132,12 @@ $("#buttonReset").on("click", function () {
 // --------------------- Sequenzen ---------------------
 // adds a command to your sequence and displays it in curSeq
 $("#buttonAddSeq").on("click", function () {
+    var selectedSequence = $('input[name="sequence"]:checked').val();
+    console.log(selectedSequence);
     var commandValue = td.getElementById('valueSeq').value;
     if (commandValue != '') {
         var sequenceCommand;
-        var sequenceButton = '<label><input type="radio" name="sequence" value="sequence"><i>';
+        var sequenceButton = '<label><input type="radio" name="sequence" value="sequence"><i> ';
         var selectedCommand = $('#seqCom :selected').val();
         if (selectedCommand == 's1') {             // GEHE ZU POSITION
             sequenceCommand = 'g:[' + commandValue + ',0]';
