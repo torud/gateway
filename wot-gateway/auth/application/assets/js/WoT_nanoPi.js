@@ -224,7 +224,7 @@ $(document).ready(function () {
 }); // document ready
 
 
-wsURL = 'wss://' + serverLocation.host + '/properties/motor'; //?token=' + token;
+wsURL = 'wss://' + serverLocation.host + '/properties/motor';
 webSocket = new WebSocket(wsURL);
 
 webSocket.onmessage = function (event) {
@@ -237,7 +237,10 @@ webSocket.onerror = function (error) {
     console.log(error);
 }
 
-
+/**
+ * Updates the data table "properties" with the keys and values in the properties object
+ * @param {*} properties    the most recent properties
+ */
 function updateProperties(properties) {
     var htmlString = '';
     Object.keys(properties).forEach(function (propName, index) {
