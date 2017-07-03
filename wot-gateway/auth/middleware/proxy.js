@@ -4,6 +4,7 @@ var https = require('https'),
   httpProxy = require('http-proxy');
 var path = require('path');
 
+// for description see authProxy.js
 var useRedirects = true;
 
 var keyFilePath = path.join(__dirname, '..', 'config', 'privateKey.pem');
@@ -22,6 +23,7 @@ var tlsConfig = {
 
 var proxyServer = httpProxy.createProxyServer({ //#B
   tlsConfig,
+  ws: true,
   secure: false //#C
 });
 
@@ -62,12 +64,9 @@ module.exports = function () {
         res.render('error', { message: req.flash('errorMessage') });
       }
     }); //#E
-
-    proxyServer.on('upgrade', function (req, socket, head) {
-      console.log('Proxying WebSockets!');
-      proxy.ws(req, socket, head);
-    });
-  }
+    console.log('Proxying WebSockets!');
+    proxy.ws(req, socket, head);
+  } // proxy
 };
 
 
