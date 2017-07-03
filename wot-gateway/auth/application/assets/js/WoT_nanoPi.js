@@ -183,58 +183,8 @@ $("#buttonUpdateInfo").on("click", function () {
 function logCommand(command) {
     if (command) {
         command = '<p>' + command + '</p>';
-        // command += '\n\r<br/>';
         $(command).appendTo('#sentCommands');
-        // var previousCommands = $('#sentCommands').text();
-        // console.log('Previous commands: ' + previousCommands);
-        // previousCommands += command;
-        // console.log('Logging commands: ' + previousCommands);
-        // $('#sentCommands').html(previousCommands);
+        var elem = document.getElementById('sentCommands');
+        elem.scrollTop = elem.scrollHeight;
     }
-
-
-    // logMessage = command;
-    // console.log('logMessage: ' + logMessage);
-    // var logArrayString = sessionStorage.getItem('logArray');
-    // console.log('logArrayString: ' + logArrayString);
-    // logArray.length = 0;
-    // logArray.push(logArrayString);
-    // console.log('logArray: ' + logArray);
-    // logArray.push(logMessage);
-    // for (a = 0; a <= logArray.length; a++) {
-    //     console.log("logArray ausgeben: " + logArray[a]);
-    // }
-    // sessionStorage.setItem('logArray', JSON.stringify(logArray));
-    // if (logArray.length > 10) {
-    //     logArray.shift();
-    // }
-    // $('#communicationCommand').html(logArray.join(', '));
 } // logCommand
-
-// function logCommand(mes) {
-//     logMessage = mes;
-//     console.log('logMessage: ' + logMessage);
-//     logArray = sessionStorage.getObject('logArray');
-//     logArray.push(logMessage);
-//     console.log('logArray: ' + logArray);
-//     for (a = 0; a <= logArray.length; a++) {
-//         console.log("logArray ausgeben: " + logArray[a]);
-//     }
-//     sessionStorage.setObject('logArray', logArray);
-//     if (logArray.length > 10) {
-//         logArray.shift();
-//     }
-
-//     $('#communicationCommand').html(logArray.join(', '));
-// }
-
-// function logCommand(mes) {
-//     logMessage = mes;
-//     console.log(logMessage);
-//     logString = sessionStorage.getItem('logString');
-//     console.log('logArray: ' + logString);
-//     logString = logString + ', ' + logMessage;
-//     console.log('logArray: ' + logString);
-//     sessionStorage.setItem('logString', logString);
-//     $('#communicationCommand').html(logString);
-// }
