@@ -208,7 +208,7 @@ function logCommand(command) {
 
 // --------------------- Eigenschaften (mit WebSockets) ---------------------
 
-var wsURL = 'wss://' + serverLocation.host + ':8484/properties?token=fRfLNLe9aBix0mHyeCdI0PSzNeLpPPgu';
+var wsURL = 'wss://' + serverLocation.host + ':8484/properties/motor?token=fRfLNLe9aBix0mHyeCdI0PSzNeLpPPgu';
 var webSocket = new WebSocket(wsURL);
 
 webSocket.onmessage = function (event) {
