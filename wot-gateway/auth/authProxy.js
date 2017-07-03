@@ -7,6 +7,7 @@ var proxy = require('./middleware/proxy.js');
 var proxyWebSockets = require('http-proxy');
 var fs = require('fs');
 var config = require('./config/config.json').config;
+var configURL = require('../config/config.json').things[0].url;
 var token = require('./config/config.json').things[0].token;
 var path = require('path');
 var cors = require('cors');
@@ -366,6 +367,7 @@ var httpServer = https.createServer(tlsConfig, app);
 
 var proxyServer = proxyWebSockets.createProxyServer({ //#B
   tlsConfig,
+  target: configURL,
   ws: true,
   secure: false //#C
 });
