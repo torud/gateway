@@ -6,6 +6,8 @@ var td = top.document;
 var sequenceCommands = new Array;       // Array for sequence commands (JSON)
 var sequenceButtons = new Array;        // Array for sequence commands (radio buttons)
 var i = 0;                              // position in comArray
+var selectedCommandIndex = 0;
+var sequenceCommandSelected = false;
 var serverLocation = window.location;
 var postActionStatus = 204;
 var token = '';
@@ -159,6 +161,22 @@ $('#abschnGrauSeq').on('change', function () {
     console.log('change!');
     var selectedSequence = $('input[name="sequence"]:checked').val();
     console.log(selectedSequence);
+    if (selectedSequence && selectedSequence >= 0) {
+        selectedCommandIndex = selectedSequence;
+        sequenceCommandSelected = true;
+        console.log('sequence command nr. ' + selectedCommandIndex + ' selected');
+    } else {
+        sequenceCommandSelected = false;
+        console.log('no sequence command selected');
+    }
+});
+
+$("#buttonRemoveSequence").on("click", function () {
+    if (sequenceCommandSelected) {
+        sequenceButtons.splice(selectedCommandIndex, 1);
+        sequenceCommands.splice(selectedCommandIndex, 1);
+        $('#curSeq').html(sequenceButtons.join('\n'));
+    }
 });
 
 // clears the curSeq
@@ -166,7 +184,7 @@ $("#buttonClearSequence").on("click", function () {
     sequenceCommands = [];
     sequenceButtons = [];
     i = 0;
-    $('#curSeq').html(sequenceCommands.join(', '));
+    $('#curSeq').html(sequenceButtons.join('\n'));
 });
 
 // sends a whole sequence to the motor
