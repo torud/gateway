@@ -84,19 +84,6 @@ $("#buttonDelSeq").on("click", function () {
     });
 });
 
-// sends a command to start the sequenz which is currently on the motor
-$("#buttonReset").on("click", function () {
-    var command = JSON.stringify(resetCommand);
-    postSendCommand(command, function (success, request) {
-        console.log('RESET status: ' + request.status);
-        if (success) {
-            $('#answerStatus').html('Reset-Befehl erfolgreich gesendet\n');
-        } else {
-            $('#answerStatus').html('Reset-Befehl fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
-        }
-    });
-});
-
 // sends a command to update the infos of the KannMotion control
 $("#buttonUpdateInfo").on("click", function () {
     var command = JSON.stringify(infoCommand);
@@ -124,6 +111,21 @@ $("#buttonSendJSONCommand").on("click", function () {
             $('#answerStatus').html('JSON-Befehl erfolgreich gesendet\n');
         } else {
             $('#answerStatus').html('JSON-Befehl senden fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
+        }
+    });
+});
+
+// --------------------- Befehle & Sequenzen ---------------------
+// sends a command to start the sequenz which is currently on the motor
+$("#buttonReset").on("click", function () {
+    console.log('buttonReset!')
+    var command = JSON.stringify(resetCommand);
+    postSendCommand(command, function (success, request) {
+        console.log('RESET status: ' + request.status);
+        if (success) {
+            $('#answerStatus').html('Reset-Befehl erfolgreich gesendet\n');
+        } else {
+            $('#answerStatus').html('Reset-Befehl fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
         }
     });
 });
