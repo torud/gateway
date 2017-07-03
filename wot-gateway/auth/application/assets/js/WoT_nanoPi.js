@@ -226,10 +226,11 @@ webSocket.onerror = function (error) {
 function updateProperties(properties) {
     console.log('update properties')
     var htmlString = '';
-    Object.keys(properties).forEach(function (propName) {
+    Object.keys(properties).forEach(function (propName, index) {
         var propValue = properties[propName];
-        console.log(htmlString);
+        // console.log(htmlString);
         htmlString = htmlString.concat('<pair><key>' + propName + '</key><value>' + propValue + '</value></pair>');
+        $('properties').html(htmlString);
     });
-    $('properties').html(htmlString);
+
 } // updateProperties
