@@ -229,7 +229,7 @@ function updateProperties(properties) {
     Object.keys(properties).forEach(function (propName, index) {
         var propValue = properties[propName];
         // console.log(htmlString);
-        htmlString = htmlString.concat('<pair><key>' + propName + '</key><value>' + propValue + '</value></pair>');
+        htmlString = htmlString.concat('<dt>' + propName + '</dt><dd>' + propValue + '</dd>');
         $('#properties').html(htmlString);
     });
 
