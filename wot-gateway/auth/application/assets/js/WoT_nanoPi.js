@@ -184,11 +184,12 @@ function logCommand(command) {
     if (command) {
         command = '<p>' + command + '</p>';
         // command += '\n\r<br/>';
-        var previousCommands = $('#sentCommands').text();
-        console.log('Previous commands: ' + previousCommands);
-        previousCommands += command;
-        console.log('Logging commands: ' + previousCommands);
-        $('#sentCommands').html(previousCommands);
+        $(command).appendTo('#sentCommands');
+        // var previousCommands = $('#sentCommands').text();
+        // console.log('Previous commands: ' + previousCommands);
+        // previousCommands += command;
+        // console.log('Logging commands: ' + previousCommands);
+        // $('#sentCommands').html(previousCommands);
     }
 
 
