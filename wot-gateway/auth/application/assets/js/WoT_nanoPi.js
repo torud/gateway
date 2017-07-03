@@ -59,13 +59,13 @@ $("#buttonConfig").on("click", function () {
     } else if (selectedOption == 'c24') {
         command = JSON.stringify(configKM24);
     }
-    $('#sentCommands').html(command);
+    logCommand(command);
     postSendCommand(command, function (success, request) {
         console.log('CONFIG status: ' + request.status);
         if (success) {
-            $('#communicationCommand').html('config sendt\n');
+            $('#answerStatus').html('Konfiguration erfolgreich gesendet\n');
         } else {
-            $('#communicationCommand').html('configuration failed: ' + request.status + ' ' + request.statusText);
+            $('#answerStatus').html('Konfiguration fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
         }
     });
 });
@@ -127,10 +127,10 @@ $("#buttonSendSeq").on("click", function () {
     postSendCommand(command, function (success, request) {
         console.log('SENDSEQ status: ' + request.status);
         if (success) {
-            $('#CommandSent pre').html(command);
-            $('#communicationCommand').html('sequence sendt\n');
+            // $('#CommandSent pre').html(command);    // ???
+            $('#answerStatus').html('Sequenz erfolgreich gesendet\n');
         } else {
-            $('#communicationCommand').html('sending sequence failed: ' + request.status + ' ' + request.statusText);
+            $('#answerStatus').html('Sequenz senden fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
         }
     });
 });
@@ -141,9 +141,9 @@ $("#buttonDelSeq").on("click", function () {
     postSendCommand(command, function (success, request) {
         console.log('DELSEQ status: ' + request.status);
         if (success) {
-            $('#communicationCommand').html('current sequence deleted\n');
+            $('#answerStatus').html('Lösche-Sequenz-Befehl erfolgreich gesendet\n');
         } else {
-            $('#communicationCommand').html('deleting current sequence failed: ' + request.status + ' ' + request.statusText);
+            $('#answerStatus').html('Lösche-Sequenz-Befehl fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
         }
     });
 });
@@ -154,13 +154,9 @@ $("#buttonReset").on("click", function () {
     postSendCommand(command, function (success, request) {
         console.log('RESET status: ' + request.status);
         if (success) {
-            console.log('current sequence started\n');
-            //console.log(request.responseURL);
-            //logCommand('current sequence started\n');
+            $('#answerStatus').html('Reset-Befehl erfolgreich gesendet\n');
         } else {
-            console.log('starting current sequence failed: ' + request.status + ' ' + request.statusText);
-            //console.log(request.responseURL);
-            //logCommand('starting current sequence failed: ' + request.status + ' ' + request.statusText);
+            $('#answerStatus').html('Reset-Befehl fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
         }
     });
 });
@@ -171,38 +167,39 @@ $("#buttonUpdateInfo").on("click", function () {
     postSendCommand(command, function (success, request) {
         console.log('INFO status: ' + request.status);
         if (success) {
-            console.log('current sequence started\n');
-            //console.log(request.responseURL);
-            //logCommand('current sequence started\n');
+            $('#answerStatus').html('Aktualisiere-Infos-Befehl erfolgreich gesendet\n');
         } else {
-            console.log('starting current sequence failed: ' + request.status + ' ' + request.statusText);
-            //console.log(request.responseURL);
-            //logCommand('starting current sequence failed: ' + request.status + ' ' + request.statusText);
+            $('#answerStatus').html('Aktualisiere-Infos-Befehl fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
         }
     });
 });
 
 // --------------------- Logging ---------------------
-//log commands in Logging html
-// function logCommand(mes) {
-//     logMessage = mes;
-//     console.log('logMessage: ' + logMessage);
-//     var logArrayString = sessionStorage.getItem('logArray');
-//     console.log('logArrayString: ' + logArrayString);
-//     logArray.length = 0;
-//     logArray.push(logArrayString);
-//     console.log('logArray: ' + logArray);
-//     logArray.push(logMessage);
-//     for (a = 0; a <= logArray.length; a++) {
-//         console.log("logArray ausgeben: " + logArray[a]);
-//     }
-//     sessionStorage.setItem('logArray', JSON.stringify(logArray));
-//     if (logArray.length > 10) {
-//         logArray.shift();
-//     }
 
-//     $('#communicationCommand').html(logArray.join(', '));
-// }
+function logCommand(command) {
+    var previousCommands = $('#sentCommands').innerHTML;
+    previousCommands += command;
+    console.log('Logging commands: ' + JSON.stringify(previousCommands));
+    $('#sentCommands').html(previousCommands);
+
+
+    // logMessage = command;
+    // console.log('logMessage: ' + logMessage);
+    // var logArrayString = sessionStorage.getItem('logArray');
+    // console.log('logArrayString: ' + logArrayString);
+    // logArray.length = 0;
+    // logArray.push(logArrayString);
+    // console.log('logArray: ' + logArray);
+    // logArray.push(logMessage);
+    // for (a = 0; a <= logArray.length; a++) {
+    //     console.log("logArray ausgeben: " + logArray[a]);
+    // }
+    // sessionStorage.setItem('logArray', JSON.stringify(logArray));
+    // if (logArray.length > 10) {
+    //     logArray.shift();
+    // }
+    // $('#communicationCommand').html(logArray.join(', '));
+} // logCommand
 
 // function logCommand(mes) {
 //     logMessage = mes;
