@@ -45,6 +45,7 @@ function postSendCommand(command, callback) {
     }
     if (command) {
         request.send(command);
+        logCommand(command);
     }
 } // postSendCommand
 
@@ -59,7 +60,6 @@ $("#buttonConfig").on("click", function () {
     } else if (selectedOption == 'c24') {
         command = JSON.stringify(configKM24);
     }
-    logCommand(command);
     postSendCommand(command, function (success, request) {
         console.log('CONFIG status: ' + request.status);
         if (success) {
@@ -176,6 +176,10 @@ $("#buttonUpdateInfo").on("click", function () {
 
 // --------------------- Logging ---------------------
 
+/**
+ * Adds a command to the command log
+ * @param {*} command   the command to log
+ */
 function logCommand(command) {
     var previousCommands = $('#sentCommands').innerHTML;
     previousCommands += command;
