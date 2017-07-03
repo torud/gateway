@@ -159,6 +159,7 @@ $("#buttonAddSeq").on("click", function () {
 // clears the curSeq
 $("#buttonClearSequence").on("click", function () {
     sequenceCommands = [];
+    sequenceButtons = [];
     i = 0;
     $('#curSeq').html(sequenceCommands.join(', '));
 });
@@ -172,6 +173,7 @@ $("#buttonSendSeq").on("click", function () {
             sequenceCommands[i] = ' - GESENDET';
             $('#curSeq').html(sequenceCommands.join(', '));
             sequenceCommands = [];
+            sequenceButtons = [];
             i = 0;
         }
     }
