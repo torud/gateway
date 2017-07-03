@@ -108,7 +108,7 @@ $("#buttonSendJSONCommand").on("click", function () {
     postSendCommand(command, function (success, request) {
         console.log('SENDJSONCOM status: ' + request.status);
         if (success) {
-            $('#answerStatus').html('JSON-Befehl erfolgreich gesendet\n');
+            $('#answerStatus').html('JSON-Befehl ' + command + ' erfolgreich gesendet\n');
         } else {
             $('#answerStatus').html('JSON-Befehl senden fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
         }
@@ -162,7 +162,6 @@ $("#buttonSendSeq").on("click", function () {
     var command;
     if (document.getElementById('curSeq')) {
         if (document.getElementById('curSeq').innerHTML.trim() !== '' && comArray.length > 0) {
-            console.log('curSeq innerHTML: ' + document.getElementById('curSeq').innerHTML);
             command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
             comArray[i] = ' - GESENDET';
             $('#curSeq').html(comArray.join(', '));
@@ -177,6 +176,19 @@ $("#buttonSendSeq").on("click", function () {
             $('#answerStatus').html('Sequenz erfolgreich gesendet\n');
         } else {
             $('#answerStatus').html('Sequenz senden fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
+        }
+    });
+});
+
+$("#buttonRun").on("click", function () {
+    console.log('buttonRun!')
+    var command = JSON.stringify(resetCommand);
+    postSendCommand(command, function (success, request) {
+        console.log('RESET status: ' + request.status);
+        if (success) {
+            $('#answerStatus').html('Ausführen-Befehl erfolgreich gesendet\n');
+        } else {
+            $('#answerStatus').html('Ausführen-Befehl fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
         }
     });
 });
