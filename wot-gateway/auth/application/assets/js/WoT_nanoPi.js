@@ -97,6 +97,7 @@ $("#buttonUpdateInfo").on("click", function () {
     });
 });
 
+// sends the JSON command in plainJSONSeq
 $("#buttonSendJSONCommand").on("click", function () {
     var command;
     if (td.getElementById('plainJSONSeq')) {
@@ -115,10 +116,8 @@ $("#buttonSendJSONCommand").on("click", function () {
     });
 });
 
-// --------------------- Befehle & Sequenzen ---------------------
 // sends a command to start the sequenz which is currently on the motor
 $("#buttonReset").on("click", function () {
-    console.log('buttonReset!')
     var command = JSON.stringify(resetCommand);
     postSendCommand(command, function (success, request) {
         console.log('RESET status: ' + request.status);
@@ -151,6 +150,7 @@ $("#buttonAddSeq").on("click", function () {
     }
 });
 
+// clears the curSeq
 $("#buttonClearSequence").on("click", function () {
     comArray = [];
     i = 0;
@@ -180,8 +180,8 @@ $("#buttonSendSeq").on("click", function () {
     });
 });
 
+// sends a command to start the sequenz which is currently on the motor
 $("#buttonRun").on("click", function () {
-    console.log('buttonRun!')
     var command = JSON.stringify(resetCommand);
     postSendCommand(command, function (success, request) {
         console.log('RESET status: ' + request.status);
@@ -207,3 +207,20 @@ function logCommand(command) {
         elem.scrollTop = elem.scrollHeight;
     }
 } // logCommand
+
+
+
+// --------------------- Eigenschaften ---------------------
+
+var webSocket = new WebSocket('/properties/motor');
+
+webSocket.onmessage = function (event) {
+    var result = JSON.parse(event.data);
+    console.log('WebSocket message:');
+    console.log(JSON.stringify(result));
+};
+
+socketHum.onerror = function (error) {
+    console.log('WebSocket error!');
+    console.log(error);
+};
