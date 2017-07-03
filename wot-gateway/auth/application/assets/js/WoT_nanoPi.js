@@ -227,18 +227,17 @@ $(document).ready(function () {
 function connectWebSocket() {
     wsURL = 'wss://' + serverLocation.host + ':8484/properties/motor?token=' + token;
     webSocket = new WebSocket(wsURL);
+
+    webSocket.onmessage = function (event) {
+        var result = JSON.parse(event.data);
+        updateProperties(result);
+    }
+
+    webSocket.onerror = function (error) {
+        console.log('WebSocket error!');
+        console.log(error);
+    }
 } // connectWebSocket
-
-
-webSocket.onmessage = function (event) {
-    var result = JSON.parse(event.data);
-    updateProperties(result);
-}
-
-webSocket.onerror = function (error) {
-    console.log('WebSocket error!');
-    console.log(error);
-}
 
 function updateProperties(properties) {
     var htmlString = '';
