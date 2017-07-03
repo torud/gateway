@@ -363,6 +363,10 @@ app.use(function (error, req, res, next) {
 
 var httpServer = https.createServer(tlsConfig, app);
 
+httpServer.on('upgrade', function (req, socket, head) {
+  console.log('Proxying WebSockets!');
+});
+
 httpServer.listen(config.sourcePort, function () {
   console.log('WoT Authentication Proxy started on port: %d', config.sourcePort);
 });
