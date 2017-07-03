@@ -135,7 +135,7 @@ $("#buttonAddSeq").on("click", function () {
     var commandValue = td.getElementById('valueSeq').value;
     if (commandValue != '') {
         var sequenceCommand;
-        var sequenceButton = '<input type="radio" name="sequence" value="male"> ';
+        var sequenceButton = '<label><input type="radio" name="sequence" value="sequence"><i>';
         var selectedCommand = $('#seqCom :selected').val();
         if (selectedCommand == 's1') {             // GEHE ZU POSITION
             sequenceCommand = 'g:[' + commandValue + ',0]';
@@ -147,7 +147,7 @@ $("#buttonAddSeq").on("click", function () {
             sequenceCommand = 'wt:' + commandValue;
             sequenceButton += 'WARTE (' + commandValue + 'ms)';
         }
-        sequenceButton += '<br>';
+        sequenceButton += '</i></label><br>';
         sequenceButtons[i] = sequenceButton;
         sequenceCommands[i] = sequenceCommand;
         i++;
