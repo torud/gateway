@@ -112,13 +112,6 @@ $("#buttonSendSeq").on("click", function () {
             comArray = [];
             i = 0;
         }
-    } else if (td.getElementById('plainJSONSeq')) {
-        // Tab Befehle
-        console.log('buttonSendSeq in Tab Befehle');
-        var plainJSONSeq = td.getElementById('plainJSONSeq').value;
-        if (plainJSONSeq !== '') {
-            command = plainJSONSeq;
-        }
     }
     // else {
     //     console.log('buttonSendSeq in Tab ????');
@@ -134,6 +127,27 @@ $("#buttonSendSeq").on("click", function () {
         }
     });
 });
+
+
+$("#buttonSendJSONCommand").on("click", function () {
+    var command;
+    if (td.getElementById('plainJSONSeq')) {
+        console.log('buttonSendSeq in Tab Befehle');
+        var plainJSONSeq = td.getElementById('plainJSONSeq').value;
+        if (plainJSONSeq !== '') {
+            command = plainJSONSeq;
+        }
+    }
+    postSendCommand(command, function (success, request) {
+        console.log('SENDJSONCOM status: ' + request.status);
+        if (success) {
+            $('#answerStatus').html('Sequenz erfolgreich gesendet\n');
+        } else {
+            $('#answerStatus').html('Sequenz senden fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
+        }
+    });
+});
+
 
 // send the command to delete the current sequence on the motor
 $("#buttonDelSeq").on("click", function () {
