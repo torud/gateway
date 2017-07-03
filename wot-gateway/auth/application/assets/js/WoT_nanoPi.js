@@ -214,7 +214,7 @@ $(document).ready(function () {
     request.setRequestHeader("Accept", "application/json; charset=utf-8");
     request.onreadystatechange = function () {
         if (request.readyState === XMLHttpRequest.DONE) {
-            token = request.responseText;
+            token = JSON.parse(request.responseText).token;
             console.log('Token: ' + token);
         }
     }
