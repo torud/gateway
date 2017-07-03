@@ -342,6 +342,8 @@ app.get('/error',
 // WoT-Server to the request and proxy all requests and responses
 app.use(proxy());
 
+var httpServer = https.createServer(tlsConfig, app);
+
 // add support for websockets (had to be done here and not in middleware/proxy.js
 // because of the httpServer object)
 var proxyServer = proxyWebSockets.createProxyServer({ //#B
@@ -370,8 +372,6 @@ app.use(function (error, req, res, next) {
     next();
   }
 });
-
-var httpServer = https.createServer(tlsConfig, app);
 
 httpServer.listen(config.sourcePort, function () {
   console.log('WoT Authentication Proxy started on port: %d', config.sourcePort);
