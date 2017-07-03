@@ -25,6 +25,7 @@ var configKM24 = [{ "par": { "cmd": 1, "id": 0, "val": 2500 } },
 
 var deleteSequence = [{ "rom": { "frm": [1, 1], "val": " " } }, { "sys": 1 }];
 var resetCommand = { "sys": 1 };
+var infoCommand = [{ "sys": 2 }, { "par": { "cmd": 2 } }];
 
 /**
  * Sends a HTTP-POST to /actions/sendCommand if the command isn't undefined.
@@ -50,14 +51,15 @@ function postSendCommand(command, callback) {
 // --------------------- Konfiguration ---------------------
 // sends the command to config the motor either Kann Motion 17 or 24
 $("#buttonConfig").on("click", function () {
-    $('#textArea').html('');        // nötig?
+    // $('#textArea').html('');        // nötig?
     var command;
-    if (td.getElementById('mArt').options[document.getElementById('mArt').selectedIndex].value == 'c17') {
+    var selectedOption = td.getElementById('configOptions').options[document.getElementById('configOptions').selectedIndex].value;
+    if (selectedOption == 'c17') {
         command = JSON.stringify(configKM17);
-    } else if (td.getElementById('mArt').options[document.getElementById('mArt').selectedIndex].value == 'c24') {
+    } else if (selectedOption == 'c24') {
         command = JSON.stringify(configKM24);
     }
-    $('#actualConfigCommand').html(command);
+    $('#sentCommands').html(command);
     postSendCommand(command, function (success, request) {
         console.log('CONFIG status: ' + request.status);
         if (success) {
@@ -151,6 +153,23 @@ $("#buttonReset").on("click", function () {
     var command = JSON.stringify(resetCommand);
     postSendCommand(command, function (success, request) {
         console.log('RESET status: ' + request.status);
+        if (success) {
+            console.log('current sequence started\n');
+            //console.log(request.responseURL);
+            //logCommand('current sequence started\n');
+        } else {
+            console.log('starting current sequence failed: ' + request.status + ' ' + request.statusText);
+            //console.log(request.responseURL);
+            //logCommand('starting current sequence failed: ' + request.status + ' ' + request.statusText);
+        }
+    });
+});
+
+// sends a command to update the infos of the KannMotion control
+$("#buttonUpdateInfo").on("click", function () {
+    var command = JSON.stringify(infoCommand);
+    postSendCommand(command, function (success, request) {
+        console.log('INFO status: ' + request.status);
         if (success) {
             console.log('current sequence started\n');
             //console.log(request.responseURL);

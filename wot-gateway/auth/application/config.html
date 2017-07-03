@@ -22,10 +22,6 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li role="presentation"><a href="profile">Profile Page</a></li>
-                    <!--<li class="active" role="presentation"><a href="#">Konfiguration</a></li>
-                    <li role="presentation"><a href="sequence.html">Sequenzen</a></li>
-                    <li role="presentation"><a href="commands.html">Befehle</a></li>
-                    <li role="presentation"><a href="logging.html">Logging</a></li>-->
                 </ul>
             </div>
         </div>
@@ -41,7 +37,27 @@
                 <option value="c24">Kann Motion 24</option>
             </select>
                     <button class="btn btn-default btn-block-xs-only" type="button" id="buttonConfig" style="margin-top:10px;">Konfigurieren </button>
-                    <p id="actualConfigCommand" style="margin: 10px 0;background-color:#cccbcb;min-height:100px;font-family:Courier New;padding:10px;border-radius:5px;">
+
+                </form>
+            </div>
+
+            <div class="form-group">
+                <form method="post" id="abschnGrau3">
+                    <h2>Befehle</h2>
+                    <p>Hier können die sich auf dem Motor befindliche Sequenz gelöscht werden oder die KannMotion Steuerung
+                        zurückgesetzt werden, was die aktuell auf dem Motor gespeicherte Sequenz ausführen lässt. </br>
+                        Des weiteren können auch alle Informationen der Steuerung aktualisiert werden.</p>
+                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonDelSeq" style="margin:5px;">Sequenz löschen</button>
+                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonReset" style="margin:5px;">Reset</button>
+                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonUpdateInfo" style="margin:5px;">Infos aktualisieren</button>
+                    <p style="margin-top:20px;">Hier können komplette, syntaktisch korrekte Befehle im JSON Format eingegeben und gesendet werden:</p>
+                    <input class="form-control" type="text" placeholder="JSON-Befehl" autofocus="" id="plainJSONSeq" required="required" style="max-width:100%;">
+                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSendSeq" style="margin-top:10px;">Sende Befehl</button>
+                    <p>Gesendete Kommandos:</p>
+                    <p id="sentCommands" style="margin: 10px 0;background-color:#cccbcb;min-height:100px;font-family:Courier New;padding:10px;border-radius:5px;">
+                    </p>
+                    <p>Status des letzten gesendeten Kommandos:</p>
+                    <p id="answerStatus" style="margin: 10px 0;background-color:#cccbcb;min-height:100px;font-family:Courier New;padding:10px;border-radius:5px;">
                     </p>
                 </form>
             </div>
@@ -84,19 +100,7 @@
                 </form>
             </div>
 
-            <div class="form-group">
-                <form method="post" id="abschnGrau3">
-                    <h2>Befehle</h2>
-                    <p>Hier können die sich auf dem Motor befindliche Sequenz gelöscht werden oder die KannMotion Steuerung
-                        zurückgesetzt werden, was die aktuell auf dem Motor gespeicherte Sequenz ausführen lässt.</p>
-                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonDelSeq" style="margin:5px;">Sequenz löschen</button>
-                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonReset" style="margin:5px;">Reset</button>
-                    <!--<button class="btn btn-default btn-block-xs-only" type="button" id="buttonSearchDev" style="margin:5px;">Gerät suchen</button>-->
-                    <p style="margin-top:20px;">Hier können komplette, syntaktisch korrekte Befehle im JSON Format eingegeben und gesendet werden:</p>
-                    <input class="form-control" type="text" placeholder="JSON-Befehl" autofocus="" id="plainJSONSeq" required="required" style="max-width:100%;">
-                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSendSeq" style="margin-top:10px;">Sende Befehl</button>
-                </form>
-            </div>
+
         </form>
     </div>
     <script src="assets/js/jquery.min.js"></script>
