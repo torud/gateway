@@ -5,11 +5,8 @@
 var td = top.document;
 var comArray = new Array;       // Array for sequence
 var i = 0;                      // position in comArray
-var logMessage;
-var logArray = new Array('Log');       // Array for logs
-var logString;
-var j = 0;                      // position in logArray
-var answArray = new Array;      // Array with answers
+var serverLocation = window.location;
+console.log('serverLocation: ' + serverLocation);
 var postActionStatus = 204;
 
 // ------------------------------------------ MOTOR ------------------------------------------
@@ -212,7 +209,8 @@ function logCommand(command) {
 
 // --------------------- Eigenschaften ---------------------
 
-var webSocket = new WebSocket('/properties/motor');
+var wsURL = 'wss://' + serverLocation.host;
+var webSocket = new WebSocket(wsURL + '/properties/motor');
 
 webSocket.onmessage = function (event) {
     var result = JSON.parse(event.data);
