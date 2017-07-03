@@ -8,6 +8,8 @@ var i = 0;                      // position in comArray
 var serverLocation = window.location;
 var postActionStatus = 204;
 var token = '';
+var wsURL = '';
+var webSocket;
 
 // ------------------------------------------ MOTOR ------------------------------------------
 var configKM17 = [{}];
@@ -216,14 +218,17 @@ $(document).ready(function () {
         if (request.readyState === XMLHttpRequest.DONE) {
             token = JSON.parse(request.responseText).token;
             console.log('Token: ' + token);
+            connectWebSocket();
         }
     }
     request.send(null);
 }); // document ready
 
+function connectWebSocket() {
+    wsURL = 'wss://' + serverLocation.host + ':8484/properties/motor?token=' + token;
+    webSocket = new WebSocket(wsURL);
+} // connectWebSocket
 
-var wsURL = 'wss://' + serverLocation.host + ':8484/properties/motor?token=' + token;
-var webSocket = new WebSocket(wsURL);
 
 webSocket.onmessage = function (event) {
     var result = JSON.parse(event.data);
