@@ -231,5 +231,5 @@ function updateProperties(properties) {
         console.log(htmlString);
         htmlString = htmlString.concat('<pair><key>' + propName + '</key><value>' + propValue + '</value></pair>');
     });
-    $('properties').innerHTML = htmlString;
+    $('properties').html(htmlString);
 } // updateProperties
