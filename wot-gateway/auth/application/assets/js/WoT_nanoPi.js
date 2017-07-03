@@ -181,7 +181,7 @@ $("#buttonUpdateInfo").on("click", function () {
  * @param {*} command   the command to log
  */
 function logCommand(command) {
-    var previousCommands = $('#sentCommands').html;
+    var previousCommands = $('#sentCommands').text();
     console.log('Previous commands: ' + JSON.stringify(previousCommands));
     console.log(previousCommands);
     previousCommands.append(command);
