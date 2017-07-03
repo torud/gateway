@@ -132,8 +132,6 @@ $("#buttonReset").on("click", function () {
 // --------------------- Sequenzen ---------------------
 // adds a command to your sequence and displays it in curSeq
 $("#buttonAddSeq").on("click", function () {
-    var selectedSequence = $('input[name="sequence"]:checked').val();
-    console.log(selectedSequence);
     var commandValue = td.getElementById('valueSeq').value;
     if (commandValue != '') {
         var sequenceCommand;
@@ -156,6 +154,12 @@ $("#buttonAddSeq").on("click", function () {
         // $('#curSeq').html(sequenceCommands.join(', '));
         $('#curSeq').html(sequenceButtons.join('\n'));
     }
+});
+
+$('select').on('change', function () {
+    alert(this.value);
+    var selectedSequence = $('input[name="sequence"]:checked').val();
+    console.log(selectedSequence);
 });
 
 // clears the curSeq
