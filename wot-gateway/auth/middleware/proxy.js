@@ -62,12 +62,15 @@ module.exports = function () {
         res.render('error', { message: req.flash('errorMessage') });
       }
     }); //#E
+
+    proxyServer.on('upgrade', function (req, socket, head) {
+      console.log('Proxying WebSockets!');
+      proxy.ws(req, socket, head);
+    });
   }
 };
 
-proxyServer.on('upgrade', function (req, socket, head) {
-  proxy.ws(req, socket, head);
-});
+
 
 //#A Load the Thing that can be proxied (there’s just one here)
 //#B Initialize the proxy server, making it an HTTPS proxy to ensure end-to-end encryption
