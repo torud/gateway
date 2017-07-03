@@ -224,9 +224,11 @@ webSocket.onerror = function (error) {
 }
 
 function updateProperties(properties) {
+    console.log('update properties')
     var htmlString = '';
     Object.keys(properties).forEach(function (propName) {
         var propValue = properties[propName];
+        console.log(htmlString);
         htmlString = htmlString.concat('<pair><key>' + propName + '</key><value>' + propValue + '</value></pair>');
     });
     $('properties').innerHTML = htmlString;
