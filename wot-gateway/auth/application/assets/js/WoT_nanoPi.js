@@ -103,7 +103,7 @@ $("#buttonSendSeq").on("click", function () {
     var command;
     if (document.getElementById('curSeq')) {
         // Tab Sequenzen
-        // console.log('buttonSendSeq in Tab Sequenzen');
+        console.log('buttonSendSeq in Tab Sequenzen');
         if (document.getElementById('curSeq').innerHTML.trim() !== '' && comArray.length > 0) {
             console.log('curSeq innerHTML: ' + document.getElementById('curSeq').innerHTML);
             command = '{"rom":{"frm":[1,1],"val":"{' + comArray.toString() + '}"}}';
@@ -114,7 +114,7 @@ $("#buttonSendSeq").on("click", function () {
         }
     } else if (td.getElementById('plainJSONSeq')) {
         // Tab Befehle
-        // console.log('buttonSendSeq in Tab Befehle');
+        console.log('buttonSendSeq in Tab Befehle');
         var plainJSONSeq = td.getElementById('plainJSONSeq').value;
         if (plainJSONSeq !== '') {
             command = plainJSONSeq;
