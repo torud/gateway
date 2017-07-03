@@ -66,13 +66,6 @@ module.exports = function () {
   } // proxy
 };
 
-exports.proxyWebSockets = function () {
-  console.log('Proxying WebSockets!');
-  proxyServer.ws(req, socket, head);
-} // proxyWebSockets
-
-
-
 //#A Load the Thing that can be proxied (there’s just one here)
 //#B Initialize the proxy server, making it an HTTPS proxy to ensure end-to-end encryption
 //#C Do not verify the certificate (true would refuse local certificate)
