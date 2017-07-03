@@ -1,5 +1,5 @@
 /**
- * Javascript Code für Website KannMotion WoT-Gateway
+ * Javascript Code für Application-Website KannMotion auf dem WoT-Gateway
  */
 
 var td = top.document;
@@ -37,7 +37,6 @@ function postSendCommand(command, callback) {
     var request = new XMLHttpRequest();
     request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
     request.onreadystatechange = function () {
         if (request.readyState === XMLHttpRequest.DONE && callback) {
             callback(request.status === postActionStatus, request);
