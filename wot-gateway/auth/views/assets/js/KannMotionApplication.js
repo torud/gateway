@@ -135,7 +135,7 @@ $("#buttonAddSeq").on("click", function () {
     var commandValue = td.getElementById('valueSeq').value;
     if (commandValue != '') {
         var sequenceCommand;
-        var sequenceButton = '<label><input type="radio" name="sequence" value="sequence"><i> ';
+        var sequenceButton = '<label><input type="radio" name="sequence" value="' + i + '"><i> ';
         var selectedCommand = $('#seqCom :selected').val();
         if (selectedCommand == 's1') {             // GEHE ZU POSITION
             sequenceCommand = 'g:[' + commandValue + ',0]';
@@ -151,14 +151,12 @@ $("#buttonAddSeq").on("click", function () {
         sequenceButtons[i] = sequenceButton;
         sequenceCommands[i] = sequenceCommand;
         i++;
-        // $('#curSeq').html(sequenceCommands.join(', '));
         $('#curSeq').html(sequenceButtons.join('\n'));
     }
 });
 
 $('#abschnGrauSeq').on('change', function () {
-    console.log('change!')
-    alert(this.value);
+    console.log('change!');
     var selectedSequence = $('input[name="sequence"]:checked').val();
     console.log(selectedSequence);
 });
