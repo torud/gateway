@@ -209,7 +209,7 @@ function logCommand(command) {
 
 // --------------------- Eigenschaften ---------------------
 
-var wsURL = 'wss://' + serverLocation.host;
+var wsURL = 'wss://' + serverLocation.host + '/properties/motor?token=fRfLNLe9aBix0mHyeCdI0PSzNeLpPPgu';
 var webSocket = new WebSocket(wsURL + '/properties/motor');
 
 webSocket.onmessage = function (event) {

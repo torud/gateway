@@ -185,14 +185,14 @@ describe('Motor:', function () {
             });
           }, 500);
         });
-    }, 500);
+    }, 1000);
   });
 
   it('retrieves a specific sendCommand action', function (done) {
     var uri = '/actions/sendCommand';
     req.post(rootUrl + uri,
       {
-        body: { "sys": 2 }
+        body: { "par": { "cmd": 2 } }
       },
       function (err, res, body) {
         req.get(rootUrl + res.headers.location, function (err, res, action) {
@@ -216,7 +216,7 @@ describe('Motor:', function () {
     var uri = '/actions/sendCommand';
     req.post(rootUrl + uri,
       {
-        body: { "sys": 2 }
+        body: { "par": { "cmd": 2 } }
       },
       function (err, res, body) {
         var id = res.headers.location.split('/').pop();
