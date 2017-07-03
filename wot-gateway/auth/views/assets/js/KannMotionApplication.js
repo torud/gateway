@@ -156,8 +156,8 @@ $("#buttonAddSeq").on("click", function () {
     }
 });
 
-$('select').on('change', function () {
-    alert(this.value);
+$('#abschnGrauSeq').on('change', function () {
+    // alert(this.value);
     var selectedSequence = $('input[name="sequence"]:checked').val();
     console.log(selectedSequence);
 });
