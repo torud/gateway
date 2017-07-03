@@ -216,7 +216,7 @@ $(document).ready(function () {
     request.setRequestHeader("Accept", "application/json; charset=utf-8");
     request.onreadystatechange = function () {
         if (request.readyState === XMLHttpRequest.DONE) {
-            properties = JSON.parse(request.responseText);
+            properties = JSON.parse(request.responseText)[0];
             updateProperties(properties);
         }
     }
