@@ -364,8 +364,9 @@ app.use(function (error, req, res, next) {
 
 var httpServer = https.createServer(tlsConfig, app);
 
-var proxyServer = httpProxy.createProxyServer({ //#B
+var proxyServer = proxyWebSockets.createProxyServer({ //#B
   tlsConfig,
+  ws: true,
   secure: false //#C
 });
 
