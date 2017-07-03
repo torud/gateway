@@ -213,8 +213,8 @@ var webSocket = new WebSocket(wsURL);
 
 webSocket.onmessage = function (event) {
     var result = JSON.parse(event.data);
-    console.log('WebSocket message:');
-    console.log(JSON.stringify(result));
+    // console.log('WebSocket message:');
+    // console.log(JSON.stringify(result));
     updateProperties(result);
 }
 
@@ -224,11 +224,10 @@ webSocket.onerror = function (error) {
 }
 
 function updateProperties(properties) {
-    console.log('update properties')
+    // console.log('update properties')
     var htmlString = '';
     Object.keys(properties).forEach(function (propName, index) {
         var propValue = properties[propName];
-        // console.log(htmlString);
         htmlString = htmlString.concat('<dt>' + propName + '</dt><dd>' + propValue + '</dd>');
         $('#properties').html(htmlString);
     });
