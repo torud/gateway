@@ -23,7 +23,6 @@ var tlsConfig = {
 
 var proxyServer = httpProxy.createProxyServer({ //#B
   tlsConfig,
-  ws: true,
   secure: false //#C
 });
 

@@ -4,6 +4,7 @@ var Strategy = require('passport-local').Strategy;
 var db = require('./db');
 var https = require('https');
 var proxy = require('./middleware/proxy.js');
+var proxyWebSockets = proxy.proxyWebSockets;
 var fs = require('fs');
 var config = require('./config/config.json').config;
 var token = require('./config/config.json').things[0].token;
@@ -365,7 +366,7 @@ var httpServer = https.createServer(tlsConfig, app);
 
 httpServer.on('upgrade', function (req, socket, head) {
   console.log('Proxying WebSockets!');
-  proxy.proxyWebSockets();
+  proxyWebSockets();
 });
 
 httpServer.listen(config.sourcePort, function () {
