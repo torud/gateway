@@ -210,8 +210,21 @@ function logCommand(command) {
 
 
 // --------------------- Eigenschaften (mit WebSockets) ---------------------
+$(document).ready(function () {
+    var request = new XMLHttpRequest();
+    request.open("GET", '/properties/motor', true);
+    request.setRequestHeader("Accept", "application/json; charset=utf-8");
+    request.onreadystatechange = function () {
+        if (request.readyState === XMLHttpRequest.DONE) {
+            properties = JSON.parse(request.responseText);
+            updateProperties(properties);
+        }
+    }
+    request.send(null);
+}); // document ready
 
-wsURL = 'wss://' + serverLocation.host + '/properties/motor';
+
+wsURL = 'wss://' + serverLocation.host + '/properties/motor'; //?token=' + token;
 webSocket = new WebSocket(wsURL);
 
 webSocket.onmessage = function (event) {
@@ -223,6 +236,7 @@ webSocket.onerror = function (error) {
     console.log('WebSocket error!');
     console.log(error);
 }
+
 
 function updateProperties(properties) {
     var htmlString = '';
