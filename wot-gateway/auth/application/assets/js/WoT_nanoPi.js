@@ -184,7 +184,7 @@ function logCommand(command) {
     if (command) {
         // command = '<span>' + command + '</span>';
         command += '\n\r<br/>';
-        var previousCommands = $('#sentCommands').text().trim();
+        var previousCommands = $('#sentCommands').text();
         console.log('Previous commands: ' + previousCommands);
         previousCommands += command;
         console.log('Logging commands: ' + previousCommands);
