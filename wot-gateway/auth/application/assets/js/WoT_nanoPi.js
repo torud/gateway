@@ -207,12 +207,12 @@ function logCommand(command) {
 
 
 // --------------------- Eigenschaften (mit WebSockets) ---------------------
-$(document).ready(function () {
-    request.open("GET", rootUrl + '/properties/leds', true);
-    request.setRequestHeader("Accept", "application/json; charset=utf-8");
-    request.onreadystatechange = updatePageLED;
-    request.send(null);
-} // document ready
+// $(document).ready(function () {
+//     request.open("GET", rootUrl + '/properties/leds', true);
+//     request.setRequestHeader("Accept", "application/json; charset=utf-8");
+//     request.onreadystatechange = updatePageLED;
+//     request.send(null);
+// } // document ready
 
 
 var wsURL = 'ws://' + serverLocation.host + ':8484/properties/motor';
