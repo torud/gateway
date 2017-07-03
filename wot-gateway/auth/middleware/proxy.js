@@ -64,11 +64,13 @@ module.exports = function () {
         res.render('error', { message: req.flash('errorMessage') });
       }
     }); //#E
-
-    console.log('Proxying WebSockets!');
-    proxy.ws(req, socket, head);
   } // proxy
 };
+
+exports.proxyWebSockets = function () {
+  console.log('Proxying WebSockets!');
+  proxyServer.ws(req, socket, head);
+} // proxyWebSockets
 
 
 

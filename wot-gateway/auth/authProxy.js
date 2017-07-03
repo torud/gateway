@@ -365,6 +365,7 @@ var httpServer = https.createServer(tlsConfig, app);
 
 httpServer.on('upgrade', function (req, socket, head) {
   console.log('Proxying WebSockets!');
+  proxy.proxyWebSockets();
 });
 
 httpServer.listen(config.sourcePort, function () {
