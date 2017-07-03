@@ -207,14 +207,19 @@ function logCommand(command) {
 
 
 // --------------------- Eigenschaften (mit WebSockets) ---------------------
+$(document).ready(function () {
+    request.open("GET", rootUrl + '/properties/leds', true);
+    request.setRequestHeader("Accept", "application/json; charset=utf-8");
+    request.onreadystatechange = updatePageLED;
+    request.send(null);
+} // document ready
 
-var wsURL = 'wss://' + serverLocation.host + ':8484/properties/motor?token=fRfLNLe9aBix0mHyeCdI0PSzNeLpPPgu';
+
+var wsURL = 'ws://' + serverLocation.host + ':8484/properties/motor';
 var webSocket = new WebSocket(wsURL);
 
 webSocket.onmessage = function (event) {
     var result = JSON.parse(event.data);
-    // console.log('WebSocket message:');
-    // console.log(JSON.stringify(result));
     updateProperties(result);
 }
 
@@ -224,7 +229,6 @@ webSocket.onerror = function (error) {
 }
 
 function updateProperties(properties) {
-    // console.log('update properties')
     var htmlString = '';
     Object.keys(properties).forEach(function (propName, index) {
         var propValue = properties[propName];
