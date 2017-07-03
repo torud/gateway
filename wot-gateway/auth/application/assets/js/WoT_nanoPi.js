@@ -182,7 +182,8 @@ $("#buttonUpdateInfo").on("click", function () {
  */
 function logCommand(command) {
     if (command) {
-        command = '<span>' + command + '</span>';
+        // command = '<span>' + command + '</span>';
+        command += '\n<br/>';
         var previousCommands = $('#sentCommands').text().trim();
         console.log('Previous commands: ' + previousCommands);
         previousCommands += command;
