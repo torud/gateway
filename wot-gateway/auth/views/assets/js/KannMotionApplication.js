@@ -178,11 +178,10 @@ $('#abschnGrauSeq').on('change', function () {
 // removes the selected sequence command in curSeq
 $("#buttonRemoveSequence").on("click", function () {
     if (sequenceCommandSelected && selectedCommandIndex >= 0 && selectedButtonID != '') {
+        console.log('removing ' + $('#' + selectedButtonID));
         $('#' + selectedButtonID).remove();
-
-
-        // sequenceButtons.splice(selectedCommandIndex, 1);
-        // sequenceCommands.splice(selectedCommandIndex, 1);
+        sequenceButtons.splice(selectedCommandIndex, 1);
+        sequenceCommands.splice(selectedCommandIndex, 1);
         $('#curSeq').html(sequenceButtons.join('\n'));
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
