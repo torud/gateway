@@ -164,7 +164,7 @@ $('#abschnGrauSeq').on('change', function () {
     var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
     var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
     console.log('selected index: ' + selectedIndex);
-    if (selectedIndex && selectedIndex >= 0) {
+    if (selectedIndex >= 0) {
         selectedCommandIndex = selectedIndex;
         sequenceCommandSelected = true;
         console.log('selected index: ' + selectedCommandIndex + ', selected id: ' + $('input[type=radio][name=sequence]:checked').attr('id'));
