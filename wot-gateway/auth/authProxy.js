@@ -193,7 +193,7 @@ app.post('/connectWLAN',
     var ssid = req.body.ssid;
 
     console.log('Trying to connect to WLAN ' + ssid + ' with password ' + password);
-    shell.exec('sudo nmcli dev wifi connect ' + ssid + ' password ' + password + '', function (code, stdout, stderr) {
+    shell.exec('chmod +x changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
       console.log('Exit code:', code);
       console.log('Program output:', stdout);
       console.log('Program stderr:', stderr);
@@ -201,12 +201,31 @@ app.post('/connectWLAN',
         console.log('failed to connect to WiFi ' + ssid);
         req.flash('WLANMessage', stderr);
       } else {
-        console.log('connected to WiFi ' + ssid);
-        req.flash('WLANMessage', stdout);
+        shell.exec('./changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
+          console.log('Exit code:', code);
+          console.log('Program output:', stdout);
+          console.log('Program stderr:', stderr);
+          if (code !== 0) {
+            console.log('failed to connect to WiFi ' + ssid);
+            req.flash('WLANMessage', stderr);
+          } else {
+            shell.exec('sudo nmcli dev wifi connect ' + ssid + ' password ' + password + '', function (code, stdout, stderr) {
+              console.log('Exit code:', code);
+              console.log('Program output:', stdout);
+              console.log('Program stderr:', stderr);
+              if (code !== 0) {
+                console.log('failed to connect to WiFi ' + ssid);
+                req.flash('WLANMessage', stderr);
+              } else {
+                console.log('connected to WiFi ' + ssid);
+                req.flash('WLANMessage', stdout);
+              }
+              res.render('connectWLAN', { message: req.flash('WLANMessage') });
+            }); // connect to wifi
+          }
+        }); // run shell script
       }
-
-      res.render('connectWLAN', { message: req.flash('WLANMessage') });
-    });
+    }); // chmod
   }); // POST /connectWLAN
 
 /**
