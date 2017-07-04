@@ -137,6 +137,19 @@ $("#buttonReset").on("click", function () {
 // --------------------- Sequenzen ---------------------
 // adds a command to your sequence and displays it in curSeq
 $("#buttonAddSeq").on("click", function () {
+    createSequenceCommand(i, buttonIndex);
+    i++;
+    buttonIndex++;
+});
+
+/**
+ * Creates a sequenceCommand and a sequenceButton according to the chosen option in seqCom,
+ * the value in valueSeq and with the specified buttonIndex. Adds it to the sequenceCommands
+ * and the sequenceButtons array at the speciefied position indexInArray.
+ * @param {*} indexInArray 
+ * @param {*} buttonIndex 
+ */
+function createSequenceCommand(indexInArray, buttonIndex) {
     var commandValue = td.getElementById('valueSeq').value;
     if (commandValue != '') {
         var sequenceCommand;
@@ -153,18 +166,17 @@ $("#buttonAddSeq").on("click", function () {
             sequenceButton += 'WARTE (' + commandValue + 'ms)';
         }
         sequenceButton += '</i></label><br>';
-        sequenceButtons[i] = sequenceButton;
-        sequenceCommands[i] = sequenceCommand;
-        i++;
-        buttonIndex++;
+        sequenceButtons[indexInArray] = sequenceButton;
+        sequenceCommands[indexInArray] = sequenceCommand;
         updateSequenceHTML();
     }
-});
+} // createSequenceCommand
 
 // detects which sequence command in curSeq is selected
 $('#abschnGrauSeq').on('change', function () {
     var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
     var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
+    console.log('selected index: ' + selectedIndex);
     if (selectedIndex >= 0) {
         selectedCommandIndex = selectedIndex;
         sequenceCommandSelected = true;
@@ -185,29 +197,12 @@ function updateChangeButton(disabled) {
     $('#buttonChangeSequence').prop('disabled', disabled);
 } // updateChangeButton
 
-// 
+// changes the selected sequence command according the currently chosen options and values
 $("#buttonChangeSequence").on("click", function () {
     console.log('change button');
     if (sequenceCommandSelected && selectedCommandIndex >= 0) {
         var selectedButtonNumber = $('input:radio[name=sequence]:checked').val();
-        var commandValue = td.getElementById('valueSeq').value;
-        var sequenceCommand;
-        var sequenceButton = '<label><input type="radio" id="seqComm' + selectedButtonNumber + '" name="sequence" value="' + selectedButtonNumber + '"><i> ';
-        var selectedCommand = $('#seqCom :selected').val();
-        if (selectedCommand == 's1') {             // GEHE ZU POSITION
-            sequenceCommand = 'g:[' + commandValue + ',0]';
-            sequenceButton += 'GEHE ZU POSITION (' + commandValue + ')';
-        } else if (selectedCommand == 's4') {      // DREHEN
-            sequenceCommand = 'r:[0,' + commandValue + ',0,0]';
-            sequenceButton += 'DREHEN (' + commandValue + '%)';
-        } else if (selectedCommand == 's12') {     // WARTE
-            sequenceCommand = 'wt:' + commandValue;
-            sequenceButton += 'WARTE (' + commandValue + 'ms)';
-        }
-        sequenceButton += '</i></label><br>';
-        sequenceButtons[selectedCommandIndex] = sequenceButton;
-        sequenceCommands[selectedCommandIndex] = sequenceCommand;
-        updateSequenceHTML();
+        createSequenceCommand(selectedCommandIndex, selectedButtonNumber);
     }
 });
 
