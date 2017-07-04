@@ -176,6 +176,7 @@ $("#buttonRemoveSequence").on("click", function () {
     if (sequenceCommandSelected && selectedCommandIndex >= 0) {
         sequenceButtons.splice(selectedCommandIndex, 1);
         sequenceCommands.splice(selectedCommandIndex, 1);
+        console.log(sequenceButtons);
         $('#curSeq').html(sequenceButtons.join('\n'));
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
