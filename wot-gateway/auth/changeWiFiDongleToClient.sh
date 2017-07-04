@@ -2,7 +2,8 @@ sudo service hostapd stop
 sudo service udhcpd stop
 sudo update-rc.d hostapd disable
 sudo update-rc.d udhcpd disable
-echo '# Defaults for hostapd initscript
+cat <<EOT > '/etc/default/hostapd'
+# Defaults for hostapd initscript
 #
 # See /usr/share/doc/hostapd/README.Debian for information about alternative
 # methods of managing hostapd.
@@ -19,10 +20,11 @@ echo '# Defaults for hostapd initscript
 #       -t   include timestamps in some debug messages
 #
 # Note that -B (daemon mode) and -P (pidfile) options are automatically
-# configured by the init.d script and must not be added to DAEMON_OPTS.' 
-> '/etc/default/hostapd'
+# configured by the init.d script and must not be added to DAEMON_OPTS.
+EOT
 
-echo '# interfaces(5) file used by ifup(8) and ifdown(8)
+cat <<EOT > '/etc/network/interfaces'
+# interfaces(5) file used by ifup(8) and ifdown(8)
 # Include files from /etc/network/interfaces.d:
 source-directory /etc/network/interfaces.d
 
@@ -37,7 +39,7 @@ allow-hotplug eth0
 #iface wlan0 inet static
 #        address 192.168.2.1
 #        netmask 255.255.255.0'
-> '/etc/network/interfaces'
+EOT
 
 sudo systemctl start NetworkManager.service
 sudo systemctl enable NetworkManager.service                        
