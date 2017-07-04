@@ -1,5 +1,8 @@
 /**
  * Javascript Code für Application-Website KannMotion auf dem WoT-Gateway
+ * 
+ * @author: Thierry Durot, thierry.durot@ntb.ch
+ * @author: Joël Lutz, joel.lutz@ntb.ch
  */
 
 var td = top.document;
@@ -165,10 +168,21 @@ $('#abschnGrauSeq').on('change', function () {
     if (selectedIndex >= 0) {
         selectedCommandIndex = selectedIndex;
         sequenceCommandSelected = true;
+        updateChangeButton(false);
     } else {
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
+        updateChangeButton(true);
     }
+});
+
+function updateChangeButton(disabled) {
+    $('#buttonChangeSequence').disabled = disabled;
+} // updateChangeButton
+
+// 
+$("#buttonChangeSequence").on("click", function () {
+    console.log('change button');
 });
 
 // removes the selected sequence command in curSeq
