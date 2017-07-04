@@ -142,6 +142,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 sequenceButton += 'WARTE (' + commandValue + 'ms)';
                 break;
             default:
+                console.error('Unknown sequence command option: ' + selectedCommand);
                 sequenceCommand = '';
                 sequenceButton += 'NO OPTION SELECTED!'
                 break;
@@ -157,7 +158,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
 $('#abschnGrauSeq').on('change', function () {
     var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
     var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
-    console.log('selected index: ' + selectedIndex);
+    // console.log('selected index: ' + selectedIndex);
     if (selectedIndex >= 0) {
         selectedCommandIndex = selectedIndex;
         sequenceCommandSelected = true;
