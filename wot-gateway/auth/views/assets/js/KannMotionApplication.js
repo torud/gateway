@@ -177,6 +177,8 @@ $('#abschnGrauSeq').on('change', function () {
 });
 
 function updateChangeButton(disabled) {
+    console.log($('#buttonChangeSequence').disabled);
+    console.log(disabled);
     $('#buttonChangeSequence').disabled = disabled;
 } // updateChangeButton
 
