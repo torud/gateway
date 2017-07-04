@@ -38,7 +38,7 @@ allow-hotplug eth0
 #allow-hotplug wlan0
 #iface wlan0 inet static
 #        address 192.168.2.1
-#        netmask 255.255.255.0'
+#        netmask 255.255.255.0
 EOT
 
 sudo systemctl start NetworkManager.service
