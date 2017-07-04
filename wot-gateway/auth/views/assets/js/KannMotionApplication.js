@@ -210,6 +210,7 @@ $("#buttonChangeSequence").on("click", function () {
     if (sequenceCommandSelected && selectedCommandIndex >= 0) {
         var selectedButtonNumber = $('input:radio[name=sequence]:checked').val();
         createSequenceCommand(selectedCommandIndex, selectedButtonNumber);
+        updateChangeButton(true);
     }
 });
 
@@ -222,6 +223,7 @@ $("#buttonRemoveSequence").on("click", function () {
         updateSequenceHTML();
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
+        updateChangeButton(true);
     }
 });
 
@@ -229,6 +231,7 @@ $("#buttonRemoveSequence").on("click", function () {
 $("#buttonClearSequence").on("click", function () {
     clearSequenceArrays();
     updateSequenceHTML();
+    updateChangeButton(true);
 });
 
 /**
