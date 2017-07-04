@@ -178,7 +178,7 @@ $('#abschnGrauSeq').on('change', function () {
 // removes the selected sequence command in curSeq
 $("#buttonRemoveSequence").on("click", function () {
     if (sequenceCommandSelected && selectedCommandIndex >= 0 && selectedButtonID != '') {
-        console.log('removing ' + $('#' + selectedButtonID));
+        console.log('removing ' + JSON.stringify($('#' + selectedButtonID)));
         $('#' + selectedButtonID).remove();
         sequenceButtons.splice(selectedCommandIndex, 1);
         sequenceCommands.splice(selectedCommandIndex, 1);
