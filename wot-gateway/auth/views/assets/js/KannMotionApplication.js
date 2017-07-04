@@ -155,16 +155,24 @@ function createSequenceCommand(indexInArray, buttonIndex) {
         var sequenceCommand;
         var sequenceButton = '<label><input type="radio" id="seqComm' + buttonIndex + '" name="sequence" value="' + buttonIndex + '"><i> ';
         var selectedCommand = $('#seqCom :selected').val();
-        if (selectedCommand == 's1') {             // GEHE ZU POSITION
-            sequenceCommand = 'g:[' + commandValue + ',0]';
-            sequenceButton += 'GEHE ZU POSITION (' + commandValue + ')';
-        } else if (selectedCommand == 's4') {      // DREHEN
-            sequenceCommand = 'r:[0,' + commandValue + ',0,0]';
-            sequenceButton += 'DREHEN (' + commandValue + '%)';
-        } else if (selectedCommand == 's12') {     // WARTE
-            sequenceCommand = 'wt:' + commandValue;
-            sequenceButton += 'WARTE (' + commandValue + 'ms)';
-        }
+        switch (selectedCommand) {
+            case 's1':      // GEHE ZU POSITION
+                sequenceCommand = 'g:[' + commandValue + ',0]';
+                sequenceButton += 'GEHE ZU POSITION (' + commandValue + ')';
+                break;
+            case 's4':      // DREHEN
+                sequenceCommand = 'r:[0,' + commandValue + ',0,0]';
+                sequenceButton += 'DREHEN (' + commandValue + '%)';
+                break;
+            case 's12':     // WARTE
+                sequenceCommand = 'wt:' + commandValue;
+                sequenceButton += 'WARTE (' + commandValue + 'ms)';
+                break;
+            default:
+                sequenceCommand = '';
+                sequenceButton += 'NO OPTION SELECTED!'
+                break;
+        } // switch
         sequenceButton += '</i></label><br>';
         sequenceButtons[indexInArray] = sequenceButton;
         sequenceCommands[indexInArray] = sequenceCommand;
@@ -193,13 +201,12 @@ $('#abschnGrauSeq').on('change', function () {
  * @param {*} disabled 
  */
 function updateChangeButton(disabled) {
-    console.log(disabled);
     $('#buttonChangeSequence').prop('disabled', disabled);
+    $('#buttonRemoveSequence').prop('disabled', disabled);
 } // updateChangeButton
 
 // changes the selected sequence command according the currently chosen options and values
 $("#buttonChangeSequence").on("click", function () {
-    console.log('change button');
     if (sequenceCommandSelected && selectedCommandIndex >= 0) {
         var selectedButtonNumber = $('input:radio[name=sequence]:checked').val();
         createSequenceCommand(selectedCommandIndex, selectedButtonNumber);
