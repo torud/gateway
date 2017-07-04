@@ -137,7 +137,9 @@ $("#buttonAddSeq").on("click", function () {
     var commandValue = td.getElementById('valueSeq').value;
     if (commandValue != '') {
         var sequenceCommand;
-        var sequenceButton = $('<label><input type="radio" name="sequence" value="' + i + '"><i> ');
+        var sequenceButton = $('<label><input type="radio" name="sequence" value="' + i + '"><i> </i></label><br>');
+        sequenceButton.label.i = 'TEST';
+        console.log(sequenceButton.label.i)
         var selectedCommand = $('#seqCom :selected').val();
         if (selectedCommand == 's1') {             // GEHE ZU POSITION
             sequenceCommand = 'g:[' + commandValue + ',0]';
