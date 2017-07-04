@@ -162,11 +162,17 @@ $('#abschnGrauSeq').on('change', function () {
     var selectedSequence = $('input[type=radio][name="sequence"]:checked').val();
 
     if (selectedSequence && selectedSequence >= 0) {
+        var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
+        var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
+        console.log('selected index: ' + selectedIndex);
+
+        selectedButtonID = $('input[type=radio][name="sequence"]:checked').attr('id');
+        console.log('Button ID: ' + selectedButtonID);
+
         selectedCommandIndex = selectedSequence;
         sequenceCommandSelected = true;
         console.log('sequence command nr. ' + selectedCommandIndex + ' selected');
-        selectedButtonID = $('input[type=radio][name="sequence"]:checked').attr('id');
-        console.log('Button ID: ' + selectedButtonID);
+
     } else {
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
