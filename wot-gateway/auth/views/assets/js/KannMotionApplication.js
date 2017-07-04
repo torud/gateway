@@ -32,20 +32,28 @@ var deleteSequence = [{ "rom": { "frm": [1, 1], "val": " " } }, { "sys": 1 }];
 var resetCommand = { "sys": 1 };
 var infoCommand = [{ "sys": 2 }, { "par": { "cmd": 2 } }];
 
+
 /**
  * Sends a HTTP-POST to /actions/sendCommand if the command isn't undefined.
- * Runs the callback with success = true if the desired answer from the WoT-Gateway (204)
+ * Displays a message with the specified name.
+ * Runs the callback (if defined) with success = true if the desired answer from the WoT-Gateway (204)
  * is received, along with the request object.
  * @param {*} command   The command to send as a string
- * @param {*} callback  Gets called after an answer is received
+ * @param {*} name      The name of the command to display in answerStatus
+ * @param {*} callback  If defined: Gets called after an answer is received
  */
-function postSendCommand(command, callback) {
+function postSendCommand(command, name, callback) {
     var request = new XMLHttpRequest();
     request.open("POST", '/actions/sendCommand');
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     request.onreadystatechange = function () {
-        if (request.readyState === XMLHttpRequest.DONE && callback) {
-            callback(request.status === postActionStatus, request);
+        if (request.readyState === XMLHttpRequest.DONE) {
+            if (callback) callback(request.status === postActionStatus, request);
+            if (request.status === postActionStatus) {
+                $('#answerStatus').html(name + ' erfolgreich gesendet\n');
+            } else {
+                $('#answerStatus').html(name + ' fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
+            }
         }
     }
     if (command) {
@@ -64,14 +72,7 @@ $("#buttonConfig").on("click", function () {
     } else if (selectedOption == 'c24') {
         command = JSON.stringify(configKM24);
     }
-    postSendCommand(command, function (success, request) {
-        console.log('CONFIG status: ' + request.status);
-        if (success) {
-            $('#answerStatus').html('Konfiguration erfolgreich gesendet\n');
-        } else {
-            $('#answerStatus').html('Konfiguration fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
-        }
-    });
+    postSendCommand(command, 'Konfiguration');
 });
 
 // --------------------- Befehle ---------------------
@@ -79,27 +80,13 @@ $("#buttonConfig").on("click", function () {
 // send the command to delete the current sequence on the motor
 $("#buttonDelSeq").on("click", function () {
     var command = JSON.stringify(deleteSequence);
-    postSendCommand(command, function (success, request) {
-        console.log('DELSEQ status: ' + request.status);
-        if (success) {
-            $('#answerStatus').html('Lösche-Sequenz-Befehl erfolgreich gesendet\n');
-        } else {
-            $('#answerStatus').html('Lösche-Sequenz-Befehl fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
-        }
-    });
+    postSendCommand(command, 'Lösche-Sequenz-Befehl');
 });
 
 // sends a command to update the infos of the KannMotion control
 $("#buttonUpdateInfo").on("click", function () {
     var command = JSON.stringify(infoCommand);
-    postSendCommand(command, function (success, request) {
-        console.log('INFO status: ' + request.status);
-        if (success) {
-            $('#answerStatus').html('Aktualisiere-Infos-Befehl erfolgreich gesendet\n');
-        } else {
-            $('#answerStatus').html('Aktualisiere-Infos-Befehl fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
-        }
-    });
+    postSendCommand(command, 'Aktualisiere-Infos-Befehl');
 });
 
 // sends the JSON command in plainJSONSeq
@@ -111,27 +98,13 @@ $("#buttonSendJSONCommand").on("click", function () {
             command = plainJSONSeq;
         }
     }
-    postSendCommand(command, function (success, request) {
-        console.log('SENDJSONCOM status: ' + request.status);
-        if (success) {
-            $('#answerStatus').html('JSON-Befehl ' + command + ' erfolgreich gesendet\n');
-        } else {
-            $('#answerStatus').html('JSON-Befehl senden fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
-        }
-    });
+    postSendCommand(command, 'JSON-Befehl ' + command);
 });
 
 // sends a command to start the sequenz which is currently on the motor
 $("#buttonReset").on("click", function () {
     var command = JSON.stringify(resetCommand);
-    postSendCommand(command, function (success, request) {
-        console.log('RESET status: ' + request.status);
-        if (success) {
-            $('#answerStatus').html('Reset-Befehl erfolgreich gesendet\n');
-        } else {
-            $('#answerStatus').html('Reset-Befehl fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
-        }
-    });
+    postSendCommand(command, 'Reset-Befehl');
 });
 
 // --------------------- Sequenzen ---------------------
@@ -188,29 +161,29 @@ $('#abschnGrauSeq').on('change', function () {
     if (selectedIndex >= 0) {
         selectedCommandIndex = selectedIndex;
         sequenceCommandSelected = true;
-        updateChangeButton(false);
+        disableButtons(false);
     } else {
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
-        updateChangeButton(true);
+        disableButtons(true);
     }
 });
 
 /**
- * Disables the changeSequence button according to the parameter.
+ * Disables the changeSequence and removeSequence button according to the parameter.
  * @param {*} disabled 
  */
-function updateChangeButton(disabled) {
+function disableButtons(disabled) {
     $('#buttonChangeSequence').prop('disabled', disabled);
     $('#buttonRemoveSequence').prop('disabled', disabled);
-} // updateChangeButton
+} // disableButtons
 
 // changes the selected sequence command according the currently chosen options and values
 $("#buttonChangeSequence").on("click", function () {
     if (sequenceCommandSelected && selectedCommandIndex >= 0) {
         var selectedButtonNumber = $('input:radio[name=sequence]:checked').val();
         createSequenceCommand(selectedCommandIndex, selectedButtonNumber);
-        updateChangeButton(true);
+        disableButtons(true);
     }
 });
 
@@ -223,7 +196,7 @@ $("#buttonRemoveSequence").on("click", function () {
         updateSequenceHTML();
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
-        updateChangeButton(true);
+        disableButtons(true);
     }
 });
 
@@ -231,7 +204,7 @@ $("#buttonRemoveSequence").on("click", function () {
 $("#buttonClearSequence").on("click", function () {
     clearSequenceArrays();
     updateSequenceHTML();
-    updateChangeButton(true);
+    disableButtons(true);
 });
 
 /**
@@ -262,28 +235,13 @@ $("#buttonSendSeq").on("click", function () {
             clearSequenceArrays();
         }
     }
-    postSendCommand(command, function (success, request) {
-        console.log('SENDSEQ status: ' + request.status);
-        if (success) {
-            // $('#CommandSent pre').html(command);    // ???
-            $('#answerStatus').html('Sequenz erfolgreich gesendet\n');
-        } else {
-            $('#answerStatus').html('Sequenz senden fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
-        }
-    });
+    postSendCommand(command, 'Sequenz');
 });
 
 // sends a command to start the sequenz which is currently on the motor
 $("#buttonRun").on("click", function () {
     var command = JSON.stringify(resetCommand);
-    postSendCommand(command, function (success, request) {
-        console.log('RESET status: ' + request.status);
-        if (success) {
-            $('#answerStatus').html('Ausführen-Befehl erfolgreich gesendet\n');
-        } else {
-            $('#answerStatus').html('Ausführen-Befehl fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
-        }
-    });
+    postSendCommand(command, 'Ausführen-Befehl');
 });
 
 // --------------------- Logging ---------------------
@@ -327,8 +285,8 @@ webSocket.onmessage = function (event) {
 }
 
 webSocket.onerror = function (error) {
-    console.log('WebSocket error!');
-    console.log(error);
+    console.error('WebSocket error!');
+    console.error(error);
 }
 
 /**
@@ -342,5 +300,4 @@ function updateProperties(properties) {
         htmlString = htmlString.concat('<dt>' + propName + '</dt><dd>' + propValue + '</dd>');
         $('#properties').html(htmlString);
     });
-
 } // updateProperties
