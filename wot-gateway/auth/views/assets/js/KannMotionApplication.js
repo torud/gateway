@@ -163,7 +163,7 @@ $('#abschnGrauSeq').on('change', function () {
     if (selectedIndex && selectedIndex >= 0) {
         selectedCommandIndex = selectedIndex;
         sequenceCommandSelected = true;
-        console.log('selected index: ' + selectedCommandIndex);
+        console.log('selected index: ' + selectedCommandIndex + ', selected id: ' + $('input[type=radio][name=sequence]:checked').attr('id'));
     } else {
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
@@ -174,6 +174,8 @@ $('#abschnGrauSeq').on('change', function () {
 // removes the selected sequence command in curSeq
 $("#buttonRemoveSequence").on("click", function () {
     if (sequenceCommandSelected && selectedCommandIndex >= 0) {
+        console.log('Array before deleting:');
+        console.log(sequenceButtons);
         console.log('deleting button with index ' + selectedCommandIndex);
         sequenceButtons.splice(selectedCommandIndex, 1);
         sequenceCommands.splice(selectedCommandIndex, 1);
