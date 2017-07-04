@@ -3,8 +3,8 @@
  */
 
 var td = top.document;
-var sequenceCommands = new Array;       // Array for sequence commands (JSON)
-var sequenceButtons = new Array;        // Array for sequence commands (radio buttons)
+var sequenceCommands = [];       // Array for sequence commands (JSON)
+var sequenceButtons = [];        // Array for sequence commands (radio buttons)
 var i = 0;                              // position in comArray
 var selectedCommandIndex = -1;
 var sequenceCommandSelected = false;
