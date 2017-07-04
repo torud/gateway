@@ -137,11 +137,7 @@ $("#buttonAddSeq").on("click", function () {
     var commandValue = td.getElementById('valueSeq').value;
     if (commandValue != '') {
         var sequenceCommand;
-        var label = $('<label></label>');
-        var sequenceButton = $('<input type="radio" id="seqCom' + i + '" name="sequence" value="' + i + '">');
-
-        // sequenceButton.label.i = 'TEST';
-        console.log($('#seqCom' + i).innerHTML);
+        var sequenceButton = '<label><input type="radio" name="sequence" value="' + i + '"><i> ';
         var selectedCommand = $('#seqCom :selected').val();
         if (selectedCommand == 's1') {             // GEHE ZU POSITION
             sequenceCommand = 'g:[' + commandValue + ',0]';
@@ -186,9 +182,6 @@ $("#buttonRemoveSequence").on("click", function () {
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
         console.log('no sequence command selected');
-        sequenceButtons.forEach(function (button, index) {
-            console.log(button);
-        });
     }
 });
 
