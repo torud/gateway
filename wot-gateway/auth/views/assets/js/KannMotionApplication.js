@@ -161,26 +161,28 @@ $('#abschnGrauSeq').on('change', function () {
     var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
     var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
     if (selectedIndex && selectedIndex >= 0) {
-        console.log('selected index: ' + selectedIndex);
         selectedCommandIndex = selectedIndex;
         sequenceCommandSelected = true;
+        console.log('selected index: ' + selectedCommandIndex);
     } else {
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
-        console.log('no sequence command selected');
+        // console.log('no sequence command selected');
     }
 });
 
 // removes the selected sequence command in curSeq
 $("#buttonRemoveSequence").on("click", function () {
     if (sequenceCommandSelected && selectedCommandIndex >= 0) {
+        console.log('deleting button with index ' + selectedCommandIndex);
         sequenceButtons.splice(selectedCommandIndex, 1);
         sequenceCommands.splice(selectedCommandIndex, 1);
+        console.log('button deleted!');
+        console.log('Array after deleting:');
         console.log(sequenceButtons);
         $('#curSeq').html(sequenceButtons.join('\n'));
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
-        console.log('button deleted!');
     }
 });
 
