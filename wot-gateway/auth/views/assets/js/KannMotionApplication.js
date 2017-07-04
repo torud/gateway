@@ -10,7 +10,6 @@ var selectedCommandIndex = -1;
 var sequenceCommandSelected = false;
 var serverLocation = window.location;
 var postActionStatus = 204;
-var token = '';
 var wsURL = '';
 var webSocket;
 
@@ -137,7 +136,7 @@ $("#buttonAddSeq").on("click", function () {
     var commandValue = td.getElementById('valueSeq').value;
     if (commandValue != '') {
         var sequenceCommand;
-        var sequenceButton = '<label><input type="radio" name="sequence" value="' + i + '"><i> ';
+        var sequenceButton = '<label><input type="radio" id="seqComm' + i + '" name="sequence" value="' + i + '"><i> ';
         var selectedCommand = $('#seqCom :selected').val();
         if (selectedCommand == 's1') {             // GEHE ZU POSITION
             sequenceCommand = 'g:[' + commandValue + ',0]';
@@ -159,9 +158,9 @@ $("#buttonAddSeq").on("click", function () {
 
 // detects which sequence command in curSeq is selected
 $('#abschnGrauSeq').on('change', function () {
-    console.log('change!');
-    var selectedSequence = $('input[name="sequence"]:checked').val();
-    console.log(selectedSequence);
+    var selectedSequence = $('input[type=radio][name="sequence"]:checked').val();
+    var buttonID = $('input[type=radio][name="sequence"]:checked').attr('id');
+    console.log('Button ID: ' + buttonID);
     if (selectedSequence && selectedSequence >= 0) {
         selectedCommandIndex = selectedSequence;
         sequenceCommandSelected = true;
