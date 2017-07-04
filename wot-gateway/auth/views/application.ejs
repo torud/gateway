@@ -56,7 +56,8 @@
                     <input class="form-control" type="text" placeholder="JSON-Befehl" autofocus="" id="plainJSONSeq" required="required" style="max-width:100%;">
                     <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSendJSONCommand" style="margin-top:10px;">Sende Befehl</button>
                     <p>Gesendete Kommandos:</p>
-                    <div id="sentCommands" style="margin: 10px 0;background-color:#cccbcb;height:200px;max-height:200px;font-family:Courier New;padding:10px;border-radius:5pxx 0;background-color:#cccbcb;min-height:100px;font-family:Courier New;padding:10px;border-radius:5px;overflow:auto;">
+                    <div id="sentCommands" style="margin: 10px 0;background-color:#cccbcb;height:200px;max-height:200px;font-family:Courier New;padding:10px;border-radius:5pxx 0;
+                    background-color:#cccbcb;min-height:100px;font-family:Courier New;padding:10px;border-radius:5px;overflow:auto;">
                     </div>
                     <p>Status des letzten gesendeten Kommandos:</p>
                     <p id="answerStatus" style="margin: 10px 0;background-color:#cccbcb;min-height:50px;font-family:Courier New;padding:10px;border-radius:5px;">
@@ -80,7 +81,7 @@
                     </select>
                         </div>
                         <div class="col-md-4">
-                            <input class="form-control" type="text" placeholder="Wert" autofocus="" id="valueSeq" required pattern="[a-zA-Z0-9]" style="margin:10px;">
+                            <input class="form-control" type="text" placeholder="Wert" autofocus="" id="valueSeq" required style="margin:10px;">
                         </div>
                     </div>
                     <div class="row">
@@ -100,7 +101,7 @@
                             <button class="btn btn-default btn-block-xs-only" type="button" id="buttonRemoveSequence" style="margin:10px;">Löschen</button>
                         </div>
                     </div>
-                    <p id="curSeq" style="margin:10px;background-color:#cccbcb;min-height:100px;font-family:Courier New;padding:10px;border-radius:5px;">
+                    <p id="curSeq" style="margin:10px;background-color:#cccbcb;min-height:100px;max-height:250px;font-family:Courier New;padding:10px;border-radius:5px;overflow:auto;">
                     </p>
                 </form>
             </div>

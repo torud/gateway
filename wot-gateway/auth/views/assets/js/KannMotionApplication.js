@@ -137,7 +137,7 @@ $("#buttonAddSeq").on("click", function () {
     var commandValue = td.getElementById('valueSeq').value;
     if (commandValue != '') {
         var sequenceCommand;
-        var sequenceButton = '<label><input type="radio" name="sequence" value="' + i + '"><i> ';
+        var sequenceButton = $('<label><input type="radio" name="sequence" value="' + i + '"><i> ');
         var selectedCommand = $('#seqCom :selected').val();
         if (selectedCommand == 's1') {             // GEHE ZU POSITION
             sequenceCommand = 'g:[' + commandValue + ',0]';
@@ -157,6 +157,7 @@ $("#buttonAddSeq").on("click", function () {
     }
 });
 
+// detects which sequence command in curSeq is selected
 $('#abschnGrauSeq').on('change', function () {
     console.log('change!');
     var selectedSequence = $('input[name="sequence"]:checked').val();
@@ -172,6 +173,7 @@ $('#abschnGrauSeq').on('change', function () {
     }
 });
 
+// removes the selected sequence command in curSeq
 $("#buttonRemoveSequence").on("click", function () {
     if (sequenceCommandSelected && selectedCommandIndex >= 0) {
         sequenceButtons.splice(selectedCommandIndex, 1);
@@ -180,6 +182,9 @@ $("#buttonRemoveSequence").on("click", function () {
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
         console.log('no sequence command selected');
+        sequenceButtons.forEach(function (button, index) {
+            console.log(button);
+        });
     }
 });
 
