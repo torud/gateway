@@ -7,7 +7,6 @@ var sequenceCommands = new Array;       // Array for sequence commands (JSON)
 var sequenceButtons = new Array;        // Array for sequence commands (radio buttons)
 var i = 0;                              // position in comArray
 var selectedCommandIndex = -1;
-var selectedButtonID = '';
 var sequenceCommandSelected = false;
 var serverLocation = window.location;
 var postActionStatus = 204;
@@ -159,40 +158,28 @@ $("#buttonAddSeq").on("click", function () {
 
 // detects which sequence command in curSeq is selected
 $('#abschnGrauSeq').on('change', function () {
-    var selectedSequence = $('input[type=radio][name="sequence"]:checked').val();
-
-    if (selectedSequence && selectedSequence >= 0) {
-        var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
-        var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
+    var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
+    var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
+    if (selectedIndex && selectedIndex >= 0) {
         console.log('selected index: ' + selectedIndex);
-
-        selectedButtonID = $('input[type=radio][name="sequence"]:checked').attr('id');
-        console.log('Button ID: ' + selectedButtonID);
-
-        selectedCommandIndex = selectedSequence;
+        selectedCommandIndex = selectedIndex;
         sequenceCommandSelected = true;
-        console.log('sequence command nr. ' + selectedCommandIndex + ' selected');
-
     } else {
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
-        selectedButtonID = '';
         console.log('no sequence command selected');
     }
 });
 
 // removes the selected sequence command in curSeq
 $("#buttonRemoveSequence").on("click", function () {
-    if (sequenceCommandSelected && selectedCommandIndex >= 0 && selectedButtonID != '') {
-        console.log('removing ' + JSON.stringify($('#' + selectedButtonID)));
-        $('#' + selectedButtonID).remove();
+    if (sequenceCommandSelected && selectedCommandIndex >= 0) {
         sequenceButtons.splice(selectedCommandIndex, 1);
         sequenceCommands.splice(selectedCommandIndex, 1);
         $('#curSeq').html(sequenceButtons.join('\n'));
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
-        selectedButtonID = '';
-        console.log('no sequence command selected');
+        console.log('button deleted!');
     }
 });
 
