@@ -45,3 +45,5 @@ sudo update-rc.d hostapd enable
 sudo update-rc.d udhcpd enable
 sudo service hostapd start
 sudo service udhcpd start
+sleep 1
+reboot
