@@ -3,9 +3,10 @@
  */
 
 var td = top.document;
-var sequenceCommands = [];       // Array for sequence commands (JSON)
-var sequenceButtons = [];        // Array for sequence commands (radio buttons)
-var i = 0;                              // position in comArray
+var sequenceCommands = [];      // Array for sequence commands (JSON)
+var sequenceButtons = [];       // Array for sequence commands (radio buttons)
+var i = 0;                      // position in sequenceCommands and sequenceButtons
+var buttonIndex = 0;
 var selectedCommandIndex = -1;
 var sequenceCommandSelected = false;
 var serverLocation = window.location;
@@ -136,7 +137,7 @@ $("#buttonAddSeq").on("click", function () {
     var commandValue = td.getElementById('valueSeq').value;
     if (commandValue != '') {
         var sequenceCommand;
-        var sequenceButton = '<label><input type="radio" id="seqComm' + i + '" name="sequence" value="' + i + '"><i> ';
+        var sequenceButton = '<label><input type="radio" id="seqComm' + buttonIndex + '" name="sequence" value="' + buttonIndex + '"><i> ';
         var selectedCommand = $('#seqCom :selected').val();
         if (selectedCommand == 's1') {             // GEHE ZU POSITION
             sequenceCommand = 'g:[' + commandValue + ',0]';
@@ -152,7 +153,8 @@ $("#buttonAddSeq").on("click", function () {
         sequenceButtons[i] = sequenceButton;
         sequenceCommands[i] = sequenceCommand;
         i++;
-        $('#curSeq').html(sequenceButtons.join('\n'));
+        buttonIndex++;
+        updateSequenceHTML();
     }
 });
 
@@ -183,7 +185,7 @@ $("#buttonRemoveSequence").on("click", function () {
         console.log('button deleted!');
         console.log('Array after deleting:');
         console.log(sequenceButtons);
-        $('#curSeq').html(sequenceButtons.join('\n'));
+        updateSequenceHTML();
         selectedCommandIndex = -1;
         sequenceCommandSelected = false;
     }
@@ -191,11 +193,26 @@ $("#buttonRemoveSequence").on("click", function () {
 
 // clears the curSeq
 $("#buttonClearSequence").on("click", function () {
+    clearSequenceArrays();
+    updateSequenceHTML();
+});
+
+/**
+ * Deletes the sequenceCommands and the sequenceButtons array
+ */
+function clearSequenceArrays() {
     sequenceCommands = [];
     sequenceButtons = [];
     i = 0;
+    buttonIndex = 0;
+} // clearSequenceArrays
+
+/**
+ * Displays the sequenceButtons array in curSeq
+ */
+function updateSequenceHTML() {
     $('#curSeq').html(sequenceButtons.join('\n'));
-});
+} // updateSequenceHTML
 
 // sends a whole sequence to the motor
 $("#buttonSendSeq").on("click", function () {
@@ -204,10 +221,8 @@ $("#buttonSendSeq").on("click", function () {
         if (document.getElementById('curSeq').innerHTML.trim() !== '' && sequenceCommands.length > 0) {
             command = '{"rom":{"frm":[1,1],"val":"{' + sequenceCommands.toString() + '}"}}';
             sequenceButtons[i] = ' - GESENDET';
-            $('#curSeq').html(sequenceButtons.join('\n'));
-            sequenceCommands = [];
-            sequenceButtons = [];
-            i = 0;
+            updateSequenceHTML();
+            clearSequenceArrays();
         }
     }
     postSendCommand(command, function (success, request) {
