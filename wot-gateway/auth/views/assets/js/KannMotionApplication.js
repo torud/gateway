@@ -179,6 +179,7 @@ $("#buttonRemoveSequence").on("click", function () {
         console.log('deleting button with index ' + selectedCommandIndex);
         sequenceButtons.splice(selectedCommandIndex, 1);
         sequenceCommands.splice(selectedCommandIndex, 1);
+        i--;
         console.log('button deleted!');
         console.log('Array after deleting:');
         console.log(sequenceButtons);
