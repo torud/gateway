@@ -139,7 +139,7 @@ $("#buttonAddSeq").on("click", function () {
         var sequenceCommand;
         var sequenceButton = $('<label><input type="radio" id="seqCom' + i + '" name="sequence" value="' + i + '"><i> </i></label><br>');
         // sequenceButton.label.i = 'TEST';
-        console.log($('#seqCom' + i).val());
+        console.log($('#seqCom' + i));
         var selectedCommand = $('#seqCom :selected').val();
         if (selectedCommand == 's1') {             // GEHE ZU POSITION
             sequenceCommand = 'g:[' + commandValue + ',0]';
