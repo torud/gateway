@@ -12,9 +12,9 @@ var express = require('express'),
   fs = require('fs'),
   path = require('path'),
   morgan = require('morgan');
-const debug = require('debug')('my-namespace')
-const name = 'my-app'
-debug('booting %s', name);
+// const debug = require('debug')('my-namespace')
+// const name = 'my-app'
+// debug('booting %s', name);
 
 morgan.token('date', function () {
   var date = new Date();
