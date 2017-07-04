@@ -176,13 +176,39 @@ $('#abschnGrauSeq').on('change', function () {
     }
 });
 
+/**
+ * Disables the changeSequence button according to the parameter.
+ * @param {*} disabled 
+ */
 function updateChangeButton(disabled) {
+    console.log(disabled);
     $('#buttonChangeSequence').prop('disabled', disabled);
 } // updateChangeButton
 
 // 
 $("#buttonChangeSequence").on("click", function () {
     console.log('change button');
+    if (sequenceCommandSelected && selectedCommandIndex >= 0) {
+        var selectedButtonNumber = $('input:radio[name=sequence]:checked').val();
+        var commandValue = td.getElementById('valueSeq').value;
+        var sequenceCommand;
+        var sequenceButton = '<label><input type="radio" id="seqComm' + selectedButtonNumber + '" name="sequence" value="' + selectedButtonNumber + '"><i> ';
+        var selectedCommand = $('#seqCom :selected').val();
+        if (selectedCommand == 's1') {             // GEHE ZU POSITION
+            sequenceCommand = 'g:[' + commandValue + ',0]';
+            sequenceButton += 'GEHE ZU POSITION (' + commandValue + ')';
+        } else if (selectedCommand == 's4') {      // DREHEN
+            sequenceCommand = 'r:[0,' + commandValue + ',0,0]';
+            sequenceButton += 'DREHEN (' + commandValue + '%)';
+        } else if (selectedCommand == 's12') {     // WARTE
+            sequenceCommand = 'wt:' + commandValue;
+            sequenceButton += 'WARTE (' + commandValue + 'ms)';
+        }
+        sequenceButton += '</i></label><br>';
+        sequenceButtons[selectedCommandIndex] = sequenceButton;
+        sequenceCommands[selectedCommandIndex] = sequenceCommand;
+        updateSequenceHTML();
+    }
 });
 
 // removes the selected sequence command in curSeq
