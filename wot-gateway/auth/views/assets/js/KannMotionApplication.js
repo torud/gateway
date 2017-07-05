@@ -128,7 +128,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
     console.log(inputElements);
     var commandValues = [];
     for (var i = 0; i < inputElements.length; i++) {
-        var elementID = inputElements[i].id();
+        var elementID = inputElements[i].id;
         console.log(elementID);
     }
     // console.log(inputFields);
