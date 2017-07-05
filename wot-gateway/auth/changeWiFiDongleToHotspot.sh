@@ -10,7 +10,7 @@ cat <<EOT > '/etc/rc.local'
 /opt/QtE-Demo/run.sh&
 
 ifconfig wlan0 192.168.2.1
-(/bin/sleep 5 && /etc/init.d/udhcpd restart)
+(/bin/sleep 5 && /bin/sh -c 'service udhcpd restart')
 
 exit 0
 EOT
