@@ -133,6 +133,13 @@ function createSequenceCommand(indexInArray, buttonIndex) {
         if (elementID.startsWith('valueSeq')) {
             var elementValue = inputElements[i].value;
             console.log(elementValue);
+            if (elementValue != '') {
+                commandValues[i] = elementValue;
+            } else {
+                console.error('elementValue Nr. ' + i + ' is empty!');
+                commandValues = [];
+                break;
+            }
         }
     } // for
     // console.log(inputFields);
