@@ -130,7 +130,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
         var elementID = inputElements[i].id;
         console.log(elementID);
         if (elementID.startsWith('valueSeq')) {
-            var elementValue = $(elementID).value;
+            var elementValue = $(elementID).value();
             console.log(elementValue);
         }
     } // for
