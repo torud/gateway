@@ -192,8 +192,18 @@ app.post('/connectWLAN',
     var password = req.body.password;
     var ssid = req.body.ssid;
 
-    console.log('Trying to connect to WLAN ' + ssid + ' with password ' + password);
-    shell.exec('chmod +x changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
+    console.log('make script to change wifi dongle to client executable');
+
+    // shell.exec('chmod +x changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
+    //   console.log('Exit code:', code);
+    //   console.log('Program output:', stdout);
+    //   console.log('Program stderr:', stderr);
+    //   if (code !== 0) {
+    //     console.log('failed to connect to WiFi ' + ssid);
+    //     req.flash('WLANMessage', stderr);
+    //   } else {
+    console.log('Running script to change wifi dongle to client');
+    shell.exec('./changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
       console.log('Exit code:', code);
       console.log('Program output:', stdout);
       console.log('Program stderr:', stderr);
@@ -201,7 +211,8 @@ app.post('/connectWLAN',
         console.log('failed to connect to WiFi ' + ssid);
         req.flash('WLANMessage', stderr);
       } else {
-        shell.exec('./changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
+        console.log('Trying to connect to WLAN ' + ssid + ' with password ' + password);
+        shell.exec('sudo nmcli dev wifi connect ' + ssid + ' password ' + password, function (code, stdout, stderr) {
           console.log('Exit code:', code);
           console.log('Program output:', stdout);
           console.log('Program stderr:', stderr);
@@ -209,23 +220,15 @@ app.post('/connectWLAN',
             console.log('failed to connect to WiFi ' + ssid);
             req.flash('WLANMessage', stderr);
           } else {
-            shell.exec('sudo nmcli dev wifi connect ' + ssid + ' password ' + password, function (code, stdout, stderr) {
-              console.log('Exit code:', code);
-              console.log('Program output:', stdout);
-              console.log('Program stderr:', stderr);
-              if (code !== 0) {
-                console.log('failed to connect to WiFi ' + ssid);
-                req.flash('WLANMessage', stderr);
-              } else {
-                console.log('connected to WiFi ' + ssid);
-                req.flash('WLANMessage', stdout);
-              }
-              res.render('connectWLAN', { message: req.flash('WLANMessage') });
-            }); // connect to wifi
+            console.log('connected to WiFi ' + ssid);
+            req.flash('WLANMessage', stdout);
           }
-        }); // run shell script
+          res.render('connectWLAN', { message: req.flash('WLANMessage') });
+        }); // connect to wifi
       }
-    }); // chmod
+    }); // run shell script
+    //   }
+    // }); // chmod
   }); // POST /connectWLAN
 
 /**
