@@ -13,7 +13,7 @@ ifconfig wlan0 192.168.2.1
 sleep 1
 service udhcpd stop
 sleep 1
-service udhcpd start
+service udhcpd restart
 
 exit 0
 EOT

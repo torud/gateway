@@ -53,7 +53,7 @@ cat <<EOT > '/etc/rc.local'
 #sleep 1
 #service udhcpd stop
 #sleep 1
-#service udhcpd start
+#service udhcpd restart
 
 exit 0
 EOT
