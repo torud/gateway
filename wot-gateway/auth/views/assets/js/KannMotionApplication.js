@@ -176,7 +176,9 @@ $('#abschnGrauSeq').on('change', function () {
             inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert4" id="valueSeq4" style="margin:10px;">');
             break;
     } // switch
-    inputFields.appendTo('#seqInputFields');
+    inputFields.forEach(function (inputField, index) {
+        inputField.appendTo('#seqInputFields');
+    });
 
     // detects which sequence command in curSeq is selected
     var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
