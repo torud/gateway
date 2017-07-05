@@ -154,7 +154,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
     }
 } // createSequenceCommand
 
-var inputField;
+var inputFields = [];
 
 // detects which sequence command in curSeq is selected
 $('#abschnGrauSeq').on('change', function () {
@@ -164,22 +164,19 @@ $('#abschnGrauSeq').on('change', function () {
     var selectedCommand = $('#seqCom :selected').val();
     switch (selectedCommand) {
         case 's1':      // GEHE ZU POSITION
-            inputField = $('<input class="form-control" type="text" placeholder="Wert1" id="valueSeq1" style="margin:10px;">');
-            inputField.appendTo('#seqInputFields');
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert1" id="valueSeq1" style="margin:10px;">');
             break;
         case 's4':      // DREHEN
-            inputField = $('<input class="form-control" type="text" placeholder="Wert2" id="valueSeq2" style="margin:10px;">');
-            inputField.appendTo('#seqInputFields');
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert2" id="valueSeq2" style="margin:10px;">');
             break;
         case 's12':     // WARTE
-            inputField = $('<input class="form-control" type="text" placeholder="Wert3" id="valueSeq3" style="margin:10px;">');
-            inputField.appendTo('#seqInputFields');
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert3" id="valueSeq3" style="margin:10px;">');
             break;
         default:
-            inputField = $('<input class="form-control" type="text" placeholder="Wert4" id="valueSeq4" style="margin:10px;">');
-            inputField.appendTo('#seqInputFields');
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert4" id="valueSeq4" style="margin:10px;">');
             break;
     } // switch
+    inputFields.appendTo('#seqInputFields');
 
     // detects which sequence command in curSeq is selected
     var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
