@@ -126,7 +126,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
     // extract the information in the current present fields of abschnGrauSeq
     var inputElements = document.getElementById("abschnGrauSeq").elements;
     console.log(inputElements);
-    var commandValues = [];
+    var commandValues = {};
     for (var i = 0; i < inputElements.length; i++) {
         var elementID = inputElements[i].id;
         console.log(elementID);
@@ -134,58 +134,36 @@ function createSequenceCommand(indexInArray, buttonIndex) {
             var elementValue = inputElements[i].value;
             console.log(elementValue);
             if (elementValue != '') {
-                commandValues[i] = elementValue;
+                commandValues[elementID] = elementValue;
             } else {
                 console.error('elementValue Nr. ' + i + ' is empty!');
-                commandValues = [];
+                commandValues = {};
                 break;
             }
         }
     } // for
-    // console.log(inputFields);
-    // for (var i = 0; i < inputFields.length; i++) {
-    //     console.log('checking inputField Nr. ' + i);
-    //     var commandValue;
-    //     if ($('#valueSeq' + i + ' :selected')) {         // inputField is a dropdown menu
-    //         console.log('inputField is a dropdown menu');
-    //         commandValue = $('#valueSeq' + i + ' :selected').val();
-    //     } else if (td.getElementById('valueSeq' + i)) {  // inputField is a text input
-    //         console.log('inputField is a text input');
-    //         commandValue = td.getElementById('valueSeq' + i).value;
-    //     } else {
-    //         console.error('unknown input field!');
-    //     }
-    //     console.log('command value: ' + commandValue);
-    //     if (commandValue && commandValue != '') {
-    //         commandValues[i] = commandValue;
-    //     } else {
-    //         console.error('commandValue Nr. ' + i + ' is empty!');
-    //         commandValues = [];
-    //         break;
-    //     }
-    // } // for
     // creates a sequenceCommand (JSON) and a sequenceButton (HTML radio button)
-    if (commandValues != []) {
+    if (commandValues != {}) {
         var sequenceCommand;
         var sequenceButton = '<label><input type="radio" id="seqComm' + buttonIndex + '" name="sequence" value="' + buttonIndex + '"><i> ';
         var selectedCommand = $('#seqCom :selected').val();
         switch (selectedCommand) {
             case 's1':      // GEHE ZU POSITION
-                var optionShortest = commandValues.shift();
-                var position = commandValues.shift();
-                sequenceCommand = 'g:[' + position + ',' + optionShortest + ']';
-                sequenceButton += 'GEHE ZU POSITION (' + optionShortest + ', ' + optionShortest + ')';
+                var option = commandValues.valueSeq0;
+                var position = commandValues.valueSeq1;
+                sequenceCommand = 'g:[' + position + ',' + option + ']';
+                sequenceButton += 'GEHE ZU POSITION (' + option + ', ' + option + ')';
                 break;
             case 's4':      // DREHEN
-                var optionConstant = commandValues.shift();
-                var speed = commandValues.shift();
-                var min = commandValues.shift();
-                var max = commandValues.shift();
-                sequenceCommand = 'r:[' + optionConstant + ',' + speed + ',' + min + ',' + max + ']';
-                sequenceButton += 'DREHEN (' + optionConstant + ',' + speed + ',' + min + ',' + max + ')';
+                var option = commandValues.valueSeq0;
+                var speed = commandValues.valueSeq1;
+                var min = commandValues.valueSeq2;
+                var max = commandValues.valueSeq3;
+                sequenceCommand = 'r:[' + option + ',' + speed + ',' + min + ',' + max + ']';
+                sequenceButton += 'DREHEN (' + option + ',' + speed + ',' + min + ',' + max + ')';
                 break;
             case 's12':     // WARTE
-                var time = commandValues.shift();
+                var time = commandValues.valueSeq0;
                 sequenceCommand = 'wt:' + time;
                 sequenceButton += 'WARTE (' + time + 'ms)';
                 break;
@@ -195,7 +173,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 sequenceButton += 'NO OPTION SELECTED!'
                 break;
         } // switch
-        var comment = commandValues.shift();
+        var comment = commandValues.valueSeqComment;
         sequenceButton += comment + '</i></label><br>';
         sequenceButtons[indexInArray] = sequenceButton;
         sequenceCommands[indexInArray] = sequenceCommand;
@@ -241,10 +219,10 @@ $('#abschnGrauSeq').on('change', function () {
                 inputFields[3] = $('<input class="form-control" type="text" placeholder="Max" id="valueSeq3" style="margin:10px;">');
                 break;
             case 's12':     // WARTE
-                inputFields[0] = $('<input class="form-control" type="text" placeholder="Zeit in ms [0,3600000]" id="valueSeq1" style="margin:10px;">');
+                inputFields[0] = $('<input class="form-control" type="text" placeholder="Zeit in ms [0,3600000]" id="valueSeq0" style="margin:10px;">');
                 break;
             default:
-                inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert" id="valueSeq1" style="margin:10px;">');
+                inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert" id="valueSeq0" style="margin:10px;">');
                 break;
         } // switch
         inputFields.push($('<input class="form-control" type="text" placeholder="Kommentar" id="valueSeqComment" style="margin:10px;">'));
