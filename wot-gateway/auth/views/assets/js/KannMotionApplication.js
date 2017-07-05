@@ -157,6 +157,28 @@ function createSequenceCommand(indexInArray, buttonIndex) {
 // detects which sequence command in curSeq is selected
 $('#abschnGrauSeq').on('change', function () {
     console.log('change!');
+    // displays input fields according to the chosen command
+    var selectedCommand = $('#seqCom :selected').val();
+    switch (selectedCommand) {
+        case 's1':      // GEHE ZU POSITION
+            var input = $('<input type="text" value="Testinput1" />');
+            input.appendTo('#seqButtons');
+            break;
+        case 's4':      // DREHEN
+            var input = $('<input type="text" value="Testinput2" />');
+            input.appendTo('#seqButtons');
+            break;
+        case 's12':     // WARTE
+            var input = $('<input type="text" value="Testinput3" />');
+            input.appendTo('#seqButtons');
+            break;
+        default:
+            var input = $('<input type="text" value="Testinput4" />');
+            input.appendTo('#seqButtons');
+            break;
+    } // switch
+
+    // detects which sequence command in curSeq is selected
     var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
     var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
     // console.log('selected index: ' + selectedIndex);
