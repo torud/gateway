@@ -2,6 +2,19 @@ sudo nmcli r wifi off
 sudo systemctl stop NetworkManager.service
 sudo systemctl disable NetworkManager.service
 
+cat <<EOT > '/etc/rc.local'
+# By default this script does nothing.
+
+. /usr/bin/setqt4env
+/usr/bin/lcd2usb_print "CPU: {{CPU}}" "Mem: {{MEM}}" "IP: {{IP}}" "LoadAvg: {{L$
+/opt/QtE-Demo/run.sh&
+
+ifconfig wlan0 192.168.2.1
+service udhcpd restart
+
+exit 0
+EOT
+
 cat <<EOT > '/etc/network/interfaces'
 # interfaces(5) file used by ifup(8) and ifdown(8)
 # Include files from /etc/network/interfaces.d:

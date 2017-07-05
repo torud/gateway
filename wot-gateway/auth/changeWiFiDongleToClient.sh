@@ -2,6 +2,7 @@ sudo service hostapd stop
 sudo service udhcpd stop
 sudo update-rc.d hostapd disable
 sudo update-rc.d udhcpd disable
+
 cat <<EOT > '/etc/default/hostapd'
 # Defaults for hostapd initscript
 #
@@ -39,6 +40,19 @@ allow-hotplug eth0
 #iface wlan0 inet static
 #        address 192.168.2.1
 #        netmask 255.255.255.0
+EOT
+
+cat <<EOT > '/etc/rc.local'
+# By default this script does nothing.
+
+. /usr/bin/setqt4env
+/usr/bin/lcd2usb_print "CPU: {{CPU}}" "Mem: {{MEM}}" "IP: {{IP}}" "LoadAvg: {{L$
+/opt/QtE-Demo/run.sh&
+
+#ifconfig wlan0 192.168.2.1
+#service udhcpd restart
+
+exit 0
 EOT
 
 sudo systemctl start NetworkManager.service
