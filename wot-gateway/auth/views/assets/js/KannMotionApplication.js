@@ -160,9 +160,9 @@ var inputField;
 $('#abschnGrauSeq').on('change', function () {
     console.log('change!');
     // displays input fields according to the chosen command
+
     var selectedCommand = $('#seqCom :selected').val();
     switch (selectedCommand) {
-
         case 's1':      // GEHE ZU POSITION
             inputField = $('<input class="form-control" type="text" placeholder="Wert1" id="valueSeq1" style="margin:10px;">');
             inputField.appendTo('#seqInputFields');
