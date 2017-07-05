@@ -196,7 +196,7 @@ function getDropdownDiv(id, optionNames) {
 $('#curSeq').on('change', function () {
     console.log('change in curSeq')
     // detects which sequence command in curSeq is selected
-    var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
+    var radioButtons = $("#curSeq input:radio[name='sequence']");
     var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
     console.log('selected index: ' + selectedIndex);
     if (selectedIndex >= 0) {
@@ -213,8 +213,6 @@ $('#curSeq').on('change', function () {
 // displays input fields according to the chosen command and detects which sequence command in curSeq is selected
 $('#abschnGrauSeq').on('change', function () {
     console.log('change!');
-
-
     // displays input fields according to the chosen command
     var selectedCommand = $('#seqCom :selected').val();
     if (selectedCommand !== oldSelectedCommand) {
