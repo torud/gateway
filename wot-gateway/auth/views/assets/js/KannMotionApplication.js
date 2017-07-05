@@ -170,7 +170,7 @@ $('#abschnGrauSeq').on('change', function () {
             break;
         case 's4':      // DREHEN
             inputFields[0] = $('<div class="col-md-4">' +
-                '<select class="form-control" id="optionSeq1" style="margin:10px;margin-top:10px;">' +
+                '<select class="form-control" id="optionSeq1" style="margin:10px;margin-top:10px;width=50px">' +
                 '<option value="option1" selected="">Konstant</option>' +
                 '<option value="option2">Analoger Eingang</option>' +
                 '</select>' +
