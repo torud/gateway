@@ -123,32 +123,36 @@ $("#buttonAddSeq").on("click", function () {
  * @param {*} buttonIndex 
  */
 function createSequenceCommand(indexInArray, buttonIndex) {
-    // extract the information in the current inputfields
+    // extract the information in the current present fields of seqInputFields
     var inputElements = document.getElementById("seqInputFields").elements;
     console.log(inputElements);
     var commandValues = [];
-    console.log(inputFields);
-    for (var i = 0; i < inputFields.length; i++) {
-        console.log('checking inputField Nr. ' + i);
-        var commandValue;
-        if ($('#valueSeq' + i + ' :selected')) {         // inputField is a dropdown menu
-            console.log('inputField is a dropdown menu');
-            commandValue = $('#valueSeq' + i + ' :selected').val();
-        } else if (td.getElementById('valueSeq' + i)) {  // inputField is a text input
-            console.log('inputField is a text input');
-            commandValue = td.getElementById('valueSeq' + i).value;
-        } else {
-            console.error('unknown input field!');
-        }
-        console.log('command value: ' + commandValue);
-        if (commandValue && commandValue != '') {
-            commandValues[i] = commandValue;
-        } else {
-            console.error('commandValue Nr. ' + i + ' is empty!');
-            commandValues = [];
-            break;
-        }
-    } // for
+    for (var i = 0; i < inputElements.length; i++) {
+        var elementID = inputElements[i].attr('id');
+        console.log(elementID);
+    }
+    // console.log(inputFields);
+    // for (var i = 0; i < inputFields.length; i++) {
+    //     console.log('checking inputField Nr. ' + i);
+    //     var commandValue;
+    //     if ($('#valueSeq' + i + ' :selected')) {         // inputField is a dropdown menu
+    //         console.log('inputField is a dropdown menu');
+    //         commandValue = $('#valueSeq' + i + ' :selected').val();
+    //     } else if (td.getElementById('valueSeq' + i)) {  // inputField is a text input
+    //         console.log('inputField is a text input');
+    //         commandValue = td.getElementById('valueSeq' + i).value;
+    //     } else {
+    //         console.error('unknown input field!');
+    //     }
+    //     console.log('command value: ' + commandValue);
+    //     if (commandValue && commandValue != '') {
+    //         commandValues[i] = commandValue;
+    //     } else {
+    //         console.error('commandValue Nr. ' + i + ' is empty!');
+    //         commandValues = [];
+    //         break;
+    //     }
+    // } // for
     // creates a sequenceCommand (JSON) and a sequenceButton (HTML radio button)
     if (commandValues != []) {
         var sequenceCommand;
