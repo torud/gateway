@@ -123,12 +123,12 @@ $("#buttonAddSeq").on("click", function () {
  * @param {*} buttonIndex 
  */
 function createSequenceCommand(indexInArray, buttonIndex) {
-    // extract the information in the current present fields of sequenceInputs
+    // extract the information in the current present fields of abschnGrauSeq
     var inputElements = document.getElementById("abschnGrauSeq").elements;
     console.log(inputElements);
     var commandValues = [];
     for (var i = 0; i < inputElements.length; i++) {
-        var elementID = inputElements[i].attr('id');
+        var elementID = inputElements[i].id();
         console.log(elementID);
     }
     // console.log(inputFields);
