@@ -123,23 +123,49 @@ $("#buttonAddSeq").on("click", function () {
  * @param {*} buttonIndex 
  */
 function createSequenceCommand(indexInArray, buttonIndex) {
-    var commandValue = td.getElementById('valueSeq').value;
-    if (commandValue != '') {
+    // extract the information in the current inputfields
+    var commandValues = [];
+    for (var i = 0; i < inputFields.length; i++) {
+        var commandValue;
+        if ($('#valueSeq' + i + ' :selected')) {         // inputField is a dropdown menu
+            commandValue = $('#valueSeq' + i + ' :selected').val();
+        } else if (td.getElementById('valueSeq' + i)) {  // inputField is a text input
+            commandValue = td.getElementById('valueSeq' + i).value;
+        } else {
+            console.error('unknown input field!');
+        }
+        if (commandValue && commandValue != '') {
+            commandValues[i] = commandValue;
+        } else {
+            console.error('commandValue Nr. ' + i + ' is empty!');
+            commandValues = [];
+            break;
+        }
+    } // for
+    // creates a sequenceCommand (JSON) and a sequenceButton (HTML radio button)
+    if (commandValues != []) {
         var sequenceCommand;
         var sequenceButton = '<label><input type="radio" id="seqComm' + buttonIndex + '" name="sequence" value="' + buttonIndex + '"><i> ';
         var selectedCommand = $('#seqCom :selected').val();
         switch (selectedCommand) {
             case 's1':      // GEHE ZU POSITION
-                sequenceCommand = 'g:[' + commandValue + ',0]';
-                sequenceButton += 'GEHE ZU POSITION (' + commandValue + ')';
+                var optionShortest = commandValues.shift();
+                var position = commandValues.shift();
+                sequenceCommand = 'g:[' + position + ',' + optionShortest + ']';
+                sequenceButton += 'GEHE ZU POSITION (' + optionShortest + ', ' + optionShortest + ')';
                 break;
             case 's4':      // DREHEN
-                sequenceCommand = 'r:[0,' + commandValue + ',0,0]';
-                sequenceButton += 'DREHEN (' + commandValue + '%)';
+                var optionConstant = commandValues.shift();
+                var speed = commandValues.shift();
+                var min = commandValues.shift();
+                var max = commandValues.shift();
+                sequenceCommand = 'r:[' + optionConstant + ',' + speed + ',' + min + ',' + max + ']';
+                sequenceButton += 'DREHEN (' + optionConstant + ',' + speed + ',' + min + ',' + max + ')';
                 break;
             case 's12':     // WARTE
-                sequenceCommand = 'wt:' + commandValue;
-                sequenceButton += 'WARTE (' + commandValue + 'ms)';
+                var time = commandValues.shift();
+                sequenceCommand = 'wt:' + time;
+                sequenceButton += 'WARTE (' + time + 'ms)';
                 break;
             default:
                 console.error('Unknown sequence command option: ' + selectedCommand);
@@ -147,7 +173,8 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 sequenceButton += 'NO OPTION SELECTED!'
                 break;
         } // switch
-        sequenceButton += '</i></label><br>';
+        var comment = commandValues.shift();
+        sequenceButton += comment + '</i></label><br>';
         sequenceButtons[indexInArray] = sequenceButton;
         sequenceCommands[indexInArray] = sequenceCommand;
         updateSequenceHTML();
@@ -164,30 +191,29 @@ var oldSelectedCommand = 's1';
  */
 function getDropdownDiv(id, optionNames) {
     var result = '<div class="col-md-4">' +
-        '<select class="form-control" id="' + id + '" style="margin:10px;margin-top:10px;width=50px">';
+        '<select class="form-control" id="' + id + '" style="margin:10px;margin-top:10px;width=500px">';
     for (var i = 0; i < optionNames.length; i++) {
         result = result.concat('<option value="option' + i + '">' + optionNames[i] + '</option>');
     }
     return result.concat('</select></div >');
 } // getDropdownDiv
 
-// detects which sequence command in curSeq is selected
+// displays input fields according to the chosen command and detects which sequence command in curSeq is selected
 $('#abschnGrauSeq').on('change', function () {
     console.log('change!');
+    // displays input fields according to the chosen command
     var selectedCommand = $('#seqCom :selected').val();
     if (selectedCommand !== oldSelectedCommand) {
         oldSelectedCommand = selectedCommand;
-        // displays input fields according to the chosen command
         $('#seqInputFields').empty();
         inputFields = [];
-
         switch (selectedCommand) {
             case 's1':      // GEHE ZU POSITION
-                inputFields[0] = $(getDropdownDiv('optionSeq1', ['Shortest']));
+                inputFields[0] = $(getDropdownDiv('valueSeq0', ['Shortest']));
                 inputFields[1] = $('<input class="form-control" type="text" placeholder="Position [-3600000,3600000]" id="valueSeq1" style="margin:10px;">');
                 break;
             case 's4':      // DREHEN
-                inputFields[0] = $(getDropdownDiv('optionSeq1', ['Konstant', 'Analoger Eingang']));
+                inputFields[0] = $(getDropdownDiv('valueSeq0', ['Konstant', 'Analoger Eingang']));
                 inputFields[1] = $('<input class="form-control" type="text" placeholder="Wert [-100,100]" id="valueSeq1" style="margin:10px;">');
                 inputFields[2] = $('<input class="form-control" type="text" placeholder="Min" id="valueSeq2" style="margin:10px;">');
                 inputFields[3] = $('<input class="form-control" type="text" placeholder="Max" id="valueSeq3" style="margin:10px;">');
@@ -203,7 +229,7 @@ $('#abschnGrauSeq').on('change', function () {
         inputFields.forEach(function (inputField, index) {
             inputField.appendTo('#seqInputFields');
         });
-    }
+    } // if
 
     // detects which sequence command in curSeq is selected
     var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
