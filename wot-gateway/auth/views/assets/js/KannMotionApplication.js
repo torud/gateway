@@ -161,7 +161,7 @@ $(document).ready(function () {
     $('#abschnGrauSeq').on('change', function () {
         console.log('change!');
         // displays input fields according to the chosen command
-        $('#seqInputFields').empty();
+        // $('#seqInputFields').empty();
         inputFields = [];
         var selectedCommand = $('#seqCom :selected').val();
         switch (selectedCommand) {
