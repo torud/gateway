@@ -156,6 +156,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
 
 // detects which sequence command in curSeq is selected
 $('#abschnGrauSeq').on('change', function () {
+    console.log('change!');
     var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
     var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
     // console.log('selected index: ' + selectedIndex);
