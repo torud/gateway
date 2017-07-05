@@ -156,6 +156,19 @@ function createSequenceCommand(indexInArray, buttonIndex) {
 
 var inputFields = [];
 
+/**
+ * Creates a string which contains a HTML div with a dropdown list.
+ * @param {*} id            the id of the div
+ * @param {*} optionNames   an array of the elements in the dropdown menu
+ */
+function getDropdownDiv(id, optionNames) {
+    var result = '<div class="col-md-4">' +
+        '<select class="form-control" id="' + id + '" style="margin:10px;margin-top:10px;width=50px">';
+    for (var i = 0; i < optionNames.length; i++) {
+        result = result.concat('<option value="option' + i + '">' + optionNames[i] + '</option>');
+    }
+    return result.concat('</select></div >');
+} // getDropdownDiv
 
 // detects which sequence command in curSeq is selected
 $('#abschnGrauSeq').on('change', function () {
@@ -166,26 +179,23 @@ $('#abschnGrauSeq').on('change', function () {
     var selectedCommand = $('#seqCom :selected').val();
     switch (selectedCommand) {
         case 's1':      // GEHE ZU POSITION
-            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert1" id="valueSeq1" style="margin:10px;">');
+            inputFields[0] = $(getDropdownDiv('optionSeq1', ['Shortest']));
+            inputFields[1] = $('<input class="form-control" type="text" placeholder="Position [-3600000,3600000]" id="valueSeq1" style="margin:10px;">');
             break;
         case 's4':      // DREHEN
-            inputFields[0] = $('<div class="col-md-4">' +
-                '<select class="form-control" id="optionSeq1" style="margin:10px;margin-top:10px;width=50px">' +
-                '<option value="option1" selected="">Konstant</option>' +
-                '<option value="option2">Analoger Eingang</option>' +
-                '</select>' +
-                '</div >');
-            inputFields[1] = $('<input class="form-control" type="text" placeholder="Wert" id="valueSeq2" style="margin:10px;">');
+            inputFields[0] = $(getDropdownDiv('optionSeq1', ['Konstant', 'Analoger Eingang']));
+            inputFields[1] = $('<input class="form-control" type="text" placeholder="Wert [-100,100]" id="valueSeq1" style="margin:10px;">');
             inputFields[2] = $('<input class="form-control" type="text" placeholder="Min" id="valueSeq2" style="margin:10px;">');
-            inputFields[3] = $('<input class="form-control" type="text" placeholder="Max" id="valueSeq2" style="margin:10px;">');
+            inputFields[3] = $('<input class="form-control" type="text" placeholder="Max" id="valueSeq3" style="margin:10px;">');
             break;
         case 's12':     // WARTE
-            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert3" id="valueSeq3" style="margin:10px;">');
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Zeit in ms [0,3600000]" id="valueSeq1" style="margin:10px;">');
             break;
         default:
-            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert4" id="valueSeq4" style="margin:10px;">');
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert" id="valueSeq1" style="margin:10px;">');
             break;
     } // switch
+    inputFields.push($('<input class="form-control" type="text" placeholder="Kommentar" id="valueSeqComment" style="margin:10px;">'));
     inputFields.forEach(function (inputField, index) {
         inputField.appendTo('#seqInputFields');
     });
