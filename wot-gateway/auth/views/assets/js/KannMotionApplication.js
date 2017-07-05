@@ -160,7 +160,7 @@ var inputFields = [];
 $('#abschnGrauSeq').on('change', function () {
     console.log('change!');
     // displays input fields according to the chosen command
-    $('#seqInputFields').innerHTML = '';
+    $('#seqInputFields div').html('')
     var selectedCommand = $('#seqCom :selected').val();
     switch (selectedCommand) {
         case 's1':      // GEHE ZU POSITION
