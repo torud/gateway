@@ -167,7 +167,9 @@ $('#abschnGrauSeq').on('change', function () {
             inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert1" id="valueSeq1" style="margin:10px;">');
             break;
         case 's4':      // DREHEN
-            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert2" id="valueSeq2" style="margin:10px;">');
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert" id="valueSeq2" style="margin:10px;">');
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Min" id="valueSeq2" style="margin:10px;">');
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Max" id="valueSeq2" style="margin:10px;">');
             break;
         case 's12':     // WARTE
             inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert3" id="valueSeq3" style="margin:10px;">');
