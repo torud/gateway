@@ -227,10 +227,10 @@ app.get('/startHotspot',
       console.log('Program stderr:', stderr);
       if (code !== 0) {
         console.log('Failed to change WiFi dongle to hotspot.');
-        req.flash('loginMessage', 'Failed to change WiFi dongle to hotspot: ' + stderr);
+        req.flash('loginMessage', 'Failed to change WiFi dongle to hotspot.');
       } else {
         console.log('Changed WiFi dongle to hotspot.');
-        req.flash('loginMessage', 'Changed WiFi dongle to hotspot: ' + stdout);
+        req.flash('loginMessage', 'Changed WiFi dongle to hotspot.');
       }
       res.redirect('/login');
     }); // run shell script
