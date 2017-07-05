@@ -27,102 +27,97 @@
         </div>
     </nav>
     <div class="container" style="background-color:#e1e1e1">
-        <form>
-            <!--Konfiguration-->
-            <div class="form-group">
-                <form method="post" id="abschnGrau">
-                    <h2>Konfiguration</h2>
-                    <p>Zur Konfiguration kann hier der gewünschte Motor ausgewählt werden.</p>
-                    <select class="form-control" id="configOptions">
+        <!--Konfiguration-->
+        <div class="form-group">
+            <form id="abschnGrau">
+                <h2>Konfiguration</h2>
+                <p>Zur Konfiguration kann hier der gewünschte Motor ausgewählt werden.</p>
+                <select class="form-control" id="configOptions">
                 <option value="c17" selected="">Kann Motion 17</option>
                 <option value="c24">Kann Motion 24</option>
             </select>
-                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonConfig" style="margin-top:10px;">Konfigurieren </button>
+                <button class="btn btn-default btn-block-xs-only" type="button" id="buttonConfig" style="margin-top:10px;">Konfigurieren </button>
 
-                </form>
-            </div>
+            </form>
+        </div>
 
-            <!--Befehle-->
-            <div class="form-group">
-                <form method="post" id="abschnGrau3">
-                    <h2>Befehle</h2>
-                    <p>Hier können die sich auf dem Motor befindliche Sequenz gelöscht werden oder die KannMotion Steuerung
-                        zurückgesetzt werden, was die aktuell auf dem Motor gespeicherte Sequenz ausführen lässt. <br/> Des
-                        weiteren können auch alle Informationen der Steuerung aktualisiert werden.</p>
-                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonDelSeq" style="margin:5px;">Sequenz löschen</button>
-                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonReset" style="margin:5px;">Reset</button>
-                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonUpdateInfo" style="margin:5px;">Infos aktualisieren</button>
-                    <p style="margin-top:20px;">Hier können komplette, syntaktisch korrekte Befehle im JSON Format eingegeben und gesendet werden:</p>
-                    <input class="form-control" type="text" placeholder="JSON-Befehl" autofocus="" id="plainJSONSeq" required="required" style="max-width:100%;">
-                    <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSendJSONCommand" style="margin-top:10px;">Sende Befehl</button>
-                    <p>Gesendete Kommandos:</p>
-                    <div id="sentCommands" style="margin: 10px 0;background-color:#cccbcb;height:200px;max-height:200px;font-family:Courier New;padding:10px;border-radius:5pxx 0;
+        <!--Befehle-->
+        <div class="form-group">
+            <form id="abschnGrau3">
+                <h2>Befehle</h2>
+                <p>Hier können die sich auf dem Motor befindliche Sequenz gelöscht werden oder die KannMotion Steuerung zurückgesetzt
+                    werden, was die aktuell auf dem Motor gespeicherte Sequenz ausführen lässt. <br/> Des weiteren können
+                    auch alle Informationen der Steuerung aktualisiert werden.</p>
+                <button class="btn btn-default btn-block-xs-only" type="button" id="buttonDelSeq" style="margin:5px;">Sequenz löschen</button>
+                <button class="btn btn-default btn-block-xs-only" type="button" id="buttonReset" style="margin:5px;">Reset</button>
+                <button class="btn btn-default btn-block-xs-only" type="button" id="buttonUpdateInfo" style="margin:5px;">Infos aktualisieren</button>
+                <p style="margin-top:20px;">Hier können komplette, syntaktisch korrekte Befehle im JSON Format eingegeben und gesendet werden:</p>
+                <input class="form-control" type="text" placeholder="JSON-Befehl" autofocus="" id="plainJSONSeq" required="required" style="max-width:100%;">
+                <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSendJSONCommand" style="margin-top:10px;">Sende Befehl</button>
+                <p>Gesendete Kommandos:</p>
+                <div id="sentCommands" style="margin: 10px 0;background-color:#cccbcb;height:200px;max-height:200px;font-family:Courier New;padding:10px;border-radius:5pxx 0;
                     background-color:#cccbcb;min-height:100px;font-family:Courier New;padding:10px;border-radius:5px;overflow:auto;">
-                    </div>
-                    <p>Status des letzten gesendeten Kommandos:</p>
-                    <p id="answerStatus" style="margin: 10px 0;background-color:#cccbcb;min-height:50px;font-family:Courier New;padding:10px;border-radius:5px;">
-                    </p>
-                </form>
-            </div>
+                </div>
+                <p>Status des letzten gesendeten Kommandos:</p>
+                <p id="answerStatus" style="margin: 10px 0;background-color:#cccbcb;min-height:50px;font-family:Courier New;padding:10px;border-radius:5px;">
+                </p>
+            </form>
+        </div>
 
-            <!--Sequenzen-->
-            <div class="form-group">
-                <form id="abschnGrauSeq">
-                    <h2>Sequenzen</h2>
-                    <p>Hier können Sequenzen für den Motor zusammengestellt werden. Aktion auswählen, Werte eintragen und dann
-                        hinzufügen. Wenn alle gewünschten Aktionen hinzugefügt sind, kann die Sequenz an den Motor gesendet
-                        werden. <br/> Wenn die Sequenz auf den Motor geladen wurde, kann die Sequenz ausgeführt werden.</p>
-                    <form id="sequenceInputs">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <select class="form-control" id="seqCom" style="margin:10px;margin-top:10px;">
-                        <option value="s1" selected="">Gehe zu Position</option>
-                        <option value="s4">Drehen</option>
-                        <option value="s12">Warte</option>
-                    </select>
-                            </div>
-                            <div class="col-md-4" id="seqInputFields">
-                                <input class="form-control" type="text" placeholder="Wert" id="valueSeq1" style="margin:10px;">
-                            </div>
-                        </div>
-                    </form>
-                    <div class="row" id="seqButtons">
+        <!--Sequenzen-->
+        <div class="form-group">
+            <form id="abschnGrauSeq">
+                <h2>Sequenzen</h2>
+                <p>Hier können Sequenzen für den Motor zusammengestellt werden. Aktion auswählen, Werte eintragen und dann hinzufügen.
+                    Wenn alle gewünschten Aktionen hinzugefügt sind, kann die Sequenz an den Motor gesendet werden. <br/>                    Wenn die Sequenz auf den Motor geladen wurde, kann die Sequenz ausgeführt werden.</p>
+                <form id="sequenceInputs">
+                    <div class="row">
                         <div class="col-md-4">
-                            <button class="btn btn-default btn-block-xs-only" type="button" id="buttonAddSeq" style="margin:10px;">Hinzufügen</button>
+                            <select class="form-control" id="seqCom" style="margin:10px;margin-top:10px;">
+                                    <option value="s1" selected="">Gehe zu Position</option>
+                                    <option value="s4">Drehen</option>
+                                    <option value="s12">Warte</option>
+                                </select>
                         </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSendSeq" style="margin:10px;">Sequenz auf Motor laden</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-default btn-block-xs-only" type="button" id="buttonRun" style="margin:10px;">Ausführen</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-default btn-block-xs-only" type="button" id="buttonClearSequence" style="margin:10px;">Ganze Sequenz Löschen</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-default btn-block-xs-only" type="button" id="buttonRemoveSequence" disabled="true" style="margin:10px;">Löschen</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-default btn-block-xs-only" type="button" id="buttonChangeSequence" disabled="true" style="margin:10px;">Ändern</button>
+                        <div class="col-md-4" id="seqInputFields">
+                            <input class="form-control" type="text" placeholder="Wert" id="valueSeq1" style="margin:10px;">
                         </div>
                     </div>
-                    <p id="curSeq" style="margin:10px;background-color:#cccbcb;min-height:200px;max-height:200px;font-family:Courier New;padding:10px;border-radius:5px;overflow:auto;">
-                    </p>
                 </form>
-            </div>
+                <div class="row" id="seqButtons">
+                    <div class="col-md-4">
+                        <button class="btn btn-default btn-block-xs-only" type="button" id="buttonAddSeq" style="margin:10px;">Hinzufügen</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-default btn-block-xs-only" type="button" id="buttonSendSeq" style="margin:10px;">Sequenz auf Motor laden</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-default btn-block-xs-only" type="button" id="buttonRun" style="margin:10px;">Ausführen</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-default btn-block-xs-only" type="button" id="buttonClearSequence" style="margin:10px;">Ganze Sequenz Löschen</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-default btn-block-xs-only" type="button" id="buttonRemoveSequence" disabled="true" style="margin:10px;">Löschen</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-default btn-block-xs-only" type="button" id="buttonChangeSequence" disabled="true" style="margin:10px;">Ändern</button>
+                    </div>
+                </div>
+                <p id="curSeq" style="margin:10px;background-color:#cccbcb;min-height:200px;max-height:200px;font-family:Courier New;padding:10px;border-radius:5px;overflow:auto;">
+                </p>
+            </form>
+        </div>
 
-            <!--Eigenschaften-->
-            <div class="form-group">
-                <form method="post" id="abschnGrau">
-                    <h2>Eigenschaften</h2>
-                    <p>Hier sind die <a href="/properties">Eigenschaften</a> der KannMotion-Steuerung zu sehen.</p>
-                    <dl id="properties" class="dl-horizontal">
-                    </dl>
-                </form>
-            </div>
-
-
-        </form>
+        <!--Eigenschaften-->
+        <div class="form-group">
+            <form id="abschnGrau">
+                <h2>Eigenschaften</h2>
+                <p>Hier sind die <a href="/properties">Eigenschaften</a> der KannMotion-Steuerung zu sehen.</p>
+                <dl id="properties" class="dl-horizontal">
+                </dl>
+            </form>
+        </div>
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
