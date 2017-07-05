@@ -156,49 +156,49 @@ function createSequenceCommand(indexInArray, buttonIndex) {
 
 var inputFields = [];
 
-$(document).ready(function () {
-    // detects which sequence command in curSeq is selected
-    $('#abschnGrauSeq').on('change', function () {
-        console.log('change!');
-        // displays input fields according to the chosen command
-        // $('#seqInputFields').empty();
-        inputFields = [];
-        var selectedCommand = $('#seqCom :selected').val();
-        switch (selectedCommand) {
-            case 's1':      // GEHE ZU POSITION
-                inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert1" id="valueSeq1" style="margin:10px;">');
-                break;
-            case 's4':      // DREHEN
-                inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert" id="valueSeq2" style="margin:10px;">');
-                inputFields[1] = $('<input class="form-control" type="text" placeholder="Min" id="valueSeq2" style="margin:10px;">');
-                inputFields[2] = $('<input class="form-control" type="text" placeholder="Max" id="valueSeq2" style="margin:10px;">');
-                break;
-            case 's12':     // WARTE
-                inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert3" id="valueSeq3" style="margin:10px;">');
-                break;
-            default:
-                inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert4" id="valueSeq4" style="margin:10px;">');
-                break;
-        } // switch
-        inputFields.forEach(function (inputField, index) {
-            inputField.appendTo('#seqInputFields');
-        });
 
-        // detects which sequence command in curSeq is selected
-        var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
-        var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
-        // console.log('selected index: ' + selectedIndex);
-        if (selectedIndex >= 0) {
-            selectedCommandIndex = selectedIndex;
-            sequenceCommandSelected = true;
-            disableButtons(false);
-        } else {
-            selectedCommandIndex = -1;
-            sequenceCommandSelected = false;
-            disableButtons(true);
-        }
+// detects which sequence command in curSeq is selected
+$('#abschnGrauSeq').on('change', function () {
+    console.log('change!');
+    // displays input fields according to the chosen command
+    $('#seqInputFields').empty();
+    inputFields = [];
+    var selectedCommand = $('#seqCom :selected').val();
+    switch (selectedCommand) {
+        case 's1':      // GEHE ZU POSITION
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert1" id="valueSeq1" style="margin:10px;">');
+            break;
+        case 's4':      // DREHEN
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert" id="valueSeq2" style="margin:10px;">');
+            inputFields[1] = $('<input class="form-control" type="text" placeholder="Min" id="valueSeq2" style="margin:10px;">');
+            inputFields[2] = $('<input class="form-control" type="text" placeholder="Max" id="valueSeq2" style="margin:10px;">');
+            break;
+        case 's12':     // WARTE
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert3" id="valueSeq3" style="margin:10px;">');
+            break;
+        default:
+            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert4" id="valueSeq4" style="margin:10px;">');
+            break;
+    } // switch
+    inputFields.forEach(function (inputField, index) {
+        inputField.appendTo('#seqInputFields');
     });
+
+    // detects which sequence command in curSeq is selected
+    var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
+    var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
+    // console.log('selected index: ' + selectedIndex);
+    if (selectedIndex >= 0) {
+        selectedCommandIndex = selectedIndex;
+        sequenceCommandSelected = true;
+        disableButtons(false);
+    } else {
+        selectedCommandIndex = -1;
+        sequenceCommandSelected = false;
+        disableButtons(true);
+    }
 });
+
 
 /**
  * Disables the changeSequence and removeSequence button according to the parameter.
