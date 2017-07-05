@@ -160,7 +160,7 @@ var inputField;
 $('#abschnGrauSeq').on('change', function () {
     console.log('change!');
     // displays input fields according to the chosen command
-
+    $('#seqInputFields').empty();
     var selectedCommand = $('#seqCom :selected').val();
     switch (selectedCommand) {
         case 's1':      // GEHE ZU POSITION
@@ -168,16 +168,16 @@ $('#abschnGrauSeq').on('change', function () {
             inputField.appendTo('#seqInputFields');
             break;
         case 's4':      // DREHEN
-            inputField = $('<input type="text" value="Testinput2" />');
-            inputField.appendTo('#seqButtons');
+            inputField = $('<input class="form-control" type="text" placeholder="Wert2" id="valueSeq2" style="margin:10px;">');
+            inputField.appendTo('#seqInputFields');
             break;
         case 's12':     // WARTE
-            inputField = $('<input type="text" value="Testinput3" />');
-            inputField.appendTo('#seqButtons');
+            inputField = $('<input class="form-control" type="text" placeholder="Wert3" id="valueSeq3" style="margin:10px;">');
+            inputField.appendTo('#seqInputFields');
             break;
         default:
-            inputField = $('<input type="text" value="Testinput4" />');
-            inputField.appendTo('#seqButtons');
+            inputField = $('<input class="form-control" type="text" placeholder="Wert4" id="valueSeq4" style="margin:10px;">');
+            inputField.appendTo('#seqInputFields');
             break;
     } // switch
 
