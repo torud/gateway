@@ -126,14 +126,18 @@ function createSequenceCommand(indexInArray, buttonIndex) {
     // extract the information in the current inputfields
     var commandValues = [];
     for (var i = 0; i < inputFields.length; i++) {
+        console.log('checking inputField Nr. ' + i);
         var commandValue;
         if ($('#valueSeq' + i + ' :selected')) {         // inputField is a dropdown menu
+            console.log('inputField is a dropdown menu');
             commandValue = $('#valueSeq' + i + ' :selected').val();
         } else if (td.getElementById('valueSeq' + i)) {  // inputField is a text input
+            console.log('inputField is a text input');
             commandValue = td.getElementById('valueSeq' + i).value;
         } else {
             console.error('unknown input field!');
         }
+        console.log('command value: ' + commandValue);
         if (commandValue && commandValue != '') {
             commandValues[i] = commandValue;
         } else {
