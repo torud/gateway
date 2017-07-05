@@ -203,7 +203,7 @@ app.post('/connectWLAN',
     //     req.flash('WLANMessage', stderr);
     //   } else {
     console.log('Running script to change wifi dongle to client');
-    shell.exec('ls', function (code, stdout, stderr) {
+    shell.exec('/root/WoT/gateway/wot-gateway/auth/changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
       console.log('Exit code:', code);
       console.log('Program output:', stdout);
       console.log('Program stderr:', stderr);
