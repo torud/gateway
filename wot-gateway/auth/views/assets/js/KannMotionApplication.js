@@ -169,7 +169,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 sequenceButton += 'NO OPTION SELECTED!'
                 break;
         } // switch
-        var comment = commandValues.valueSeqComment;
+        var comment = commandValues.valueSeqComment || '';
         sequenceButton += comment + '</i></label><br>';
         sequenceButtons[indexInArray] = sequenceButton;
         sequenceCommands[indexInArray] = sequenceCommand;
