@@ -124,6 +124,8 @@ $("#buttonAddSeq").on("click", function () {
  */
 function createSequenceCommand(indexInArray, buttonIndex) {
     // extract the information in the current inputfields
+    var inputElements = document.getElementById("abschnGrauSeq").elements;
+    console.log(inputElements);
     var commandValues = [];
     console.log(inputFields);
     for (var i = 0; i < inputFields.length; i++) {
