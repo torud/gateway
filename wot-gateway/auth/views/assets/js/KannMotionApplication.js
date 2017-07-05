@@ -155,6 +155,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
 } // createSequenceCommand
 
 var inputFields = [];
+var oldSelectedCommand = 's1';
 
 /**
  * Creates a string which contains a HTML div with a dropdown list.
@@ -173,32 +174,36 @@ function getDropdownDiv(id, optionNames) {
 // detects which sequence command in curSeq is selected
 $('#abschnGrauSeq').on('change', function () {
     console.log('change!');
-    // displays input fields according to the chosen command
-    $('#seqInputFields').empty();
-    inputFields = [];
     var selectedCommand = $('#seqCom :selected').val();
-    switch (selectedCommand) {
-        case 's1':      // GEHE ZU POSITION
-            inputFields[0] = $(getDropdownDiv('optionSeq1', ['Shortest']));
-            inputFields[1] = $('<input class="form-control" type="text" placeholder="Position [-3600000,3600000]" id="valueSeq1" style="margin:10px;">');
-            break;
-        case 's4':      // DREHEN
-            inputFields[0] = $(getDropdownDiv('optionSeq1', ['Konstant', 'Analoger Eingang']));
-            inputFields[1] = $('<input class="form-control" type="text" placeholder="Wert [-100,100]" id="valueSeq1" style="margin:10px;">');
-            inputFields[2] = $('<input class="form-control" type="text" placeholder="Min" id="valueSeq2" style="margin:10px;">');
-            inputFields[3] = $('<input class="form-control" type="text" placeholder="Max" id="valueSeq3" style="margin:10px;">');
-            break;
-        case 's12':     // WARTE
-            inputFields[0] = $('<input class="form-control" type="text" placeholder="Zeit in ms [0,3600000]" id="valueSeq1" style="margin:10px;">');
-            break;
-        default:
-            inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert" id="valueSeq1" style="margin:10px;">');
-            break;
-    } // switch
-    inputFields.push($('<input class="form-control" type="text" placeholder="Kommentar" id="valueSeqComment" style="margin:10px;">'));
-    inputFields.forEach(function (inputField, index) {
-        inputField.appendTo('#seqInputFields');
-    });
+    if (selectedCommand !== oldSelectedCommand) {
+        oldSelectedCommand = selectedCommand;
+        // displays input fields according to the chosen command
+        $('#seqInputFields').empty();
+        inputFields = [];
+
+        switch (selectedCommand) {
+            case 's1':      // GEHE ZU POSITION
+                inputFields[0] = $(getDropdownDiv('optionSeq1', ['Shortest']));
+                inputFields[1] = $('<input class="form-control" type="text" placeholder="Position [-3600000,3600000]" id="valueSeq1" style="margin:10px;">');
+                break;
+            case 's4':      // DREHEN
+                inputFields[0] = $(getDropdownDiv('optionSeq1', ['Konstant', 'Analoger Eingang']));
+                inputFields[1] = $('<input class="form-control" type="text" placeholder="Wert [-100,100]" id="valueSeq1" style="margin:10px;">');
+                inputFields[2] = $('<input class="form-control" type="text" placeholder="Min" id="valueSeq2" style="margin:10px;">');
+                inputFields[3] = $('<input class="form-control" type="text" placeholder="Max" id="valueSeq3" style="margin:10px;">');
+                break;
+            case 's12':     // WARTE
+                inputFields[0] = $('<input class="form-control" type="text" placeholder="Zeit in ms [0,3600000]" id="valueSeq1" style="margin:10px;">');
+                break;
+            default:
+                inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert" id="valueSeq1" style="margin:10px;">');
+                break;
+        } // switch
+        inputFields.push($('<input class="form-control" type="text" placeholder="Kommentar" id="valueSeqComment" style="margin:10px;">'));
+        inputFields.forEach(function (inputField, index) {
+            inputField.appendTo('#seqInputFields');
+        });
+    }
 
     // detects which sequence command in curSeq is selected
     var radioButtons = $("#abschnGrauSeq input:radio[name='sequence']");
