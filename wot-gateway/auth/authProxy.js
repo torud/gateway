@@ -181,27 +181,16 @@ app.get('/reset',
     });
   }); // GET /reset
 
-app.get('/connectWLAN',
+app.get('/connectWiFi',
   function (req, res) {
-    // req.flash('WLANMessage', 'Test.');
-    res.render('connectWLAN', { message: req.flash('WLANMessage') });
-  }); // GET /connectWLAN
+    // req.flash('WiFiMessage', 'Test.');
+    res.render('connectWiFi', { message: req.flash('WiFiMessage') });
+  }); // GET /connectWiFi
 
-app.post('/connectWLAN',
+app.post('/connectWiFi',
   function (req, res, next) {
     var password = req.body.password;
     var ssid = req.body.ssid;
-
-    console.log('make script to change wifi dongle to client executable');
-
-    // shell.exec('chmod +x changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
-    //   console.log('Exit code:', code);
-    //   console.log('Program output:', stdout);
-    //   console.log('Program stderr:', stderr);
-    //   if (code !== 0) {
-    //     console.log('failed to connect to WiFi ' + ssid);
-    //     req.flash('WLANMessage', stderr);
-    //   } else {
     console.log('Running script to change wifi dongle to client');
     shell.exec('/root/WoT/gateway/wot-gateway/auth/changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
       console.log('Exit code:', code);
@@ -209,27 +198,43 @@ app.post('/connectWLAN',
       console.log('Program stderr:', stderr);
       if (code !== 0) {
         console.log('failed to connect to WiFi ' + ssid);
-        req.flash('WLANMessage', stderr);
+        req.flash('WiFiMessage', stderr);
       } else {
-        console.log('Trying to connect to WLAN ' + ssid + ' with password ' + password);
+        console.log('Trying to connect to WiFi ' + ssid + ' with password ' + password);
         shell.exec('sudo nmcli dev wifi connect ' + ssid + ' password ' + password, function (code, stdout, stderr) {
           console.log('Exit code:', code);
           console.log('Program output:', stdout);
           console.log('Program stderr:', stderr);
           if (code !== 0) {
             console.log('failed to connect to WiFi ' + ssid);
-            req.flash('WLANMessage', stderr);
+            req.flash('WiFiMessage', stderr);
           } else {
             console.log('connected to WiFi ' + ssid);
-            req.flash('WLANMessage', stdout);
+            req.flash('WiFiMessage', stdout);
           }
-          res.render('connectWLAN', { message: req.flash('WLANMessage') });
+          res.render('connectWiFi', { message: req.flash('WiFiMessage') });
         }); // connect to wifi
       }
     }); // run shell script
-    //   }
-    // }); // chmod
-  }); // POST /connectWLAN
+  }); // POST /connectWiFi
+
+app.get('/startHotspot',
+  function (req, res, next) {
+    console.log('Running script to change wifi dongle to hotspot');
+    shell.exec('/root/WoT/gateway/wot-gateway/auth/changeWiFiDongleToHotspot.sh', function (code, stdout, stderr) {
+      console.log('Exit code:', code);
+      console.log('Program output:', stdout);
+      console.log('Program stderr:', stderr);
+      if (code !== 0) {
+        console.log('failed to change WiFi dongle to hotspot');
+        req.flash('loginMessage', 'Failed to change WiFi dongle to hotspot.');
+      } else {
+        console.log('changed WiFi dongle to hotspot');
+        req.flash('loginMessage', 'Changed WiFi dongle to hotspot.');
+      }
+      res.redirect('/login');
+    }); // run shell script
+  }); // GET /startHotspot
 
 /**
  * custom authorisation middleware, checks if user is authenticated.
