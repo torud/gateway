@@ -145,21 +145,21 @@ function createSequenceCommand(indexInArray, buttonIndex) {
         var selectedCommand = $('#seqCom :selected').val();
         switch (selectedCommand) {
             case 's1':      // GEHE ZU POSITION
-                var option = commandValues.valueSeq0;
-                var position = commandValues.valueSeq1;
+                var option = commandValues.valueSeq0 || '0';
+                var position = commandValues.valueSeq1 || '0';
                 sequenceCommand = 'g:[' + position + ',' + option + ']';
                 sequenceButton += 'GEHE ZU POSITION (' + position + ', ' + option + ')';
                 break;
             case 's4':      // DREHEN
-                var option = commandValues.valueSeq0;
-                var speed = commandValues.valueSeq1;
-                var min = commandValues.valueSeq2;
-                var max = commandValues.valueSeq3;
+                var option = commandValues.valueSeq0 || '0';
+                var speed = commandValues.valueSeq1 || '0';
+                var min = commandValues.valueSeq2 || '0';
+                var max = commandValues.valueSeq3 || '0';
                 sequenceCommand = 'r:[' + option + ',' + speed + ',' + min + ',' + max + ']';
                 sequenceButton += 'DREHEN (' + option + ',' + speed + ',' + min + ',' + max + ')';
                 break;
             case 's12':     // WARTE
-                var time = commandValues.valueSeq0;
+                var time = commandValues.valueSeq0 || '0';
                 sequenceCommand = 'wt:' + time;
                 sequenceButton += 'WARTE (' + time + 'ms)';
                 break;
