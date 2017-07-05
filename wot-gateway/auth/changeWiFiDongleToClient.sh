@@ -43,14 +43,25 @@ allow-hotplug eth0
 EOT
 
 cat <<EOT > '/etc/rc.local'
+#!/bin/sh -e
+
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
 # By default this script does nothing.
 
 . /usr/bin/setqt4env
-/usr/bin/lcd2usb_print "CPU: {{CPU}}" "Mem: {{MEM}}" "IP: {{IP}}" "LoadAvg: {{L$
+/usr/bin/lcd2usb_print "CPU: {{CPU}}" "Mem: {{MEM}}" "IP: {{IP}}" "LoadAvg: {{LOADAVG}}" 2>&1 > /dev/null&
 /opt/QtE-Demo/run.sh&
 
 #ifconfig wlan0 192.168.2.1
-#(sleep 5; udhcpd restart) &
+#service udhpd restart
 
 exit 0
 EOT
