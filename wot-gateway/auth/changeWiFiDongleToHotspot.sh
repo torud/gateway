@@ -11,6 +11,8 @@ cat <<EOT > '/etc/rc.local'
 
 ifconfig wlan0 192.168.2.1
 sleep 1
+service udhcpd stop
+sleep 1
 service udhcpd start
 
 exit 0
