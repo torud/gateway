@@ -125,6 +125,7 @@ $("#buttonAddSeq").on("click", function () {
 function createSequenceCommand(indexInArray, buttonIndex) {
     // extract the information in the current inputfields
     var commandValues = [];
+    console.log(inputFields);
     for (var i = 0; i < inputFields.length; i++) {
         console.log('checking inputField Nr. ' + i);
         var commandValue;
