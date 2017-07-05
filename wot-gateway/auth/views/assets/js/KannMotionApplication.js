@@ -123,8 +123,8 @@ $("#buttonAddSeq").on("click", function () {
  * @param {*} buttonIndex 
  */
 function createSequenceCommand(indexInArray, buttonIndex) {
-    // extract the information in the current present fields of seqInputFields
-    var inputElements = document.getElementById("seqInputFields").elements;
+    // extract the information in the current present fields of sequenceInputs
+    var inputElements = document.getElementById("sequenceInputs").elements;
     console.log(inputElements);
     var commandValues = [];
     for (var i = 0; i < inputElements.length; i++) {
