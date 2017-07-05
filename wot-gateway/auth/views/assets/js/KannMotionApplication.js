@@ -125,12 +125,15 @@ $("#buttonAddSeq").on("click", function () {
 function createSequenceCommand(indexInArray, buttonIndex) {
     // extract the information in the current present fields of abschnGrauSeq
     var inputElements = document.getElementById("abschnGrauSeq").elements;
-    console.log(inputElements);
     var commandValues = [];
     for (var i = 0; i < inputElements.length; i++) {
         var elementID = inputElements[i].id;
         console.log(elementID);
-    }
+        if (elementID.startsWith('valueSeq')) {
+            var elementValue = $(elementID).value;
+            console.log(elementValue);
+        }
+    } // for
     // console.log(inputFields);
     // for (var i = 0; i < inputFields.length; i++) {
     //     console.log('checking inputField Nr. ' + i);
