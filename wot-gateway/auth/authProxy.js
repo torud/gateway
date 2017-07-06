@@ -43,6 +43,25 @@ var tlsConfig = {
   passphrase: passphrase
 };
 
+var configPath = path.join(__dirname, '..', 'config', 'config.json');
+
+fs.watch(configPath, function (event, filename) {
+  if (event == 'change') {
+    updateToken();
+  }
+}); // fs.watch
+
+function updateToken() {
+  var authServerConfig = fs.readFileSync(configPath).toString();
+  try {
+    authServerConfig = JSON.parse(authServerConfig);
+    token = authServerConfig.things[0].token;
+    console.log('new API token: ' + token);
+  } catch (e) {
+    console.log(e);
+  }
+} // updateToken
+
 /**
  * Configure the local strategy for use by Passport.
  * 
