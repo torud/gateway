@@ -5,6 +5,7 @@
  * @author: Joël Lutz, joel.lutz@ntb.ch
  */
 
+// -------------------------- global variables --------------------------
 var td = top.document;
 var sequenceCommands = [];      // Array for sequence commands (JSON)
 var sequenceButtons = [];       // Array for sequence commands (radio buttons)
@@ -18,7 +19,8 @@ var wsURL = '';
 var webSocket;
 var inputFields = [];
 
-// ------------------------------------------ MOTOR ------------------------------------------
+
+// -------------------------- predefined motor commands --------------------------
 var configKM17_11H2045X4_095_001 = [{ "par": { "cmd": 1, "id": 0, "val": 10000 } },
 { "par": { "cmd": 1, "id": 1, "val": 295000 } },
 { "par": { "cmd": 1, "id": 2, "val": 295000 } },
@@ -53,25 +55,221 @@ var deleteSequence = [{ "rom": { "frm": [1, 1], "val": " " } }, { "sys": 1 }];
 var resetCommand = { "sys": 1 };
 var infoCommand = [{ "sys": 2 }, { "par": { "cmd": 2 } }];
 
+
+// -------------------------- possible sequence commands and their input fields --------------------------
 var oldSelectedCommand = 's1';
 
 // value of the input option field in seqCom
-var gehezuPosValue = 's1';
+var goToPosOptionValue = 's1';
 // options of the dropdown menu
-var geheZuPosOptionen = ['Shortest', 'Longest'];
+var goToPosDropdownInputOptions = ['Shortest'];
 // input fields for this command (array = dropdown menu, string = text input with string as placeholder)
-var geheZuPosInputFelder = [geheZuPosOptionen, 'Position [-3\'600\'000,3\'600\'000]'];
+var goToPosInputFields = [goToPosDropdownInputOptions, 'Position [-3\'600\'000,3\'600\'000]'];
 
-var drehenValue = 's4';
-var drehenOptionen = ['Konstant', 'Analoger Eingang'];
-var drehenInputFelder = [drehenOptionen, 'Wert [-100, 100]', 'Min', 'Max'];
+var turnOptionValue = 's4';
+var turnDropdownInputOptions = ['Konstant', 'Analoger Eingang'];
+var turnInputFields = [turnDropdownInputOptions, 'Wert [-100, 100]', 'Min', 'Max'];
 
-var wartenValue = 's12';
-var wartenInputFelder = ['Zeit in ms [0,3\'600\'000]'];
+var waitOptionValue = 's12';
+var waitInputFields = ['Zeit in ms [0,3\'600\'000]'];
 
-createInputFields(geheZuPosInputFelder);
+createInputFields(goToPosInputFields);
 
 
+// -------------------------- motor configuration --------------------------
+// sends the command to config the motor either Kann Motion 17 or 24
+$("#buttonConfig").on("click", function () {
+    var command;
+    var selectedOption = td.getElementById('configOptions').options[document.getElementById('configOptions').selectedIndex].value;
+    switch (selectedOption) {
+        case 'c17_11H':
+            command = JSON.stringify(configKM17_11H2045X4_095_001);
+            break;
+        case 'c17_24H':
+            command = JSON.stringify(configKM17_24H2085_200_4A);
+            break;
+        case 'c24_11H':
+            command = JSON.stringify(configKM24_11H2045X4_095_001);
+            break;
+        case 'c24_24H':
+            command = JSON.stringify(configKM24_24H2085_200_4A);
+            break;
+    }
+    postSendCommand(command, 'Konfiguration');
+});
+
+
+// -------------------------- motor commands --------------------------
+// send the command to delete the current sequence on the motor
+$("#buttonDelSeq").on("click", function () {
+    var command = JSON.stringify(deleteSequence);
+    postSendCommand(command, 'Lösche-Sequenz-Befehl');
+});
+
+// sends a command to start the sequenz which is currently on the motor
+$("#buttonReset").on("click", function () {
+    var command = JSON.stringify(resetCommand);
+    postSendCommand(command, 'Reset-Befehl');
+});
+
+// sends a command to update the infos of the KannMotion control
+$("#buttonUpdateInfo").on("click", function () {
+    var command = JSON.stringify(infoCommand);
+    postSendCommand(command, 'Aktualisiere-Infos-Befehl');
+});
+
+// sends the JSON command in plainJSONSeq
+$("#buttonSendJSONCommand").on("click", function () {
+    var command;
+    if (td.getElementById('plainJSONSeq')) {
+        var plainJSONSeq = td.getElementById('plainJSONSeq').value;
+        if (plainJSONSeq !== '') {
+            command = plainJSONSeq;
+        }
+    }
+    postSendCommand(command, 'JSON-Befehl ' + command);
+});
+
+
+// -------------------------- motor sequences --------------------------
+// adds a command to your sequence and displays it in the currentSequence paragraph
+$("#buttonAddSeq").on("click", function () {
+    createSequenceCommand(i, buttonIndex);
+    i++;
+    buttonIndex++;
+});
+
+// sends a whole sequence to the motor
+$("#buttonSendSeq").on("click", function () {
+    var command;
+    if (document.getElementById('currentSequence')) {
+        if (document.getElementById('currentSequence').innerHTML.trim() !== '' && sequenceCommands.length > 0) {
+            command = '{"rom":{"frm":[1,1],"val":"{' + sequenceCommands.toString() + '}"}}';
+            sequenceButtons[i] = ' - GESENDET';
+            updateSequenceHTML();
+            clearSequenceArrays();
+        }
+    }
+    postSendCommand(command, 'Sequenz');
+});
+
+// sends a command to start the sequenz which is currently on the motor
+$("#buttonRun").on("click", function () {
+    var command = JSON.stringify(resetCommand);
+    postSendCommand(command, 'Ausführen-Befehl');
+});
+
+// clears the currentSequence paragraph
+$("#buttonClearSequence").on("click", function () {
+    clearSequenceArrays();
+    updateSequenceHTML();
+    disableButtons(true);
+});
+
+// removes the selected sequence command in the currentSequence paragraph
+$("#buttonRemoveSequence").on("click", function () {
+    if (sequenceCommandSelected && selectedCommandIndex >= 0) {
+        sequenceButtons.splice(selectedCommandIndex, 1);
+        sequenceCommands.splice(selectedCommandIndex, 1);
+        i--;
+        updateSequenceHTML();
+        selectedCommandIndex = -1;
+        sequenceCommandSelected = false;
+        disableButtons(true);
+    }
+});
+
+// changes the selected sequence command according the currently chosen options and values
+$("#buttonChangeSequence").on("click", function () {
+    if (sequenceCommandSelected && selectedCommandIndex >= 0) {
+        var selectedButtonNumber = $('input:radio[name=sequence]:checked').val();
+        console.log('selected button number: ' + selectedButtonNumber);
+        createSequenceCommand(selectedCommandIndex, selectedButtonNumber);
+        disableButtons(true);
+    }
+});
+
+// detects which sequence command in the currentSequence paragraph is selected
+$('#currentSequence').on('change', function () {
+    var radioButtons = $("#currentSequence input:radio[name='sequence']");
+    var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
+    console.log('selected index: ' + selectedIndex);
+    if (selectedIndex >= 0) {
+        selectedCommandIndex = selectedIndex;
+        sequenceCommandSelected = true;
+        disableButtons(false);
+    } else {
+        selectedCommandIndex = -1;
+        sequenceCommandSelected = false;
+        disableButtons(true);
+    }
+});
+
+// displays input fields according to the chosen command
+$('#sequences').on('change', function () {
+    // displays input fields according to the chosen command
+    var selectedCommand = $('#seqCom :selected').val();
+    if (selectedCommand !== oldSelectedCommand) {
+        oldSelectedCommand = selectedCommand;
+        $('#seqInputFields').empty();
+        var commandInputFields;
+        switch (selectedCommand) {
+            case goToPosOptionValue:    // GEHE ZU POSITION
+                commandInputFields = goToPosInputFields;
+                break;
+            case turnOptionValue:       // DREHEN
+                commandInputFields = turnInputFields;
+                break;
+            case waitOptionValue:       // WARTE
+                commandInputFields = waitInputFields;
+                break;
+            default:
+                console.error('Unknown selected sequence command: ' + selectedCommand);
+                commandInputFields = [];
+                break;
+        } // switch
+        createInputFields(commandInputFields);
+    } // if
+});
+
+
+// -------------------------- properties (with WebSockets) --------------------------
+$(document).ready(function () {
+    var request = new XMLHttpRequest();
+    request.open("GET", '/properties/motor', true);
+    request.setRequestHeader("Accept", "application/json; charset=utf-8");
+    request.onreadystatechange = function () {
+        if (request.readyState === XMLHttpRequest.DONE) {
+            properties = JSON.parse(request.responseText)[0];
+            updateProperties(properties);
+        }
+    }
+    request.send(null);
+}); // document ready
+
+wsURL = 'wss://' + serverLocation.host + '/properties/motor';
+webSocket = new WebSocket(wsURL);
+
+webSocket.onmessage = function (event) {
+    var result = JSON.parse(event.data);
+    updateProperties(result);
+}
+
+webSocket.onerror = function (error) {
+    console.error('WebSocket error!');
+    console.error(error);
+}
+
+
+// -------------------------- logging --------------------------
+// clears the sentCommands log
+$("#buttonClearLog").on("click", function () {
+    $('#sentCommands').empty();
+    $('#answerStatus').empty();
+});
+
+
+// -------------------------- help functions --------------------------
 /**
  * Sends a HTTP-POST to /actions/sendCommand if the command isn't undefined.
  * Displays a message with the specified name.
@@ -101,69 +299,6 @@ function postSendCommand(command, name, callback) {
     }
 } // postSendCommand
 
-// --------------------- Konfiguration ---------------------
-// sends the command to config the motor either Kann Motion 17 or 24
-$("#buttonConfig").on("click", function () {
-    var command;
-    var selectedOption = td.getElementById('configOptions').options[document.getElementById('configOptions').selectedIndex].value;
-    switch (selectedOption) {
-        case 'c17_11H':
-            command = JSON.stringify(configKM17_11H2045X4_095_001);
-            break;
-        case 'c17_24H':
-            command = JSON.stringify(configKM17_24H2085_200_4A);
-            break;
-        case 'c24_11H':
-            command = JSON.stringify(configKM24_11H2045X4_095_001);
-            break;
-        case 'c24_24H':
-            command = JSON.stringify(configKM24_24H2085_200_4A);
-            break;
-    }
-    postSendCommand(command, 'Konfiguration');
-});
-
-// --------------------- Befehle ---------------------
-
-// send the command to delete the current sequence on the motor
-$("#buttonDelSeq").on("click", function () {
-    var command = JSON.stringify(deleteSequence);
-    postSendCommand(command, 'Lösche-Sequenz-Befehl');
-});
-
-// sends a command to update the infos of the KannMotion control
-$("#buttonUpdateInfo").on("click", function () {
-    var command = JSON.stringify(infoCommand);
-    postSendCommand(command, 'Aktualisiere-Infos-Befehl');
-});
-
-// sends the JSON command in plainJSONSeq
-$("#buttonSendJSONCommand").on("click", function () {
-    var command;
-    if (td.getElementById('plainJSONSeq')) {
-        var plainJSONSeq = td.getElementById('plainJSONSeq').value;
-        if (plainJSONSeq !== '') {
-            command = plainJSONSeq;
-        }
-    }
-    postSendCommand(command, 'JSON-Befehl ' + command);
-});
-
-// sends a command to start the sequenz which is currently on the motor
-$("#buttonReset").on("click", function () {
-    var command = JSON.stringify(resetCommand);
-    postSendCommand(command, 'Reset-Befehl');
-});
-
-// --------------------- Sequenzen ---------------------
-
-// adds a command to your sequence and displays it in curSeq
-$("#buttonAddSeq").on("click", function () {
-    createSequenceCommand(i, buttonIndex);
-    i++;
-    buttonIndex++;
-});
-
 /**
  * Creates a sequenceCommand and a sequenceButton according to the chosen option in seqCom,
  * the value in valueSeq and with the specified buttonIndex. Adds it to the sequenceCommands
@@ -172,15 +307,13 @@ $("#buttonAddSeq").on("click", function () {
  * @param {*} buttonIndex 
  */
 function createSequenceCommand(indexInArray, buttonIndex) {
-    // extract the information in the current present fields of abschnGrauSeq
-    var inputElements = document.getElementById("abschnGrauSeq").elements;
-    console.log(inputElements);
+    // extract the information in the current present fields of sequences
+    var inputElements = document.getElementById("sequences").elements;
     var commandValues = {};
     for (var i = 0; i < inputElements.length; i++) {
         var elementID = inputElements[i].id;
         if (elementID.startsWith('valueSeq')) {
             var elementValue = inputElements[i].value;
-            // console.log(elementID + ': ' + elementValue);
             if (elementValue != '') {
                 commandValues[elementID] = elementValue;
             }
@@ -192,25 +325,25 @@ function createSequenceCommand(indexInArray, buttonIndex) {
         var sequenceButton = '<label><input type="radio" id="seqComm' + buttonIndex + '" name="sequence" value="' + buttonIndex + '"><i> ';
         var selectedCommand = $('#seqCom :selected').val();
         switch (selectedCommand) {
-            case gehezuPosValue:      // GEHE ZU POSITION
+            case goToPosOptionValue:      // GEHE ZU POSITION
                 var option = commandValues.valueSeq0 || '0';
                 option = option.replace(/^\D+/g, '');  // replace all leading non-digits with nothing
-                var optionName = geheZuPosOptionen[option];
+                var optionName = goToPosDropdownInputOptions[option];
                 var position = commandValues.valueSeq1 || '0';
                 sequenceCommand = 'g:[' + position + ',' + option + ']';
                 sequenceButton += 'GEHE ZU POSITION (' + position + ', ' + optionName + ')';
                 break;
-            case drehenValue:      // DREHEN
+            case turnOptionValue:      // DREHEN
                 var option = commandValues.valueSeq0 || '0';
                 option = option.replace(/^\D+/g, '');
-                var optionName = drehenOptionen[option];
+                var optionName = turnDropdownInputOptions[option];
                 var speed = commandValues.valueSeq1 || '0';
                 var min = commandValues.valueSeq2 || '0';
                 var max = commandValues.valueSeq3 || '0';
                 sequenceCommand = 'r:[' + option + ',' + speed + ',' + min + ',' + max + ']';
                 sequenceButton += 'DREHEN (' + optionName + ', ' + speed + '%, ' + min + '%, ' + max + '%)';
                 break;
-            case wartenValue:     // WARTE
+            case waitOptionValue:     // WARTE
                 var time = commandValues.valueSeq0 || '0';
                 sequenceCommand = 'wt:' + time;
                 sequenceButton += 'WARTE (' + time + 'ms)';
@@ -243,50 +376,6 @@ function getDropdownDiv(id, optionNames) {
     return result.concat('</select></div>');
 } // getDropdownDiv
 
-// detects which sequence command in curSeq is selected
-$('#curSeq').on('change', function () {
-    var radioButtons = $("#curSeq input:radio[name='sequence']");
-    var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
-    console.log('selected index: ' + selectedIndex);
-    if (selectedIndex >= 0) {
-        selectedCommandIndex = selectedIndex;
-        sequenceCommandSelected = true;
-        disableButtons(false);
-    } else {
-        selectedCommandIndex = -1;
-        sequenceCommandSelected = false;
-        disableButtons(true);
-    }
-});
-
-// displays input fields according to the chosen command
-$('#abschnGrauSeq').on('change', function () {
-    // displays input fields according to the chosen command
-    var selectedCommand = $('#seqCom :selected').val();
-    if (selectedCommand !== oldSelectedCommand) {
-        oldSelectedCommand = selectedCommand;
-        $('#seqInputFields').empty();
-        var commandInputFields;
-        switch (selectedCommand) {
-            case gehezuPosValue:    // GEHE ZU POSITION
-                commandInputFields = geheZuPosInputFelder;
-                break;
-            case drehenValue:       // DREHEN
-                commandInputFields = drehenInputFelder;
-                break;
-            case wartenValue:       // WARTE
-                commandInputFields = wartenInputFelder;
-                break;
-            default:
-                console.error('Unknown selected sequence command: ' + selectedCommand);
-                commandInputFields = [];
-                break;
-        } // switch
-        createInputFields(commandInputFields);
-    } // if
-
-});
-
 /**
  * Creates input fields according to the array in the parameter. If an entry in the array is
  * an array itself, it creates a dropdown menu with the specified labels. If an entry in the array
@@ -309,44 +398,6 @@ function createInputFields(commandInputFields) {
 } // createInputFields
 
 /**
- * Disables the changeSequence and removeSequence button according to the parameter.
- * @param {*} disabled 
- */
-function disableButtons(disabled) {
-    $('#buttonChangeSequence').prop('disabled', disabled);
-    $('#buttonRemoveSequence').prop('disabled', disabled);
-} // disableButtons
-
-// changes the selected sequence command according the currently chosen options and values
-$("#buttonChangeSequence").on("click", function () {
-    if (sequenceCommandSelected && selectedCommandIndex >= 0) {
-        var selectedButtonNumber = $('input:radio[name=sequence]:checked').val();
-        createSequenceCommand(selectedCommandIndex, selectedButtonNumber);
-        disableButtons(true);
-    }
-});
-
-// removes the selected sequence command in curSeq
-$("#buttonRemoveSequence").on("click", function () {
-    if (sequenceCommandSelected && selectedCommandIndex >= 0) {
-        sequenceButtons.splice(selectedCommandIndex, 1);
-        sequenceCommands.splice(selectedCommandIndex, 1);
-        i--;
-        updateSequenceHTML();
-        selectedCommandIndex = -1;
-        sequenceCommandSelected = false;
-        disableButtons(true);
-    }
-});
-
-// clears the curSeq
-$("#buttonClearSequence").on("click", function () {
-    clearSequenceArrays();
-    updateSequenceHTML();
-    disableButtons(true);
-});
-
-/**
  * Deletes the sequenceCommands and the sequenceButtons array
  */
 function clearSequenceArrays() {
@@ -357,82 +408,20 @@ function clearSequenceArrays() {
 } // clearSequenceArrays
 
 /**
- * Displays the sequenceButtons array in curSeq
+ * Displays the sequenceButtons array in the currentSequence paragraph
  */
 function updateSequenceHTML() {
-    $('#curSeq').html(sequenceButtons.join('\n'));
+    $('#currentSequence').html(sequenceButtons.join('\n'));
 } // updateSequenceHTML
 
-// sends a whole sequence to the motor
-$("#buttonSendSeq").on("click", function () {
-    var command;
-    if (document.getElementById('curSeq')) {
-        if (document.getElementById('curSeq').innerHTML.trim() !== '' && sequenceCommands.length > 0) {
-            command = '{"rom":{"frm":[1,1],"val":"{' + sequenceCommands.toString() + '}"}}';
-            sequenceButtons[i] = ' - GESENDET';
-            updateSequenceHTML();
-            clearSequenceArrays();
-        }
-    }
-    postSendCommand(command, 'Sequenz');
-});
-
-// sends a command to start the sequenz which is currently on the motor
-$("#buttonRun").on("click", function () {
-    var command = JSON.stringify(resetCommand);
-    postSendCommand(command, 'Ausführen-Befehl');
-});
-
-// --------------------- Logging ---------------------
-
 /**
- * Adds a command to the command log
- * @param {*} command   the command to log
+ * Disables the changeSequence and removeSequence button according to the parameter.
+ * @param {*} disabled  true if the buttons should be disabled
  */
-function logCommand(command) {
-    if (command) {
-        command = '<p>' + command + '</p>';
-        $(command).appendTo('#sentCommands');
-        var elem = document.getElementById('sentCommands');
-        elem.scrollTop = elem.scrollHeight;
-    }
-} // logCommand
-
-// clears the sentCommands log
-$("#buttonClearLog").on("click", function () {
-    $('#sentCommands').empty();
-    $('#answerStatus').empty();
-});
-
-
-
-// --------------------- Eigenschaften (mit WebSockets) ---------------------
-$(document).ready(function () {
-    var request = new XMLHttpRequest();
-    request.open("GET", '/properties/motor', true);
-    request.setRequestHeader("Accept", "application/json; charset=utf-8");
-    request.onreadystatechange = function () {
-        if (request.readyState === XMLHttpRequest.DONE) {
-            properties = JSON.parse(request.responseText)[0];
-            updateProperties(properties);
-        }
-    }
-    request.send(null);
-}); // document ready
-
-
-wsURL = 'wss://' + serverLocation.host + '/properties/motor';
-webSocket = new WebSocket(wsURL);
-
-webSocket.onmessage = function (event) {
-    var result = JSON.parse(event.data);
-    updateProperties(result);
-}
-
-webSocket.onerror = function (error) {
-    console.error('WebSocket error!');
-    console.error(error);
-}
+function disableButtons(disabled) {
+    $('#buttonChangeSequence').prop('disabled', disabled);
+    $('#buttonRemoveSequence').prop('disabled', disabled);
+} // disableButtons
 
 /**
  * Updates the data table "properties" with the keys and values in the properties object
@@ -446,3 +435,16 @@ function updateProperties(properties) {
         $('#properties').html(htmlString);
     });
 } // updateProperties
+
+/**
+ * Adds a command to the command log
+ * @param {*} command   the command to log
+ */
+function logCommand(command) {
+    if (command) {
+        command = '<p>' + command + '</p>';
+        $(command).appendTo('#sentCommands');
+        var elem = document.getElementById('sentCommands');
+        elem.scrollTop = elem.scrollHeight;
+    }
+} // logCommand
