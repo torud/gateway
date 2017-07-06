@@ -58,7 +58,9 @@ function updateToken() {
     token = authServerConfig.things[0].token;
     console.log('new API token: ' + token);
   } catch (e) {
+    console.log('Could not parse authServer config file:');
     console.log(e);
+    console.log(authServerConfig);
   }
 } // updateToken
 
