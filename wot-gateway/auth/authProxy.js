@@ -43,7 +43,7 @@ var tlsConfig = {
   passphrase: passphrase
 };
 
-var configPath = path.join(__dirname, '..', 'config', 'config.json');
+var configPath = path.join(__dirname, 'config', 'config.json');
 
 fs.watch(configPath, function (event, filename) {
   if (event == 'change') {
