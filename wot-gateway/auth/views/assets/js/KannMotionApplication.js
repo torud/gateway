@@ -155,7 +155,7 @@ $("#buttonAddSeq").on("click", function () {
 function createSequenceCommand(indexInArray, buttonIndex) {
     // extract the information in the current present fields of abschnGrauSeq
     var inputElements = document.getElementById("abschnGrauSeq").elements;
-    // console.log(inputElements);
+    console.log(inputElements);
     var commandValues = {};
     for (var i = 0; i < inputElements.length; i++) {
         var elementID = inputElements[i].id;
@@ -176,6 +176,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
             case 's1':      // GEHE ZU POSITION
                 var option = commandValues.valueSeq0 || '0';
                 option = option.replace(/^\D+/g, '');  // replace all leading non-digits with nothing
+                var optionName = commandValues.
                 var position = commandValues.valueSeq1 || '0';
                 sequenceCommand = 'g:[' + position + ',' + option + ']';
                 sequenceButton += 'GEHE ZU POSITION (' + position + ', ' + option + ')';
@@ -201,7 +202,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 break;
         } // switch
         var comment = commandValues.valueSeqComment || '';
-        sequenceButton += comment + '</i></label><br>';
+        sequenceButton += '\t' + comment + '</i></label><br>';
         sequenceButtons[indexInArray] = sequenceButton;
         sequenceCommands[indexInArray] = sequenceCommand;
         updateSequenceHTML();
