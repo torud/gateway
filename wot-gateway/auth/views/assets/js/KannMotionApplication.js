@@ -142,6 +142,9 @@ $("#buttonReset").on("click", function () {
 });
 
 // --------------------- Sequenzen ---------------------
+
+createDefaultInputFields();
+
 // adds a command to your sequence and displays it in curSeq
 $("#buttonAddSeq").on("click", function () {
     createSequenceCommand(i, buttonIndex);
@@ -257,7 +260,7 @@ $('#abschnGrauSeq').on('change', function () {
         switch (selectedCommand) {
             case 's1':      // GEHE ZU POSITION
                 inputFields[0] = $(getDropdownDiv('valueSeq0', geheZuPosOptionen));
-                inputFields[1] = $('<input class="form-control" type="text" placeholder="Position [-3600000,3600000]" id="valueSeq1" style="margin:10px;">');
+                inputFields[1] = $('<input class="form-control" type="text" placeholder="Position [-3\'600\'000,3\'600\'000]" id="valueSeq1" style="margin:10px;">');
                 break;
             case 's4':      // DREHEN
                 inputFields[0] = $(getDropdownDiv('valueSeq0', drehenOptionen));
@@ -266,7 +269,7 @@ $('#abschnGrauSeq').on('change', function () {
                 inputFields[3] = $('<input class="form-control" type="text" placeholder="Max" id="valueSeq3" style="margin:10px;">');
                 break;
             case 's12':     // WARTE
-                inputFields[0] = $('<input class="form-control" type="text" placeholder="Zeit in ms [0,3600000]" id="valueSeq0" style="margin:10px;">');
+                inputFields[0] = $('<input class="form-control" type="text" placeholder="Zeit in ms [0,3\'600\'000]" id="valueSeq0" style="margin:10px;">');
                 break;
             default:
                 inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert" id="valueSeq0" style="margin:10px;">');
@@ -280,6 +283,14 @@ $('#abschnGrauSeq').on('change', function () {
 
 });
 
+function createDefaultInputFields() {
+    inputFields[0] = $(getDropdownDiv('valueSeq0', geheZuPosOptionen));
+    inputFields[1] = $('<input class="form-control" type="text" placeholder="Position [-3\'600\'000,3\'600\'000]" id="valueSeq1" style="margin:10px;">');
+    inputFields.push($('<input class="form-control" type="text" placeholder="Kommentar" id="valueSeqComment" style="margin:10px;">'));
+    inputFields.forEach(function (inputField, index) {
+        inputField.appendTo('#seqInputFields');
+    });
+} // createDefaultInputFields
 
 /**
  * Disables the changeSequence and removeSequence button according to the parameter.
@@ -374,6 +385,7 @@ function logCommand(command) {
 // clears the sentCommands log
 $("#buttonClearLog").on("click", function () {
     $('#sentCommands').empty();
+    $('#answerStatus').empty();
 });
 
 
