@@ -277,6 +277,7 @@ $('#abschnGrauSeq').on('change', function () {
                 commandInputFields = wartenInputFelder;
                 break;
             default:
+                console.error('default sequence command case!');
                 commandInputFields = [];
                 break;
         } // switch
