@@ -370,11 +370,10 @@ function updateSequenceHTML() {
  */
 function disableSequenceButtons(disabled) {
     console.log('disabling radio buttons: ' + disabled);
-    var radioButtons = $("#curSeq input:radio[name='sequence']");
-    console.log(radioButtons);
-    radioButtons.forEach(function (button) {
-        button.prop('disabled', disabled);
-    });
+    var radios = document.curSeq.sequence;
+    for (var i = 0, iLen = radios.length; i < iLen; i++) {
+        radios[i].disabled = disabled;
+    }
 } // disableSequenceButtons
 
 // sends a whole sequence to the motor
