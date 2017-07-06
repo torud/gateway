@@ -208,7 +208,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 var min = commandValues.valueSeq2 || '0';
                 var max = commandValues.valueSeq3 || '0';
                 sequenceCommand = 'r:[' + option + ',' + speed + ',' + min + ',' + max + ']';
-                sequenceButton += 'DREHEN (' + optionName + ',' + speed + ',' + min + ',' + max + ')';
+                sequenceButton += 'DREHEN (' + optionName + ', ' + speed + '%, ' + min + '%, ' + max + '%)';
                 break;
             case wartenValue:     // WARTE
                 var time = commandValues.valueSeq0 || '0';
@@ -222,7 +222,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 break;
         } // switch
         var comment = commandValues.valueSeqComment || '';
-        sequenceButton += ' ' + comment + '</i></label><br>';
+        sequenceButton += '<font color="green"> ' + comment + '</font></i></label><br>';
         sequenceButtons[indexInArray] = sequenceButton;
         sequenceCommands[indexInArray] = sequenceCommand;
         updateSequenceHTML();
