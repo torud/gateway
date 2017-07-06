@@ -294,9 +294,12 @@ $('#abschnGrauSeq').on('change', function () {
 function createInputFields(commandInputFields) {
     inputFields = [];
     for (var i = 0; i < commandInputFields.lenght; i++) {
+        console.log('creating input field nr. ' + i);
         if (commandInputFields[i].constructor === Array) {   // input field is a dropdown menu
+            console.log('commandInputField is a dropdown menu');
             inputFields[i] = $(getDropdownDiv('valueSeq' + i, commandInputFields[i]));
         } else {    // input field is a text input field
+            console.log('commandInputField is a text input field');
             inputFields[i] = $('<input class="form-control" type="text" placeholder="' + commandInputFields[i] + '" id="valueSeq' + i + '" style="margin:10px;">');
         }
     } // for
