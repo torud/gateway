@@ -164,7 +164,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
             console.log(elementID + ': ' + elementValue);
             if (elementValue != '') {
                 if (elementValue.startsWith('option')) {
-                    commandValues[elementID] = [elementValue, inputElements[i].innerHTML];
+                    commandValues[elementID] = [elementValue, inputElements[i][i].innerHTML];
                 } else {
                     commandValues[elementID] = elementValue;
                 }
