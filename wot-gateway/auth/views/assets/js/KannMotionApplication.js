@@ -18,9 +18,30 @@ var wsURL = '';
 var webSocket;
 
 // ------------------------------------------ MOTOR ------------------------------------------
-var configKM17 = [{}];
-
-var configKM24 = [{ "par": { "cmd": 1, "id": 0, "val": 2500 } },
+var configKM17_11H2045X4_095_001 = [{ "par": { "cmd": 1, "id": 0, "val": 10000 } },
+{ "par": { "cmd": 1, "id": 1, "val": 295000 } },
+{ "par": { "cmd": 1, "id": 2, "val": 295000 } },
+{ "par": { "cmd": 1, "id": 3, "val": 750000 } },
+{ "par": { "cmd": 1, "id": 4, "val": 32 } },
+{ "par": { "cmd": 1, "id": 5, "val": 50 } },
+{ "par": { "cmd": 1, "id": 6, "val": 25000 } },
+{ "par": { "cmd": 1, "id": 7, "val": 0 } }];
+var configKM17_24H2085_200_4A = [{ "par": { "cmd": 1, "id": 0, "val": 20000 } },
+{ "par": { "cmd": 1, "id": 1, "val": 200000 } },
+{ "par": { "cmd": 1, "id": 2, "val": 200000 } },
+{ "par": { "cmd": 1, "id": 3, "val": 290000 } },
+{ "par": { "cmd": 1, "id": 4, "val": 40 } },
+{ "par": { "cmd": 1, "id": 5, "val": 70 } },
+{ "par": { "cmd": 1, "id": 6, "val": 18000 } },
+{ "par": { "cmd": 1, "id": 7, "val": 0 } }];
+var configKM24_11H2045X4_095_001 = [{ "par": { "cmd": 1, "id": 0, "val": 10000 } },
+{ "par": { "cmd": 1, "id": 1, "val": 295000 } },
+{ "par": { "cmd": 1, "id": 2, "val": 295000 } },
+{ "par": { "cmd": 1, "id": 3, "val": 750000 } },
+{ "par": { "cmd": 1, "id": 4, "val": 32 } },
+{ "par": { "cmd": 1, "id": 5, "val": 50 } },
+{ "par": { "cmd": 1, "id": 6, "val": 25000 } }];
+var configKM24_24H2085_200_4A = [{ "par": { "cmd": 1, "id": 0, "val": 2500 } },
 { "par": { "cmd": 1, "id": 1, "val": 10000 } },
 { "par": { "cmd": 1, "id": 2, "val": 10000 } },
 { "par": { "cmd": 1, "id": 3, "val": 152000 } },
@@ -67,10 +88,19 @@ function postSendCommand(command, name, callback) {
 $("#buttonConfig").on("click", function () {
     var command;
     var selectedOption = td.getElementById('configOptions').options[document.getElementById('configOptions').selectedIndex].value;
-    if (selectedOption == 'c17') {
-        command = JSON.stringify(configKM17);
-    } else if (selectedOption == 'c24') {
-        command = JSON.stringify(configKM24);
+    switch (selectedOption) {
+        case 'c17_11H':
+            command = JSON.stringify(configKM17_11H2045X4_095_001);
+            break;
+        case 'c17_24H':
+            command = JSON.stringify(configKM17_24H2085_200_4A);
+            break;
+        case 'c24_11H':
+            command = JSON.stringify(configKM24_11H2045X4_095_001);
+            break;
+        case 'c24_24H':
+            command = JSON.stringify(configKM24_24H2085_200_4A);
+            break;
     }
     postSendCommand(command, 'Konfiguration');
 });
@@ -145,12 +175,14 @@ function createSequenceCommand(indexInArray, buttonIndex) {
         switch (selectedCommand) {
             case 's1':      // GEHE ZU POSITION
                 var option = commandValues.valueSeq0 || '0';
+                option = option.replace(/^\D+/g, '');  // replace all leading non-digits with nothing
                 var position = commandValues.valueSeq1 || '0';
                 sequenceCommand = 'g:[' + position + ',' + option + ']';
                 sequenceButton += 'GEHE ZU POSITION (' + position + ', ' + option + ')';
                 break;
             case 's4':      // DREHEN
                 var option = commandValues.valueSeq0 || '0';
+                option = option.replace(/^\D+/g, '');  // replace all leading non-digits with nothing
                 var speed = commandValues.valueSeq1 || '0';
                 var min = commandValues.valueSeq2 || '0';
                 var max = commandValues.valueSeq3 || '0';
