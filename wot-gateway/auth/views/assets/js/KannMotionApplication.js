@@ -300,7 +300,7 @@ function createInputFields(commandInputFields) {
     console.log('createInputFields');
     console.log(commandInputFields);
     inputFields = [];
-    for (var j = 0; j < commandInputFields.lenght; j++) {
+    for (var j = 0; j < commandInputFields.length; j++) {
         console.log('creating input field nr. ' + j);
         if (commandInputFields[j].constructor === Array) {   // input field is a dropdown menu
             console.log('commandInputField is a dropdown menu');
