@@ -300,14 +300,14 @@ function createInputFields(commandInputFields) {
     console.log('createInputFields');
     console.log(commandInputFields);
     inputFields = [];
-    for (var i = 0; i < commandInputFields.lenght; i++) {
-        console.log('creating input field nr. ' + i);
-        if (commandInputFields[i].constructor === Array) {   // input field is a dropdown menu
+    for (var j = 0; j < commandInputFields.lenght; j++) {
+        console.log('creating input field nr. ' + j);
+        if (commandInputFields[j].constructor === Array) {   // input field is a dropdown menu
             console.log('commandInputField is a dropdown menu');
-            inputFields[i] = $(getDropdownDiv('valueSeq' + i, commandInputFields[i]));
+            inputFields[j] = $(getDropdownDiv('valueSeq' + j, commandInputFields[j]));
         } else {    // input field is a text input field
             console.log('commandInputField is a text input field');
-            inputFields[i] = $('<input class="form-control" type="text" placeholder="' + commandInputFields[i] + '" id="valueSeq' + i + '" style="margin:10px;">');
+            inputFields[j] = $('<input class="form-control" type="text" placeholder="' + commandInputFields[j] + '" id="valueSeq' + j + '" style="margin:10px;">');
         }
     } // for
     inputFields.push($('<input class="form-control" type="text" placeholder="Kommentar" id="valueSeqComment" style="margin:10px;">'));
