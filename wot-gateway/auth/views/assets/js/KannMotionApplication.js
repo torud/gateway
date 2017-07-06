@@ -112,12 +112,6 @@ $("#buttonReset").on("click", function () {
     postSendCommand(command, 'Reset-Befehl');
 });
 
-// sends a command to update the infos of the KannMotion control
-$("#buttonUpdateInfo").on("click", function () {
-    var command = JSON.stringify(infoCommand);
-    postSendCommand(command, 'Aktualisiere-Infos-Befehl');
-});
-
 // sends the JSON command in plainJSONSeq
 $("#buttonSendJSONCommand").on("click", function () {
     var command;
@@ -183,7 +177,7 @@ $("#buttonRemoveSequence").on("click", function () {
 $("#buttonChangeSequence").on("click", function () {
     if (sequenceCommandSelected && selectedCommandIndex >= 0) {
         var selectedButtonNumber = $('input:radio[name=sequence]:checked').val();
-        console.log('selected button number: ' + selectedButtonNumber);
+        // console.log('selected button number: ' + selectedButtonNumber);
         createSequenceCommand(selectedCommandIndex, selectedButtonNumber);
         disableButtons(true);
     }
@@ -193,7 +187,7 @@ $("#buttonChangeSequence").on("click", function () {
 $('#currentSequence').on('change', function () {
     var radioButtons = $("#currentSequence input:radio[name='sequence']");
     var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
-    console.log('selected index: ' + selectedIndex);
+    // console.log('selected index: ' + selectedIndex);
     if (selectedIndex >= 0) {
         selectedCommandIndex = selectedIndex;
         sequenceCommandSelected = true;
@@ -234,6 +228,13 @@ $('#sequences').on('change', function () {
 
 
 // -------------------------- properties (with WebSockets) --------------------------
+
+// sends a command to update the infos of the KannMotion control
+$("#buttonUpdateInfo").on("click", function () {
+    var command = JSON.stringify(infoCommand);
+    postSendCommand(command, 'Aktualisiere-Infos-Befehl');
+});
+
 $(document).ready(function () {
     var request = new XMLHttpRequest();
     request.open("GET", '/properties/motor', true);
