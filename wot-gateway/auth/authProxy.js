@@ -43,26 +43,26 @@ var tlsConfig = {
   passphrase: passphrase
 };
 
-var configPath = path.join(__dirname, 'config', 'config.json');
+// var configPath = path.join(__dirname, 'config', 'config.json');
 
-fs.watch(configPath, function (event, filename) {
-  if (event == 'change') {
-    updateToken();
-  }
-}); // fs.watch
+// fs.watch(configPath, function (event, filename) {
+//   if (event == 'change') {
+//     updateToken();
+//   }
+// }); // fs.watch
 
-function updateToken() {
-  var authServerConfig = fs.readFileSync(configPath).toString();
-  try {
-    authServerConfig = JSON.parse(authServerConfig);
-    token = authServerConfig.things[0].token;
-    console.log('new API token: ' + token);
-  } catch (e) {
-    console.log('Could not parse authServer config file:');
-    console.log(e);
-    console.log(authServerConfig);
-  }
-} // updateToken
+// function updateToken() {
+//   var authServerConfig = fs.readFileSync(configPath).toString();
+//   try {
+//     authServerConfig = JSON.parse(authServerConfig);
+//     token = authServerConfig.things[0].token;
+//     console.log('new API token: ' + token);
+//   } catch (e) {
+//     console.log('Could not parse authServer config file:');
+//     console.log(e);
+//     console.log(authServerConfig);
+//   }
+// } // updateToken
 
 /**
  * Configure the local strategy for use by Passport.
