@@ -159,13 +159,13 @@ $("#buttonAddSeq").on("click", function () {
 function createSequenceCommand(indexInArray, buttonIndex) {
     // extract the information in the current present fields of abschnGrauSeq
     var inputElements = document.getElementById("abschnGrauSeq").elements;
-    console.log(inputElements);
+    // console.log(inputElements);
     var commandValues = {};
     for (var i = 0; i < inputElements.length; i++) {
         var elementID = inputElements[i].id;
         if (elementID.startsWith('valueSeq')) {
             var elementValue = inputElements[i].value;
-            console.log(elementID + ': ' + elementValue);
+            // console.log(elementID + ': ' + elementValue);
             if (elementValue != '') {
                 commandValues[elementID] = elementValue;
             }
@@ -179,7 +179,6 @@ function createSequenceCommand(indexInArray, buttonIndex) {
         switch (selectedCommand) {
             case 's1':      // GEHE ZU POSITION
                 var option = commandValues.valueSeq0 || '0';
-                console.log(option);
                 option = option.replace(/^\D+/g, '');  // replace all leading non-digits with nothing
                 var optionName = geheZuPosOptionen[option];
                 var position = commandValues.valueSeq1 || '0';
@@ -188,8 +187,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 break;
             case 's4':      // DREHEN
                 var option = commandValues.valueSeq0 || '0';
-                console.log(option);
-                option = option.replace(/^\D+/g, '');  // replace all leading non-digits with nothing
+                option = option.replace(/^\D+/g, '');
                 var optionName = drehenOptionen[option];
                 var speed = commandValues.valueSeq1 || '0';
                 var min = commandValues.valueSeq2 || '0';
