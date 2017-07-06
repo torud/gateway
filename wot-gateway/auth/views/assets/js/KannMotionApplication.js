@@ -371,6 +371,7 @@ function updateSequenceHTML() {
 function disableSequenceButtons(disabled) {
     console.log('disabling radio buttons: ' + disabled);
     var radioButtons = $("#curSeq input:radio[name='sequence']");
+    console.log(radioButtons);
     radioButtons.forEach(function (button) {
         button.prop('disabled', disabled);
     });
