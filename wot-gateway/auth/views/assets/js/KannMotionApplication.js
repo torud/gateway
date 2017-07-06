@@ -55,8 +55,11 @@ var infoCommand = [{ "sys": 2 }, { "par": { "cmd": 2 } }];
 
 var oldSelectedCommand = 's1';
 
+// value of the input option field in seqCom
 var gehezuPosValue = 's1';
-var geheZuPosOptionen = ['Shortest'];
+// options of the dropdown menu
+var geheZuPosOptionen = ['Shortest', 'Longest'];
+// input fields for this command (array = dropdown menu, string = text input with string as placeholder)
 var geheZuPosInputFelder = [geheZuPosOptionen, 'Position [-3\'600\'000,3\'600\'000]'];
 
 var drehenValue = 's4';
@@ -237,12 +240,11 @@ function getDropdownDiv(id, optionNames) {
     for (var i = 0; i < optionNames.length; i++) {
         result = result.concat('<option value="option' + i + '">' + optionNames[i] + '</option>');
     }
-    return result.concat('</select></div >');
+    return result.concat('</select></div>');
 } // getDropdownDiv
 
+// detects which sequence command in curSeq is selected
 $('#curSeq').on('change', function () {
-    console.log('change in curSeq')
-    // detects which sequence command in curSeq is selected
     var radioButtons = $("#curSeq input:radio[name='sequence']");
     var selectedIndex = radioButtons.index(radioButtons.filter(':checked'));
     console.log('selected index: ' + selectedIndex);
@@ -259,29 +261,24 @@ $('#curSeq').on('change', function () {
 
 // displays input fields according to the chosen command
 $('#abschnGrauSeq').on('change', function () {
-    console.log('change!');
     // displays input fields according to the chosen command
     var selectedCommand = $('#seqCom :selected').val();
-    console.log('selected command: ' + selectedCommand);
     if (selectedCommand !== oldSelectedCommand) {
         oldSelectedCommand = selectedCommand;
         $('#seqInputFields').empty();
         var commandInputFields;
         switch (selectedCommand) {
-            case gehezuPosValue:      // GEHE ZU POSITION
-                console.log('command: ' + gehezuPosValue);
+            case gehezuPosValue:    // GEHE ZU POSITION
                 commandInputFields = geheZuPosInputFelder;
                 break;
-            case drehenValue:      // DREHEN
-                console.log('command: ' + drehenValue);
+            case drehenValue:       // DREHEN
                 commandInputFields = drehenInputFelder;
                 break;
-            case wartenValue:     // WARTE
-                console.log('command: ' + wartenValue);
+            case wartenValue:       // WARTE
                 commandInputFields = wartenInputFelder;
                 break;
             default:
-                console.error('default sequence command case!');
+                console.error('Unknown selected sequence command: ' + selectedCommand);
                 commandInputFields = [];
                 break;
         } // switch
@@ -297,16 +294,11 @@ $('#abschnGrauSeq').on('change', function () {
  * @param {*} commandInputFields 
  */
 function createInputFields(commandInputFields) {
-    console.log('createInputFields');
-    console.log(commandInputFields);
     inputFields = [];
     for (var j = 0; j < commandInputFields.length; j++) {
-        console.log('creating input field nr. ' + j);
         if (commandInputFields[j].constructor === Array) {   // input field is a dropdown menu
-            console.log('commandInputField is a dropdown menu');
             inputFields[j] = $(getDropdownDiv('valueSeq' + j, commandInputFields[j]));
         } else {    // input field is a text input field
-            console.log('commandInputField is a text input field');
             inputFields[j] = $('<input class="form-control" type="text" placeholder="' + commandInputFields[j] + '" id="valueSeq' + j + '" style="margin:10px;">');
         }
     } // for
