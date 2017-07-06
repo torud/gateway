@@ -163,7 +163,11 @@ function createSequenceCommand(indexInArray, buttonIndex) {
             var elementValue = inputElements[i].value;
             console.log(elementID + ': ' + elementValue);
             if (elementValue != '') {
-                commandValues[elementID] = elementValue;
+                if (elementValue.startsWith('option')) {
+                    commandValues[elementID] = { elementValue: inputElements[i].innerHTML };
+                } else {
+                    commandValues[elementID] = elementValue;
+                }
             }
         }
     } // for
@@ -175,6 +179,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
         switch (selectedCommand) {
             case 's1':      // GEHE ZU POSITION
                 var option = commandValues.valueSeq0 || '0';
+                console.log(option);
                 option = option.replace(/^\D+/g, '');  // replace all leading non-digits with nothing
                 // var optionName = commandValues.
                 var position = commandValues.valueSeq1 || '0';
@@ -183,6 +188,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 break;
             case 's4':      // DREHEN
                 var option = commandValues.valueSeq0 || '0';
+                console.log(option);
                 option = option.replace(/^\D+/g, '');  // replace all leading non-digits with nothing
                 var speed = commandValues.valueSeq1 || '0';
                 var min = commandValues.valueSeq2 || '0';
