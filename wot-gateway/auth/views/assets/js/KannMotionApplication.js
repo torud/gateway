@@ -176,7 +176,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
             case 's1':      // GEHE ZU POSITION
                 var option = commandValues.valueSeq0 || '0';
                 option = option.replace(/^\D+/g, '');  // replace all leading non-digits with nothing
-                var optionName = commandValues.
+                // var optionName = commandValues.
                 var position = commandValues.valueSeq1 || '0';
                 sequenceCommand = 'g:[' + position + ',' + option + ']';
                 sequenceButton += 'GEHE ZU POSITION (' + position + ', ' + option + ')';
