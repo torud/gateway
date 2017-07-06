@@ -2,8 +2,8 @@ var keys = require('../resources/auth');
 
 module.exports = function () {
   return function (req, res, next) {
-    //console.log(req.method + " " + req.path);
-    console.log("API-Token auth-middleware: " + keys.apiToken);
+    // console.log(req.method + " " + req.path);
+    // console.log("API-Token auth-middleware: " + keys.apiToken);
     if (req.path.substring(0, 5) === "/css/") {
       next(); //#A
     } else {
