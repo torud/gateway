@@ -46,8 +46,8 @@ exports.extractFields = function (fields, object, target) {
 
 exports.isTokenValid = function (token) {
   console.log('comparing ' + token + ' to ' + keys.apiToken);
-  console.log(keys.apiToken === token);
-  return keys.apiToken === token;
+  console.log(keys.apiToken == token);
+  return keys.apiToken == token;
 };
 
 exports.modelToResources = function (subModel, withValue) {
