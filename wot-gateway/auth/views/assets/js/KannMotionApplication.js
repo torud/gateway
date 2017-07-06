@@ -371,6 +371,11 @@ function logCommand(command) {
     }
 } // logCommand
 
+// clears the sentCommands log
+$("#buttonClearLog").on("click", function () {
+    $('#sentCommands').empty();
+});
+
 
 
 // --------------------- Eigenschaften (mit WebSockets) ---------------------
