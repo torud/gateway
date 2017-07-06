@@ -225,6 +225,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
         sequenceButton += ' ' + comment + '</i></label><br>';
         sequenceButtons[indexInArray] = sequenceButton;
         sequenceCommands[indexInArray] = sequenceCommand;
+        disableSequenceButtons(false);
         updateSequenceHTML();
     }
 } // createSequenceCommand
@@ -363,6 +364,18 @@ function updateSequenceHTML() {
     $('#curSeq').html(sequenceButtons.join('\n'));
 } // updateSequenceHTML
 
+/**
+ * Disables the changeSequence and removeSequence button according to the parameter.
+ * @param {*} disabled 
+ */
+function disableSequenceButtons(disabled) {
+    console.log('disabling radio buttons: ' + disabled);
+    var radioButtons = $("#curSeq input:radio[name='sequence']");
+    radiobuttons.forEach(function (button) {
+        button.prop('disabled', disabled);
+    });
+} // disableSequenceButtons
+
 // sends a whole sequence to the motor
 $("#buttonSendSeq").on("click", function () {
     var command;
@@ -370,6 +383,7 @@ $("#buttonSendSeq").on("click", function () {
         if (document.getElementById('curSeq').innerHTML.trim() !== '' && sequenceCommands.length > 0) {
             command = '{"rom":{"frm":[1,1],"val":"{' + sequenceCommands.toString() + '}"}}';
             sequenceButtons[i] = ' - GESENDET';
+            disableSequenceButtons(true);
             updateSequenceHTML();
             clearSequenceArrays();
         }
