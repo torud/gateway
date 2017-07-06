@@ -16,6 +16,7 @@ var serverLocation = window.location;
 var postActionStatus = 204;
 var wsURL = '';
 var webSocket;
+var inputFields = [];
 
 // ------------------------------------------ MOTOR ------------------------------------------
 var configKM17_11H2045X4_095_001 = [{ "par": { "cmd": 1, "id": 0, "val": 10000 } },
@@ -48,10 +49,13 @@ var configKM24_24H2085_200_4A = [{ "par": { "cmd": 1, "id": 0, "val": 2500 } },
 { "par": { "cmd": 1, "id": 4, "val": 162 } },
 { "par": { "cmd": 1, "id": 5, "val": 389 } },
 { "par": { "cmd": 1, "id": 6, "val": 45000 } }];
-
 var deleteSequence = [{ "rom": { "frm": [1, 1], "val": " " } }, { "sys": 1 }];
 var resetCommand = { "sys": 1 };
 var infoCommand = [{ "sys": 2 }, { "par": { "cmd": 2 } }];
+
+var oldSelectedCommand = 's1';
+var geheZuPosOptionen = ['Shortest'];
+var drehenOptionen = ['Konstant', 'Analoger Eingang'];
 
 
 /**
@@ -163,11 +167,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
             var elementValue = inputElements[i].value;
             console.log(elementID + ': ' + elementValue);
             if (elementValue != '') {
-                if (elementValue.startsWith('option')) {
-                    commandValues[elementID] = [elementValue, inputElements[i][i].innerHTML];
-                } else {
-                    commandValues[elementID] = elementValue;
-                }
+                commandValues[elementID] = elementValue;
             }
         }
     } // for
@@ -181,20 +181,21 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 var option = commandValues.valueSeq0 || '0';
                 console.log(option);
                 option = option.replace(/^\D+/g, '');  // replace all leading non-digits with nothing
-                // var optionName = commandValues.
+                var optionName = geheZuPosOptionen[option];
                 var position = commandValues.valueSeq1 || '0';
                 sequenceCommand = 'g:[' + position + ',' + option + ']';
-                sequenceButton += 'GEHE ZU POSITION (' + position + ', ' + option + ')';
+                sequenceButton += 'GEHE ZU POSITION (' + position + ', ' + optionName + ')';
                 break;
             case 's4':      // DREHEN
                 var option = commandValues.valueSeq0 || '0';
                 console.log(option);
                 option = option.replace(/^\D+/g, '');  // replace all leading non-digits with nothing
+                var optionName = drehenOptionen[option];
                 var speed = commandValues.valueSeq1 || '0';
                 var min = commandValues.valueSeq2 || '0';
                 var max = commandValues.valueSeq3 || '0';
                 sequenceCommand = 'r:[' + option + ',' + speed + ',' + min + ',' + max + ']';
-                sequenceButton += 'DREHEN (' + option + ',' + speed + ',' + min + ',' + max + ')';
+                sequenceButton += 'DREHEN (' + optionName + ',' + speed + ',' + min + ',' + max + ')';
                 break;
             case 's12':     // WARTE
                 var time = commandValues.valueSeq0 || '0';
@@ -214,9 +215,6 @@ function createSequenceCommand(indexInArray, buttonIndex) {
         updateSequenceHTML();
     }
 } // createSequenceCommand
-
-var inputFields = [];
-var oldSelectedCommand = 's1';
 
 /**
  * Creates a string which contains a HTML div with a dropdown list.
@@ -260,11 +258,11 @@ $('#abschnGrauSeq').on('change', function () {
         inputFields = [];
         switch (selectedCommand) {
             case 's1':      // GEHE ZU POSITION
-                inputFields[0] = $(getDropdownDiv('valueSeq0', ['Shortest']));
+                inputFields[0] = $(getDropdownDiv('valueSeq0', geheZuPosOptionen));
                 inputFields[1] = $('<input class="form-control" type="text" placeholder="Position [-3600000,3600000]" id="valueSeq1" style="margin:10px;">');
                 break;
             case 's4':      // DREHEN
-                inputFields[0] = $(getDropdownDiv('valueSeq0', ['Konstant', 'Analoger Eingang']));
+                inputFields[0] = $(getDropdownDiv('valueSeq0', drehenOptionen));
                 inputFields[1] = $('<input class="form-control" type="text" placeholder="Wert [-100,100]" id="valueSeq1" style="margin:10px;">');
                 inputFields[2] = $('<input class="form-control" type="text" placeholder="Min" id="valueSeq2" style="margin:10px;">');
                 inputFields[3] = $('<input class="form-control" type="text" placeholder="Max" id="valueSeq3" style="margin:10px;">');
