@@ -54,8 +54,19 @@ var resetCommand = { "sys": 1 };
 var infoCommand = [{ "sys": 2 }, { "par": { "cmd": 2 } }];
 
 var oldSelectedCommand = 's1';
+
+var gehezuPosValue = 's1';
 var geheZuPosOptionen = ['Shortest'];
+var geheZuPosInputFelder = [geheZuPosOptionen, 'Position [-3\'600\'000,3\'600\'000]'];
+
+var drehenValue = 's4';
 var drehenOptionen = ['Konstant', 'Analoger Eingang'];
+var drehenInputFelder = [drehenOptionen, 'Wert [-100, 100]', 'Min', 'Max'];
+
+var wartenValue = 's12';
+var wartenInputFelder = ['Zeit in ms [0,3\'600\'000]'];
+
+createInputFields(geheZuPosInputFelder);
 
 
 /**
@@ -143,8 +154,6 @@ $("#buttonReset").on("click", function () {
 
 // --------------------- Sequenzen ---------------------
 
-createDefaultInputFields();
-
 // adds a command to your sequence and displays it in curSeq
 $("#buttonAddSeq").on("click", function () {
     createSequenceCommand(i, buttonIndex);
@@ -180,7 +189,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
         var sequenceButton = '<label><input type="radio" id="seqComm' + buttonIndex + '" name="sequence" value="' + buttonIndex + '"><i> ';
         var selectedCommand = $('#seqCom :selected').val();
         switch (selectedCommand) {
-            case 's1':      // GEHE ZU POSITION
+            case gehezuPosValue:      // GEHE ZU POSITION
                 var option = commandValues.valueSeq0 || '0';
                 option = option.replace(/^\D+/g, '');  // replace all leading non-digits with nothing
                 var optionName = geheZuPosOptionen[option];
@@ -188,7 +197,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 sequenceCommand = 'g:[' + position + ',' + option + ']';
                 sequenceButton += 'GEHE ZU POSITION (' + position + ', ' + optionName + ')';
                 break;
-            case 's4':      // DREHEN
+            case drehenValue:      // DREHEN
                 var option = commandValues.valueSeq0 || '0';
                 option = option.replace(/^\D+/g, '');
                 var optionName = drehenOptionen[option];
@@ -198,7 +207,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 sequenceCommand = 'r:[' + option + ',' + speed + ',' + min + ',' + max + ']';
                 sequenceButton += 'DREHEN (' + optionName + ',' + speed + ',' + min + ',' + max + ')';
                 break;
-            case 's12':     // WARTE
+            case wartenValue:     // WARTE
                 var time = commandValues.valueSeq0 || '0';
                 sequenceCommand = 'wt:' + time;
                 sequenceButton += 'WARTE (' + time + 'ms)';
@@ -210,7 +219,7 @@ function createSequenceCommand(indexInArray, buttonIndex) {
                 break;
         } // switch
         var comment = commandValues.valueSeqComment || '';
-        sequenceButton += '\t' + comment + '</i></label><br>';
+        sequenceButton += ' ' + comment + '</i></label><br>';
         sequenceButtons[indexInArray] = sequenceButton;
         sequenceCommands[indexInArray] = sequenceCommand;
         updateSequenceHTML();
@@ -248,7 +257,7 @@ $('#curSeq').on('change', function () {
     }
 });
 
-// displays input fields according to the chosen command and detects which sequence command in curSeq is selected
+// displays input fields according to the chosen command
 $('#abschnGrauSeq').on('change', function () {
     console.log('change!');
     // displays input fields according to the chosen command
@@ -256,41 +265,46 @@ $('#abschnGrauSeq').on('change', function () {
     if (selectedCommand !== oldSelectedCommand) {
         oldSelectedCommand = selectedCommand;
         $('#seqInputFields').empty();
-        inputFields = [];
+        var commandInputFields;
         switch (selectedCommand) {
-            case 's1':      // GEHE ZU POSITION
-                inputFields[0] = $(getDropdownDiv('valueSeq0', geheZuPosOptionen));
-                inputFields[1] = $('<input class="form-control" type="text" placeholder="Position [-3\'600\'000,3\'600\'000]" id="valueSeq1" style="margin:10px;">');
+            case gehezuPosValue:      // GEHE ZU POSITION
+                commandInputFields = geheZuPosInputFelder;
                 break;
-            case 's4':      // DREHEN
-                inputFields[0] = $(getDropdownDiv('valueSeq0', drehenOptionen));
-                inputFields[1] = $('<input class="form-control" type="text" placeholder="Wert [-100,100]" id="valueSeq1" style="margin:10px;">');
-                inputFields[2] = $('<input class="form-control" type="text" placeholder="Min" id="valueSeq2" style="margin:10px;">');
-                inputFields[3] = $('<input class="form-control" type="text" placeholder="Max" id="valueSeq3" style="margin:10px;">');
+            case drehenValue:      // DREHEN
+                commandInputFields = drehenInputFelder;
                 break;
-            case 's12':     // WARTE
-                inputFields[0] = $('<input class="form-control" type="text" placeholder="Zeit in ms [0,3\'600\'000]" id="valueSeq0" style="margin:10px;">');
+            case wartenValue:     // WARTE
+                commandInputFields = wartenInputFelder;
                 break;
             default:
-                inputFields[0] = $('<input class="form-control" type="text" placeholder="Wert" id="valueSeq0" style="margin:10px;">');
+                commandInputFields = [];
                 break;
         } // switch
-        inputFields.push($('<input class="form-control" type="text" placeholder="Kommentar" id="valueSeqComment" style="margin:10px;">'));
-        inputFields.forEach(function (inputField, index) {
-            inputField.appendTo('#seqInputFields');
-        });
+        createInputFields(commandInputFields);
     } // if
 
 });
 
-function createDefaultInputFields() {
-    inputFields[0] = $(getDropdownDiv('valueSeq0', geheZuPosOptionen));
-    inputFields[1] = $('<input class="form-control" type="text" placeholder="Position [-3\'600\'000,3\'600\'000]" id="valueSeq1" style="margin:10px;">');
+/**
+ * Creates input fields according to the array in the parameter. If an entry in the array is
+ * an array itself, it creates a dropdown menu with the specified labels. If an entry in the array
+ * is a string, it creates a text input field with the string as a placeholder.
+ * @param {*} commandInputFields 
+ */
+function createInputFields(commandInputFields) {
+    inputFields = [];
+    for (var i = 0; i < commandInputFields.lenght; i++) {
+        if (commandInputFields[i].constructor === Array) {   // input field is a dropdown menu
+            inputFields[i] = $(getDropdownDiv('valueSeq' + i, commandInputFields[i]));
+        } else {    // input field is a text input field
+            inputFields[i] = $('<input class="form-control" type="text" placeholder="' + commandInputFields[i] + '" id="valueSeq' + i + '" style="margin:10px;">');
+        }
+    } // for
     inputFields.push($('<input class="form-control" type="text" placeholder="Kommentar" id="valueSeqComment" style="margin:10px;">'));
     inputFields.forEach(function (inputField, index) {
         inputField.appendTo('#seqInputFields');
     });
-} // createDefaultInputFields
+} // createInputFields
 
 /**
  * Disables the changeSequence and removeSequence button according to the parameter.
