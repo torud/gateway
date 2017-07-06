@@ -292,6 +292,7 @@ $('#abschnGrauSeq').on('change', function () {
  * @param {*} commandInputFields 
  */
 function createInputFields(commandInputFields) {
+    console.log('createInputFields');
     inputFields = [];
     for (var i = 0; i < commandInputFields.lenght; i++) {
         console.log('creating input field nr. ' + i);
