@@ -1,7 +1,6 @@
 var model = require('./../resources/model'),
   keys = require('./../resources/auth'),
   crypto = require('crypto'),
-  keys = require('./../resources/auth'),
   _ = require('lodash/collection');
 
 exports.addDevice = function (id, name, description, sensors, actuators) {
@@ -46,6 +45,7 @@ exports.extractFields = function (fields, object, target) {
 };
 
 exports.isTokenValid = function (token) {
+  console.log('comparing ' + token + ' to ' + keys.apiToken);
   return keys.apiToken === token;
 };
 
