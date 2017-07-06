@@ -262,18 +262,22 @@ $('#abschnGrauSeq').on('change', function () {
     console.log('change!');
     // displays input fields according to the chosen command
     var selectedCommand = $('#seqCom :selected').val();
+    console.log('selected command: ' + selectedCommand);
     if (selectedCommand !== oldSelectedCommand) {
         oldSelectedCommand = selectedCommand;
         $('#seqInputFields').empty();
         var commandInputFields;
         switch (selectedCommand) {
             case gehezuPosValue:      // GEHE ZU POSITION
+                console.log('command: ' + gehezuPosValue);
                 commandInputFields = geheZuPosInputFelder;
                 break;
             case drehenValue:      // DREHEN
+                console.log('command: ' + drehenValue);
                 commandInputFields = drehenInputFelder;
                 break;
             case wartenValue:     // WARTE
+                console.log('command: ' + wartenValue);
                 commandInputFields = wartenInputFelder;
                 break;
             default:
