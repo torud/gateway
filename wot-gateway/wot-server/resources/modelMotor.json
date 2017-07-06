@@ -11,7 +11,7 @@
     "hostname": "146.136.39.87",
     "port": 8484,
     "secure": true,
-    "generateNewAPIToken": false,
+    "generateNewAPIToken": true,
     "dataArraySize": 30
   },
   "links": {
