@@ -259,7 +259,7 @@ webSocket.onmessage = function (event) {
 webSocket.onerror = function (error) {
     console.error('WebSocket error!');
     console.error(error);
-    $('#answerStatus').html('WoT-Gateway-Server ist offline!');
+    $('#answerStatus').html('WoT-Gateway-Server ist offline! Neustart des Motor-Gateways erforderlich!');
 }
 
 
