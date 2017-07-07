@@ -59,6 +59,7 @@ var infoCommand = [{ "sys": 2 }, { "par": { "cmd": 2 } }];
 // -------------------------- possible sequence commands and their input fields --------------------------
 var oldSelectedCommand = 's1';
 
+// command GEHE ZU POSITION
 // value of the input option field in seqCom
 var goToPosOptionValue = 's1';
 // options of the dropdown menu
@@ -66,10 +67,12 @@ var goToPosDropdownInputOptions = ['Shortest'];
 // input fields for this command (array = dropdown menu, string = text input with string as placeholder)
 var goToPosInputFields = [goToPosDropdownInputOptions, 'Position [-3\'600\'000,3\'600\'000]'];
 
+// command DREHEN
 var turnOptionValue = 's4';
 var turnDropdownInputOptions = ['Konstant', 'Analoger Eingang'];
 var turnInputFields = [turnDropdownInputOptions, 'Wert [-100, 100]', 'Min', 'Max'];
 
+// command WARTE
 var waitOptionValue = 's12';
 var waitInputFields = ['Zeit in ms [0,3\'600\'000]'];
 
