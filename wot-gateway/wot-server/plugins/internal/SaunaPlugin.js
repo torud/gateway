@@ -11,7 +11,7 @@ var sequenzArray = [];
 var initialCommands = { "par": { "rw": 0, "id": 0 } };
 var properties = {};
 var model;
-// variable to indicate whether a timeout has occurred
+// timer to check if the sauna sends an answer within a specified time
 var timer;
 // time in ms after which the sauna has to respond,
 // otherwise properties.isOnline will be set to false

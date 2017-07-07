@@ -65,7 +65,7 @@ describe('Authentication:', function () {
     var uri = '/login';
     var pw = 'wrongPW';
     req.post(rootUrlAuth + uri,
-      { form: { username: 'Thor', password: pw } },
+      { form: { username: 'Heimdall', password: pw } },
       function (err, res, html) {
         expect(err).to.be.null;
         expect(res.statusCode).to.equal(status.UNAUTHORIZED);
@@ -82,7 +82,7 @@ describe('Authentication:', function () {
     var uri = '/login';
     var pw = '';
     req.post(rootUrlAuth + uri,
-      { form: { username: 'Thor', password: pw } },
+      { form: { username: 'Heimdall', password: pw } },
       function (err, res, html) {
         expect(err).to.be.null;
         expect(res.statusCode).to.equal(status.UNAUTHORIZED);
@@ -99,7 +99,7 @@ describe('Authentication:', function () {
     var uri = '/login';
     var pw = '1234';
     req.post(rootUrlAuth + uri,
-      { form: { username: 'Thor', password: pw } },
+      { form: { username: 'Heimdall', password: pw } },
       function (err, res, html) {
         expect(err).to.be.null;
         expect(res.statusCode).to.equal(status.OK);
@@ -122,7 +122,7 @@ describe('Authentication:', function () {
     var uri = '/login';
     var pw = '1234';
     req.post(rootUrlAuth + uri,
-      { form: { username: 'Thor', password: pw } },
+      { form: { username: 'Heimdall', password: pw } },
       function (err, res, html) {
         // // Parse the received cookie
         // var cookieLine = res.headers['set-cookie'];
@@ -185,7 +185,7 @@ describe('Authentication:', function () {
     var uri = '/login';
     var pw = '1234';
     req.post(rootUrlAuth + uri,
-      { form: { username: 'Thor', password: pw } },
+      { form: { username: 'Heimdall', password: pw } },
       function (err, res, html) {
         expect(err).to.be.null;
         expect(res.statusCode).to.equal(status.OK);
