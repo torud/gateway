@@ -52,6 +52,7 @@ module.exports = function () {
     req.headers['authorization'] = config.token; //#D
     proxyServer.web(req, res, { target: config.url }, function (e) {
       // an error occurred
+      console.log('error in proxy:');
       console.log(e);
       req.flash('errorMessage', 'The server of the Web Thing is offline!');
       if (useRedirects) {
