@@ -382,7 +382,6 @@ if (useRedirects) {
 
 app.get('/error',
   function (req, res) {
-    req.flash('errorMessage', 'The server of the Web Thing is offline!');
     res.render('error', { user: req.user, message: req.flash('errorMessage') });
   }); // GET /error
 
@@ -409,12 +408,7 @@ httpServer.on('upgrade', function (req, socket, head) {
     // an error occurred
     console.log('error in authServer WebSocket proxy:');
     console.log(e);
-    if (useRedirects) {
-      res.redirect('/error');
-    } else {
-      res.status(502);  // Bad Gateway
-      res.render('error', { message: req.flash('errorMessage') });
-    }
+    res.status(502).send({ success: false, message: 'The server of the Web Thing is offline!' });
   });
 
 });
