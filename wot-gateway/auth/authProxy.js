@@ -408,6 +408,7 @@ httpServer.on('upgrade', function (req, socket, head) {
     // an error occurred
     console.log('error in authServer WebSocket proxy:');
     console.log(e);
+    console.log(req);
     req.status(502).send({ success: false, message: 'The server of the Web Thing is offline!' });
   });
 
