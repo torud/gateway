@@ -194,15 +194,14 @@ describe('Sauna:', function () {
       });
   });
 
-  // TODO: array of commands
   it('sends a array of commands', function (done) {
     var uri = '/actions/sendCommand';
     req.post(rootUrl + uri,
       {
-        body: [{ "sys": 2 },
-        { "par": { "cmd": 0, "id": 1 } },
-        { "rom": { "frm": [1, 1], "val": "{r:[0,30,0,0],wt:3000,g:[900,0]}" } },
-        { "par": { "cmd": 1, "id": 6, "val": 45000 } }]
+        body: [{ "par": { "rw": 0, "id": 0 } },
+        { "par": { "rw": 0, "id": 1 } },
+        { "par": { "rw": 0, "id": 2 } },
+        { "par": { "rw": 0, "id": 3 } }]
       },
       function (err, res, body) {
         var id = res.headers.location.split('/').pop();
@@ -219,12 +218,12 @@ describe('Sauna:', function () {
             expect(action).to.be.a('object');
             expect(action.command).to.be.a('array');
             expect(action.command).to.have.length(4);
-            expect(action.command[0]).to.be.a('object');
-            expect(action.command[0].sys).to.be.a('number');
-            expect(action.command[0].sys).to.be.equal(2);
-            expect(action.command[1]).to.be.a('object');
-            expect(action.command[1].par).to.be.a('object');
-            expect(action.command[1].par.cmd).to.equal(0);
+            for (var i = 0; i < 4; i++) {
+              expect(action.command[i]).to.be.a('object');
+              expect(action.command[i].par).to.be.a('object');
+              expect(action.command[i].par.id).to.be.a('number');
+              expect(action.command[i].par.id).to.be.equal(i);
+            }
             expect(action.status).to.be.a('string');
             expect(action.timestamp).to.be.a('string');
             expect(action.status).to.equal('completed');

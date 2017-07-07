@@ -1,5 +1,5 @@
 /**
- * Javascript Code für Application-Website KannMotion auf dem WoT-Gateway
+ * JavaScript code Application-Website KannMotion on the WoT-Gateway
  * 
  * @author: Thierry Durot, thierry.durot@ntb.ch
  * @author: Joël Lutz, joel.lutz@ntb.ch

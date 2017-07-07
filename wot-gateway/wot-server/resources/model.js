@@ -1,3 +1,3 @@
-var resources = require('./modelSauna.json');
+var resources = require('./modelMotor.json');
 module.exports = resources;
 

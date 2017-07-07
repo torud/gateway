@@ -401,9 +401,9 @@ var proxyServer = proxyWebSockets.createProxyServer({ //#B
 });
 
 httpServer.on('upgrade', function (req, socket, head) {
-  console.log('Upgrading to WebSockets!');
+  // console.log('Upgrading to WebSockets!');
   req.url += '?token=' + token;
-  console.log(req.url);
+  // console.log(req.url);
   proxyServer.ws(req, socket, head);
 });
 
