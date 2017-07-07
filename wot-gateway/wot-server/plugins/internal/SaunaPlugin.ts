@@ -17,7 +17,7 @@ var properties = {};
 var model;
 // variable to indicate whether a timeout has occurred
 var timer;
-// time in ms after which the motor has to respond,
+// time in ms after which the sauna has to respond,
 // otherwise properties.isOnline will be set to false
 var timeoutTime = 5000;
 
@@ -29,7 +29,7 @@ var SaunaPlugin = exports.SaunaPlugin = function (params) {
     CorePlugin.call(this, params, 'sauna', stop, null, ['sendCommand'], sendCommand);
     // model = links.properties.resources.sauna;
     model = this.model;
-};
+} // SaunaPlugin
 
 util.inherits(SaunaPlugin, CorePlugin);
 
@@ -49,7 +49,7 @@ SaunaPlugin.prototype.connectHardware = function () {
 
 /**
  * Initializes the properties defined in the model
- * and sends the initial commands to the KannMotion control
+ * and sends the initial commands to the sauna
  */
 function sauna_initPropertyValues() {
     /**
@@ -167,7 +167,7 @@ function addValue(data) {
 
 /**
  * Sets the isOnline-property to true if an answer from the
- * KannMotion control is received within the specified time
+ * sauna is received within the specified time
  * (i.e. the parameter error is false)
  * @param error indicates whether there has been a timeout
  */
@@ -193,7 +193,7 @@ function timeoutHandler(error) {
  * Sends the next command in the commands array if there is still something to send.
  */
 function sauna_processAnswer() {
-    // Antwort des Motors auslesen und dem Model hinzufügen:
+    // Antwort der Sauna auslesen und dem Model hinzufügen:
     // gesamtes answerArray abarbeiten und Antworten jeweils entfernen
     while (answerArray.length > 0) {
         var answer: string = answerArray.shift();
@@ -231,7 +231,6 @@ function sauna_processAnswer() {
                  * {"cmd":{"id":0,"temp":80,"hum":30,"dur":15,"state":"ACK"}} oder
                  * {"cmd":{"id":1,"state":"ACK"}} oder
                  * {"cmd":{"id":3,"val":"password","state":"ACK"}}
-
                  */
                 if (antwort.cmd.id == 0) {
                     properties.targetTemp = antwort.cmd.temp;
@@ -241,7 +240,7 @@ function sauna_processAnswer() {
                 }
             } // antwort.cmd
         } catch (e) {
-            // Could not parse answer from motor, i.e. it wasn't a JSON object
+            // Could not parse answer from sauna, i.e. it wasn't a JSON object
             console.log('Failed to parse answer from the sauna or bridge!');
             console.log(e);
         }
@@ -287,4 +286,4 @@ port.on('error', function (err) {
  */
 function stop() {
     port.close();
-}
+} // stop

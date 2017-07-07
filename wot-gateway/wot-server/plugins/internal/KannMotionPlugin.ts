@@ -44,6 +44,9 @@ KannMotionPlugin.prototype.connectHardware = function () {
         console.log('Serial Port opened');
         initPropertyValues();
         // Polling infos
+        // --> just sending the initialCommands doesn't work very well with the KannMotion control,
+        // because the motor stops if a { "par": { "cmd": 2 } } command is sent
+        // --> maybe just send a { "sys": 2 } command
         // interval = setInterval(function () {
         //     sendCommand(initialCommands);
         // }, 2000); // setInterval
