@@ -44,9 +44,9 @@ KannMotionPlugin.prototype.connectHardware = function () {
         console.log('Serial Port opened');
         initPropertyValues();
         // Polling infos
-        interval = setInterval(function () {
-            sendCommand(initialCommands);
-        }, 2000); // setInterval
+        // interval = setInterval(function () {
+        //     sendCommand(initialCommands);
+        // }, 2000); // setInterval
     }); // port on open
 } // connectHardware
 
