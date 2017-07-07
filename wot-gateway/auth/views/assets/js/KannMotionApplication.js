@@ -291,6 +291,7 @@ function postSendCommand(command, name, callback) {
             if (request.status === postActionStatus) {
                 $('#answerStatus').html(name + ' erfolgreich gesendet\n');
             } else {
+                console.log(request);
                 $('#answerStatus').html(name + ' fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
             }
         }
