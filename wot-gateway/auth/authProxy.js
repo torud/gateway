@@ -404,7 +404,19 @@ httpServer.on('upgrade', function (req, socket, head) {
   // console.log('Upgrading to WebSockets!');
   req.url += '?token=' + token;
   // console.log(req.url);
-  proxyServer.ws(req, socket, head);
+  proxyServer.ws(req, socket, head, function (e) {
+    // an error occurred
+    console.log('error in authServer WebSocket proxy:');
+    console.log(e);
+    req.flash('errorMessage', 'The server of the Web Thing is offline!');
+    if (useRedirects) {
+      res.redirect('/error');
+    } else {
+      res.status(502);  // Bad Gateway
+      res.render('error', { message: req.flash('errorMessage') });
+    }
+  });
+
 });
 
 // Don't show the whole call stack in the response if there's an error
