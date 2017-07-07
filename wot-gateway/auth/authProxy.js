@@ -382,6 +382,7 @@ if (useRedirects) {
 
 app.get('/error',
   function (req, res) {
+    req.flash('errorMessage', 'The server of the Web Thing is offline!');
     res.render('error', { user: req.user, message: req.flash('errorMessage') });
   }); // GET /error
 
@@ -408,8 +409,6 @@ httpServer.on('upgrade', function (req, socket, head) {
     // an error occurred
     console.log('error in authServer WebSocket proxy:');
     console.log(e);
-    console.log(req);
-    req.flash('errorMessage', 'The server of the Web Thing is offline!');
     if (useRedirects) {
       res.redirect('/error');
     } else {
