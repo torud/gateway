@@ -10,6 +10,7 @@ var answerArray = [];
 var commands = [];
 var sequenzArray = [];
 var initialCommands = [{ "sys": 2 }, { "par": { "cmd": 2 } }];
+var interval;
 var properties = {};
 var model;
 // timer to check if motor sends an answer within a specified time
@@ -36,9 +37,9 @@ KannMotionPlugin.prototype.connectHardware = function () {
         console.log('Serial Port opened');
         initPropertyValues();
         // Polling infos
-        // interval = setInterval(function () {
-        //     sendCommand(initialCommands);
-        // }, 5000); // setInterval
+        interval = setInterval(function () {
+            sendCommand(initialCommands);
+        }, 2000); // setInterval
     }); // port on open
 }; // connectHardware
 /**
