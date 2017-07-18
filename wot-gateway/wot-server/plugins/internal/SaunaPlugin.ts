@@ -41,9 +41,9 @@ SaunaPlugin.prototype.connectHardware = function () {
         console.log('Serial Port opened');
         sauna_initPropertyValues();
         // Polling infos
-        // interval = setInterval(function () {
-        //     sendCommand(initialCommands);
-        // }, 5000); // setInterval
+        interval = setInterval(function () {
+            sendCommand(initialCommands);
+        }, 2000); // setInterval
     }); // port on open
 } // connectHardware
 
