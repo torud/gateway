@@ -19,15 +19,23 @@ var shell = require('shelljs');
 /**
  * Changes behaviour if an error or a user fault (e.g. a wrong password) occurs
  * true: let the authorisation server use redirects (all pages have status code 200,
- * error messages are shown in text, the page you see in the browser is shown in the url line)
+ * error messages are shown in text, the page you see in the browser is shown in the url line).
+ * Preferably use this, when the application is integrated in the auth-server.
  * false: directly render the pages with a specific status code (e.g. 401, 420, 500 etc.),
  * the page is sometimes just a plain status code (after a POST /login with a wrong password),
  * the page you see in the browser is not always the one shown in the url line
  * (e.g. afer login, the profile page is shown, but the url line still contains /login)
+ * Preferably use this, when the application is a local HTML file stored on the client's device.
  * Change the same variable in middleware/proxy.js (used for error when WoT-Server is offline)
  * (can not be accessed from here, despite being exported there)
  */
 var useRedirects = true;
+
+/**
+ * If the application is integrated in the auth-server, this changes the behaviour if the client
+ * GETs the /application ressource. Set to true if your application has mutliple HTML Files.
+ */
+var appHasMultipleHTMLFiles = false;
 
 var keyFilePath = path.join(__dirname, 'config', 'privateKey.pem');
 var key_file = fs.readFileSync(keyFilePath, 'utf8');
@@ -226,9 +234,9 @@ app.post('/connectWiFi',
           console.log('Exit code:', code);
           console.log('Program output:', stdout);
           console.log('Program stderr:', stderr);
-          if (code !== 0) {
+          if (code !== 0 || stdout.includes('Error')) {
             console.log('failed to connect to WiFi ' + ssid);
-            req.flash('WiFiMessage', stderr);
+            req.flash('WiFiMessage', stderr + ' ' + stdout);
           } else {
             console.log('connected to WiFi ' + ssid);
             req.flash('WiFiMessage', stdout);
@@ -358,26 +366,28 @@ if (useRedirects) {
   app.get('/application',
     function (req, res) {
       // console.log('Client wants a /application Ressource');
-      // application is a single html page
-      res.render('application');
-
-      // application has mulitple html pages
-      // res.sendFile(path.join(__dirname + '/application/config.html'));
+      if (appHasMultipleHTMLFiles) {
+        // application has mulitple html pages
+        res.sendFile(path.join(__dirname + '/multipage-application/config.html'));
+      } else {
+        // application is a single html page
+        res.render('application');
+      }
     }); // GET /application
 
-  // only use this if application has multiple html pages
-  // app.get('/*.html',
-  //   function (req, res) {
-  //     // console.log('GET *.html: ' + req.url);
-  //     res.sendFile(path.join(__dirname + '/application' + req.url));
-  //   }); // GET /*.html
+  if (appHasMultipleHTMLFiles) {
+    app.get('/*.html',
+      function (req, res) {
+        // console.log('GET *.html: ' + req.url);
+        res.sendFile(path.join(__dirname + '/multipage-application' + req.url));
+      }); // GET /*.html
 
-  // // only use this if application has multiple html pages
-  // app.get('/assets/*',
-  //   function (req, res) {
-  //     // console.log('GET assets/*: ' + req.url);
-  //     res.sendFile(path.join(__dirname + '/application' + req.url));
-  //   }); // GET /assets/*
+    app.get('/assets/*',
+      function (req, res) {
+        // console.log('GET assets/*: ' + req.url);
+        res.sendFile(path.join(__dirname + '/multipage-application' + req.url));
+      }); // GET /assets/*
+  }
 }
 
 app.get('/error',
