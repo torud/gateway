@@ -1,14 +1,14 @@
 #!/bin/bash
 
-echo "Hello"
+echo "checking WiFi connection..."
 CONNECTIONS=$(nmcli dev)
-# echo "${CONNECTIONS}"
+echo "${CONNECTIONS}"
 if [[ "$CONNECTIONS" =~ "disconnected" ]]; then
     echo "disconnected, running changeWiFiDongleToHotspot.sh"
     exec "/root/WoT/gateway/wot-gateway/auth/changeWiFiDongleToHotspot.sh"
 elif [[ "$CONNECTIONS" =~ "connected" ]]; then
     echo "connected"
 else    
-    echo "error, neither connected nor disconnected!"
+    echo "Error, neither connected nor disconnected!"
 fi
-echo "Bye Bye"
+echo "finished checking WiFi connection"

@@ -3,9 +3,13 @@ Description=checkWiFiConnection caller
 
 [Service]
 
-ExecStart=/bin/sh /root/WoT/gateway/wot-gateway/auth/checkWiFiConnection.sh
+ExecStart=/bin/bash /root/WoT/gateway/wot-gateway/auth/checkWiFiConnection.sh
 
 Restart=always
+# give up restarting if there are 10 restarts within 60 seconds
+StartLimitInterval=60
+StartLimitBurst=10
+RestartSec=10
 
 StandardOutput=syslog
 StandardError=syslog
