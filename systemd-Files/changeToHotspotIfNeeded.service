@@ -1,0 +1,20 @@
+[Unit]
+Description=changes wifi dongle to hotspot mode if wifi is disconnected
+
+[Service]
+
+ExecStart=/bin/sh /root/WoT/gateway/wot-gateway/auth/checkWiFiConnection.sh
+
+Restart=always
+# give up restarting if there are 10 restarts within 90 seconds
+StartLimitInterval=90
+StartLimitBurst=10
+
+
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=changeToHotspotIfNeeded
+
+
+[Install]
+WantedBy=multi-user.target

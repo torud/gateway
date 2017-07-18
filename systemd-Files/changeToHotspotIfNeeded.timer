@@ -1,0 +1,8 @@
+[Unit]
+Description=Run changeToHotspotIfNeeded.service weekly and on boot
+
+[Timer]
+OnUnitActiveSec=30s 
+
+[Install]
+WantedBy=timers.target
