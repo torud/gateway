@@ -220,7 +220,13 @@ app.post('/connectWiFi',
   function (req, res, next) {
     var password = req.body.password;
     var ssid = req.body.ssid;
-    changeWiFiDongleToClient(ssid, password);
+    changeWiFiDongleToClient(ssid, password, function (success, message) {
+      req.flash('WiFiMessage', message);
+      res.render('connectWiFi', { message: req.flash('WiFiMessage') });
+      if (!success) {
+        changeWiFiDongleToHotspot();
+      }
+    });
   }); // POST /connectWiFi
 
 app.get('/startHotspot',
@@ -238,10 +244,13 @@ app.get('/startHotspot',
 /**
  * Changes the WiFi dongle to client mode, so it can connect to an
  * existing wireless network with the given ssid and password.
+ * Runs the callback (if defined) with the parameter success = true if everything went well
+ * with a message from the shell command.
  * @param {*} ssid 
  * @param {*} password 
+ * @param {*} callback 
  */
-function changeWiFiDongleToClient(ssid, password) {
+function changeWiFiDongleToClient(ssid, password, callback) {
   console.log('Running script to change wifi dongle to client');
   shell.exec('/root/WoT/gateway/wot-gateway/auth/changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
     console.log('Exit code:', code);
@@ -249,8 +258,8 @@ function changeWiFiDongleToClient(ssid, password) {
     console.log('Program stderr:', stderr);
     if (code !== 0) {
       console.log('failed to connect to WiFi ' + ssid);
-      req.flash('WiFiMessage', stderr);
-      changeWiFiDongleToHotspot();
+      if (callback) callback(false, stderr);
+
     } else {
       console.log('Trying to connect to WiFi ' + ssid + ' with password ' + password);
       shell.exec('sudo nmcli dev wifi connect ' + ssid + ' password ' + password, function (code, stdout, stderr) {
@@ -259,13 +268,11 @@ function changeWiFiDongleToClient(ssid, password) {
         console.log('Program stderr:', stderr);
         if (code !== 0 || stdout.includes('Error')) {
           console.log('failed to connect to WiFi ' + ssid);
-          req.flash('WiFiMessage', stderr + ' ' + stdout);
-          changeWiFiDongleToHotspot();
+          if (callback) callback(false, stderr + ' ' + stdout);
         } else {
           console.log('connected to WiFi ' + ssid);
-          req.flash('WiFiMessage', stdout);
+          if (callback) callback(true, stdout);
         }
-        res.render('connectWiFi', { message: req.flash('WiFiMessage') });
       }); // connect to wifi
     }
   }); // run shell script
