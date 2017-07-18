@@ -5,7 +5,7 @@ CONNECTIONS=$(nmcli dev)
 # echo "${CONNECTIONS}"
 if [[ "$CONNECTIONS" =~ "disconnected" ]]; then
     echo "disconnected, running changeWiFiDongleToHotspot.sh"
-    sh ./changeWiFiDongleToHotspot.sh
+    exec "/root/WoT/gateway/wot-gateway/auth/changeWiFiDongleToHotspot.sh"
 elif [[ "$CONNECTIONS" =~ "connected" ]]; then
     echo "connected"
 else    
