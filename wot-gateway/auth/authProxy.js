@@ -221,11 +221,14 @@ app.post('/connectWiFi',
     var password = req.body.password;
     var ssid = req.body.ssid;
     changeWiFiDongleToClient(ssid, password, function (success, message) {
+      if (!success) {
+        message += '\nReseting to hotspot mode and rebooting. Please wait some time and connect to the hotspot WiFi.'
+        setTimeout(function () {
+          changeWiFiDongleToHotspot();
+        }, 2000);
+      }
       req.flash('WiFiMessage', message);
       res.render('connectWiFi', { message: req.flash('WiFiMessage') });
-      if (!success) {
-        changeWiFiDongleToHotspot();
-      }
     });
   }); // POST /connectWiFi
 
