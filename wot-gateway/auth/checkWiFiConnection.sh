@@ -1,4 +1,4 @@
 echo "Hello"
-CONNECTIONS = "nmcli dev"
-echo "$(CONNECTIONS)"
+OUTPUT = "nmcli dev"
+echo "${OUTPUT}"
 echo "Bye Bye"
