@@ -220,50 +220,77 @@ app.post('/connectWiFi',
   function (req, res, next) {
     var password = req.body.password;
     var ssid = req.body.ssid;
-    console.log('Running script to change wifi dongle to client');
-    shell.exec('/root/WoT/gateway/wot-gateway/auth/changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
-      console.log('Exit code:', code);
-      console.log('Program output:', stdout);
-      console.log('Program stderr:', stderr);
-      if (code !== 0) {
-        console.log('failed to connect to WiFi ' + ssid);
-        req.flash('WiFiMessage', stderr);
-      } else {
-        console.log('Trying to connect to WiFi ' + ssid + ' with password ' + password);
-        shell.exec('sudo nmcli dev wifi connect ' + ssid + ' password ' + password, function (code, stdout, stderr) {
-          console.log('Exit code:', code);
-          console.log('Program output:', stdout);
-          console.log('Program stderr:', stderr);
-          if (code !== 0 || stdout.includes('Error')) {
-            console.log('failed to connect to WiFi ' + ssid);
-            req.flash('WiFiMessage', stderr + ' ' + stdout);
-          } else {
-            console.log('connected to WiFi ' + ssid);
-            req.flash('WiFiMessage', stdout);
-          }
-          res.render('connectWiFi', { message: req.flash('WiFiMessage') });
-        }); // connect to wifi
-      }
-    }); // run shell script
+    changeWiFiDongleToClient(ssid, password);
   }); // POST /connectWiFi
 
 app.get('/startHotspot',
   function (req, res, next) {
-    console.log('Running script to change wifi dongle to hotspot');
-    shell.exec('/root/WoT/gateway/wot-gateway/auth/changeWiFiDongleToHotspot.sh', function (code, stdout, stderr) {
-      console.log('Exit code:', code);
-      console.log('Program output:', stdout);
-      console.log('Program stderr:', stderr);
-      if (code !== 0) {
-        console.log('Failed to change WiFi dongle to hotspot.');
-        req.flash('loginMessage', 'Failed to change WiFi dongle to hotspot.');
-      } else {
-        console.log('Changed WiFi dongle to hotspot.');
+    changeWiFiDongleToHotspot(function (success) {
+      if (success) {
         req.flash('loginMessage', 'Changed WiFi dongle to hotspot.');
+      } else {
+        req.flash('loginMessage', 'Failed to change WiFi dongle to hotspot.');
       }
       res.redirect('/login');
-    }); // run shell script
+    });
   }); // GET /startHotspot
+
+/**
+ * Changes the WiFi dongle to client mode, so it can connect to an
+ * existing wireless network with the given ssid and password.
+ * @param {*} ssid 
+ * @param {*} password 
+ */
+function changeWiFiDongleToClient(ssid, password) {
+  console.log('Running script to change wifi dongle to client');
+  shell.exec('/root/WoT/gateway/wot-gateway/auth/changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
+    console.log('Exit code:', code);
+    console.log('Program output:', stdout);
+    console.log('Program stderr:', stderr);
+    if (code !== 0) {
+      console.log('failed to connect to WiFi ' + ssid);
+      req.flash('WiFiMessage', stderr);
+      changeWiFiDongleToHotspot();
+    } else {
+      console.log('Trying to connect to WiFi ' + ssid + ' with password ' + password);
+      shell.exec('sudo nmcli dev wifi connect ' + ssid + ' password ' + password, function (code, stdout, stderr) {
+        console.log('Exit code:', code);
+        console.log('Program output:', stdout);
+        console.log('Program stderr:', stderr);
+        if (code !== 0 || stdout.includes('Error')) {
+          console.log('failed to connect to WiFi ' + ssid);
+          req.flash('WiFiMessage', stderr + ' ' + stdout);
+          changeWiFiDongleToHotspot();
+        } else {
+          console.log('connected to WiFi ' + ssid);
+          req.flash('WiFiMessage', stdout);
+        }
+        res.render('connectWiFi', { message: req.flash('WiFiMessage') });
+      }); // connect to wifi
+    }
+  }); // run shell script
+} // changeWiFiDongleToClient
+
+/**
+ * Changes the WiFi dongle to hotspot mode, so it sets up a own wireless network.
+ * Runs the callback (if defined) with the parameter success = true if everything went well.
+ * @param {*} callback 
+ */
+function changeWiFiDongleToHotspot(callback) {
+  console.log('Running script to change wifi dongle to hotspot');
+  shell.exec('/root/WoT/gateway/wot-gateway/auth/changeWiFiDongleToHotspot.sh', function (code, stdout, stderr) {
+    console.log('Exit code:', code);
+    console.log('Program output:', stdout);
+    console.log('Program stderr:', stderr);
+    if (code !== 0) {
+      console.log('Failed to change WiFi dongle to hotspot.');
+      if (callback) callback(false);
+    } else {
+      console.log('Changed WiFi dongle to hotspot.');
+      if (callback) callback(true);
+    }
+  }); // run shell script
+} // changeWiFiDongleToHotspot
 
 /**
  * custom authorisation middleware, checks if user is authenticated.
