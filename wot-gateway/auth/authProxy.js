@@ -414,18 +414,18 @@ if (useRedirects) {
       }
     }); // GET /application
 
+  app.get('/assets/*',
+    function (req, res) {
+      console.log('GET assets/*: ' + req.url);
+      res.sendFile(path.join(__dirname + '/kannmotion' + req.url));
+    }); // GET /assets/*
+
   if (appHasMultipleHTMLFiles) {
     app.get('/*.html',
       function (req, res) {
         // console.log('GET *.html: ' + req.url);
         res.sendFile(path.join(__dirname + '/multipage-application' + req.url));
       }); // GET /*.html
-
-    app.get('/assets/*',
-      function (req, res) {
-        // console.log('GET assets/*: ' + req.url);
-        res.sendFile(path.join(__dirname + '/multipage-application' + req.url));
-      }); // GET /assets/*
   }
 }
 
