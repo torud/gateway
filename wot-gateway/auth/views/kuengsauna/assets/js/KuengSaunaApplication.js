@@ -29,31 +29,11 @@ var readLight = { "par": { "rw": 0, "id": 5 } };
 // -------------------------- sauna commands --------------------------
 // choose type of sauna
 $('#chooseBtn').on('click', function () {
-      var defTemp;
-      var defHum;
-      var defDur;
-      var selectedOption = td.getElementById('selectBtn').value;
-      console.log(selectedOption);
-      switch (selectedOption) {
-            case 'finarium':
-                  defTemp = 90;
-                  defHum = 15;
-                  defDur = 30;
-                  break;
-            case 'dampfbad':
-                  defTemp = 50;
-                  defHum = 50;
-                  defDur = 30;
-                  break;
-            case 'warmluftbad':
-                  defTemp = 45;
-                  defHum = 15;
-                  defDur = 30;
-                  break;
-      }
-      td.getElementById('targetTemp').value = defTemp;
-      td.getElementById('targetHum').value = defHum;
-      td.getElementById('targetDur').value = defDur;
+      getSelectedOption();
+});
+
+$('#selectBtn').on('change', function () {
+      getSelectedOption();
 });
 
 // sends the command to start/stop the sauna
@@ -76,19 +56,19 @@ $('#switchSauna').on('change', function () {
 // actualize target values while sauna running
 $('#targetTemp').on('change', function () {
       tarTemp = td.getElementById('targetTemp').value;
-      var command = '{"cmd":{"id":0,"temp":' + tarTemp + ',"hum":' + tarHum + ',"dur":' + tarDur + '}}';
+      var command = '{"par":{"rw":1,"id":0,"val":' + tarTemp +'}}';
       postSendCommand(command, 'start/stop sauna on change temp');
 });
 
 $('#targetHum').on('change', function () {
       tarHum = td.getElementById('targetHum').value;
-      var command = '{"cmd":{"id":0,"temp":' + tarTemp + ',"hum":' + tarHum + ',"dur":' + tarDur + '}}';
+      var command = '{"par":{"rw":1,"id":1,"val":' + tarHum + '}}';
       postSendCommand(command, 'start/stop sauna on change hum');
 });
 
 $('#targetDur').on('change', function () {
       tarDur = td.getElementById('targetDur').value;
-      var command = '{"cmd":{"id":0,"temp":' + tarTemp + ',"hum":' + tarHum + ',"dur":' + tarDur + '}}';
+      var command = '{"par":{"rw":1,"id":4,"val":' + tarDur + '}}';
       postSendCommand(command, 'start/stop sauna on change dur');
 });
 
@@ -97,7 +77,6 @@ $('#levelLight').on('change', function () {
       var levLight = td.getElementById('levelLight').value;
       var command = '{"par":{"rw":1,"id":5,"val":' + levLight + '}}';
       postSendCommand(command, 'change light');
-      console.log(command);
 });
 
 
@@ -166,17 +145,52 @@ function postSendCommand(command, name, callback) {
  * @param {*} properties    the most recent properties
  */
 function displayVal(properties) {
-      console.log(properties);
       var temp = properties.currTemp;
       var hum = properties.currHum;
       var dur = properties.duration;
+      var isOnline = properties.isOnline;
       console.log(temp);
       console.log(hum);
       console.log(dur);
+      console.log(isOnline);
       td.getElementById('currTemp').value = temp;
       td.getElementById('currHum').value = hum;
       td.getElementById('currDur').value = dur;
-      //$('#currTemp').html(temp);
-      //$('#currHum').html(hum);
-      //$('#currDur').html(dum);
+      if(isOnline == true){
+            td.getElementById('isOnline').value = 'Online';
+            td.getElementById('isOnline').style.color = '#00d300';
+      }else{
+            td.getElementById('isOnline').value = 'Offline';
+            td.getElementById('isOnline').style.color = '#ff0000';
+      }
+}
+
+/**
+ *
+ */
+function getSelectedOption(){
+      var defTemp;
+      var defHum;
+      var defDur;
+      var selectedOption = td.getElementById('selectBtn').value;
+      switch (selectedOption) {
+            case 'finarium':
+                  defTemp = 90;
+                  defHum = 15;
+                  defDur = 30;
+                  break;
+            case 'dampfbad':
+                  defTemp = 50;
+                  defHum = 50;
+                  defDur = 30;
+                  break;
+            case 'warmluftbad':
+                  defTemp = 45;
+                  defHum = 15;
+                  defDur = 30;
+                  break;
+      }
+      td.getElementById('targetTemp').value = defTemp;
+      td.getElementById('targetHum').value = defHum;
+      td.getElementById('targetDur').value = defDur;
 }

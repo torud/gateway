@@ -21,7 +21,7 @@
             </div>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li role="presentation"><a href="#">Profile </a></li>
+                    <li role="presentation"><a href="profile">Profile Page</a></li>
                 </ul>
             </div>
         </div>
@@ -104,11 +104,25 @@
                     <label for="switchSauna">Toggle </label>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12 col-xs-4">
+                    <p style="color:rgb(252,251,251);">Gateway </p>
+                </div>
+                <div class="col-md-12 col-xs-8" id="colIsOnline">
+                    <p id="isOnline"> </p>
+                </div>
+            </div>
         </div>
     </div>
     <script src="kuengsauna/assets/js/jquery.min.js"></script>
     <script src="kuengsauna/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="kuengsauna/assets/js/KuengSaunaApplication.js"></script>
+    <script>
+        $("[type='number']").keypress(function (evt) {
+            evt.preventDefault();
+        });
+    </script>
+
 </body>
 
 </html>
