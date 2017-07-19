@@ -143,6 +143,15 @@ function sendCommand(value) {
             }
             addValue(properties);
         }
+        else if (action.cmd && action.cmd.id == 0) {
+            if (action.cmd.temp)
+                properties.targetTemp = action.cmd.temp;
+            if (action.cmd.hum)
+                properties.targetHum = action.cmd.hum;
+            if (action.cmd.dur)
+                properties.duration = action.cmd.dur;
+            addValue(properties);
+        }
         if (action.constructor === Array) {
             // action is an array of commands
             action.forEach(function (element) {
