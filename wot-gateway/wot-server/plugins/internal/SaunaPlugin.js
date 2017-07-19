@@ -49,7 +49,7 @@ SaunaPlugin.prototype.connectHardware = function () {
         sauna_initPropertyValues();
         // Polling infos
         interval = setInterval(function () {
-            if (properties.isOnline)
+            if (properties.isOnline && properties.isOnline == true)
                 sendCommand(initialCommands);
         }, 2000); // setInterval
     }); // port on open
