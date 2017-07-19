@@ -84,7 +84,8 @@ $(document).ready(function () {
       request.onreadystatechange = function () {
             if (request.readyState === XMLHttpRequest.DONE) {
                   properties = JSON.parse(request.responseText)[0];
-                  //updateProperties(properties);
+                  displayVal(properties);
+                  getSelectedOption();
             }
       }
       request.send(null);

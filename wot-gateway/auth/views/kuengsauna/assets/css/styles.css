@@ -48,6 +48,12 @@
   width:50%;
 }
 
+* {
+font-size: 100%;
+font-family: Arial;
+}
+
+
 p {
   margin:0 auto;
   font-family:'Advent Pro';
@@ -98,11 +104,10 @@ input[type=range] {
   }
 }
 
-#colSelect {
+#colSelect, #isOnline, colAlignCenter {
   display:flex;
   justify-content:center;
   align-items:center;
-  /*height:100vh;*/
 }
 
 .btn.btn-default {
