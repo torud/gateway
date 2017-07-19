@@ -174,7 +174,7 @@ function displayVal(properties) {
       console.log(dur);
       td.getElementById('currTemp').value = temp;
       td.getElementById('currHum').value = hum;
-      td.getElementById('currDur').value = dum;
+      td.getElementById('currDur').value = dur;
       //$('#currTemp').html(temp);
       //$('#currHum').html(hum);
       //$('#currDur').html(dum);
