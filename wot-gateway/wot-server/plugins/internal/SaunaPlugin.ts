@@ -55,9 +55,9 @@ SaunaPlugin.prototype.connectHardware = function () {
         console.log('Serial Port opened');
         sauna_initPropertyValues();
         // Polling infos
-        // interval = setInterval(function () {
-        //     sendCommand(initialCommands);
-        // }, 2000); // setInterval
+        interval = setInterval(function () {
+            if (properties.isOnline) sendCommand(initialCommands);
+        }, 2000); // setInterval
     }); // port on open
 } // connectHardware
 
@@ -131,6 +131,7 @@ function sendCommand(value) {
             }
             addValue(properties);
         } else if (action.cmd && action.cmd.id == 0) {
+            console.log('start sauna command')
             if (action.cmd.temp) properties.targetTemp = action.cmd.temp;
             if (action.cmd.hum) properties.targetHum = action.cmd.hum;
             if (action.cmd.dur) properties.duration = action.cmd.dur;
