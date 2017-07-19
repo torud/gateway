@@ -56,7 +56,7 @@ $('#switchSauna').on('change', function () {
 // actualize target values while sauna running
 $('#targetTemp').on('change', function () {
       tarTemp = td.getElementById('targetTemp').value;
-      var command = '{"par":{"rw":1,"id":0,"val":' + tarTemp +'}}';
+      var command = '{"par":{"rw":1,"id":0,"val":' + tarTemp + '}}';
       postSendCommand(command, 'start/stop sauna on change temp');
 });
 
@@ -156,10 +156,12 @@ function displayVal(properties) {
       td.getElementById('currTemp').value = temp;
       td.getElementById('currHum').value = hum;
       td.getElementById('currDur').value = dur;
-      if(isOnline == true){
+      if (isOnline == true) {
+            console.log('online')
             td.getElementById('isOnline').value = 'Online';
             td.getElementById('isOnline').style.color = '#00d300';
-      }else{
+      } else {
+            console.log('offline')
             td.getElementById('isOnline').value = 'Offline';
             td.getElementById('isOnline').style.color = '#ff0000';
       }
@@ -168,7 +170,7 @@ function displayVal(properties) {
 /**
  *
  */
-function getSelectedOption(){
+function getSelectedOption() {
       var defTemp;
       var defHum;
       var defDur;
