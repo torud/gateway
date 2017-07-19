@@ -168,7 +168,7 @@ function postSendCommand(command, name, callback) {
 function displayVal(properties) {
       console.log(properties);
       var temp = properties.currTemp;
-      var hum = properties.cuttHum;
+      var hum = properties.currHum;
       var dur = properties.duration;
       console.log(temp);
       console.log(hum);
