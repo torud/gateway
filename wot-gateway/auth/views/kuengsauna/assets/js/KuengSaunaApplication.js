@@ -166,6 +166,7 @@ function postSendCommand(command, name, callback) {
  * @param {*} properties    the most recent properties
  */
 function displayVal(properties) {
+      console.log(properties);
       var temp = properties.currTemp;
       var hum = properties.cuttHum;
       var dur = properties.duration;
