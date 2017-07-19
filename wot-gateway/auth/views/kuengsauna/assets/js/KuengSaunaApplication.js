@@ -28,10 +28,6 @@ var readLight = { "par": { "rw": 0, "id": 5 } };
 
 // -------------------------- sauna commands --------------------------
 // choose type of sauna
-$('#chooseBtn').on('click', function () {
-      getSelectedOption();
-});
-
 $('#selectBtn').on('change', function () {
       getSelectedOption();
 });
@@ -149,26 +145,20 @@ function displayVal(properties) {
       var hum = properties.currHum;
       var dur = properties.duration;
       var isOnline = properties.isOnline;
-      console.log(temp);
-      console.log(hum);
-      console.log(dur);
-      console.log(isOnline);
       td.getElementById('currTemp').value = temp;
       td.getElementById('currHum').value = hum;
       td.getElementById('currDur').value = dur;
       if (isOnline == true) {
-            console.log('online')
             $('#isOnline').html('Online');
             td.getElementById('isOnline').style.color = '#00d300';
       } else {
-            console.log('offline')
             $('#isOnline').html('Offline');
             td.getElementById('isOnline').style.color = '#ff0000';
       }
 }
 
 /**
- *
+ * Get the selected option and display it in the specific fields
  */
 function getSelectedOption() {
       var defTemp;
