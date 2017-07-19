@@ -8,7 +8,21 @@ var port = new SerialPort('/dev/ttyS1', {
 var answerArray = [];
 var commands = [];
 var sequenzArray = [];
-var initialCommands = { "par": { "rw": 0, "id": 0 } };
+var initialCommands = [{ "par": { "rw": 0, "id": 0 } },
+    { "par": { "rw": 0, "id": 1 } },
+    { "par": { "rw": 0, "id": 2 } },
+    { "par": { "rw": 0, "id": 3 } },
+    { "par": { "rw": 0, "id": 4 } },
+    { "par": { "rw": 0, "id": 5 } },
+    { "par": { "rw": 0, "id": 6 } },
+    { "par": { "rw": 0, "id": 7 } },
+    { "par": { "rw": 0, "id": 8 } },
+    { "par": { "rw": 0, "id": 9 } },
+    { "par": { "rw": 0, "id": 10 } },
+    { "par": { "rw": 0, "id": 11 } },
+    { "par": { "rw": 0, "id": 12 } },
+    { "par": { "rw": 0, "id": 13 } },
+    { "par": { "rw": 0, "id": 14 } }];
 var properties = {};
 var model;
 // timer to check if the sauna sends an answer within a specified time
@@ -34,9 +48,9 @@ SaunaPlugin.prototype.connectHardware = function () {
         console.log('Serial Port opened');
         sauna_initPropertyValues();
         // Polling infos
-        // interval = setInterval(function () {
-        //     sendCommand(initialCommands);
-        // }, 5000); // setInterval
+        interval = setInterval(function () {
+            sendCommand(initialCommands);
+        }, 2000); // setInterval
     }); // port on open
 }; // connectHardware
 /**

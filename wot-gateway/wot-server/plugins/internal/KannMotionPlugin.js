@@ -39,10 +39,10 @@ KannMotionPlugin.prototype.connectHardware = function () {
         // Polling infos
         // --> just sending the initialCommands doesn't work very well with the KannMotion control,
         // because the motor stops if a { "par": { "cmd": 2 } } command is sent
-        // --> maybe just send a { "sys": 2 } command
-        // interval = setInterval(function () {
-        //     sendCommand(initialCommands);
-        // }, 2000); // setInterval
+        // --> just send a { "sys": 2 } command
+        interval = setInterval(function () {
+            sendCommand({ "sys": 2 });
+        }, 2000); // setInterval
     }); // port on open
 }; // connectHardware
 /**
