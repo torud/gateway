@@ -158,11 +158,11 @@ function displayVal(properties) {
       td.getElementById('currDur').value = dur;
       if (isOnline == true) {
             console.log('online')
-            td.getElementById('isOnline').value = 'Online';
+            $('#isOnline').html('Online');
             td.getElementById('isOnline').style.color = '#00d300';
       } else {
             console.log('offline')
-            td.getElementById('isOnline').value = 'Offline';
+            $('#isOnline').html('Offline');
             td.getElementById('isOnline').style.color = '#ff0000';
       }
 }
