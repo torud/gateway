@@ -417,7 +417,7 @@ if (useRedirects) {
   app.get('/assets/*',
     function (req, res) {
       console.log('GET assets/*: ' + req.url);
-      res.sendFile(path.join(__dirname + '/kannmotion' + req.url));
+      res.sendFile(path.join(__dirname + '/views/kannmotion' + req.url));
     }); // GET /assets/*
 
   if (appHasMultipleHTMLFiles) {
