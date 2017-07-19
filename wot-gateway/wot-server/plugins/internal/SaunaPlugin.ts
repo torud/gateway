@@ -164,7 +164,7 @@ function sendCommand(value) {
  * data: das, was bei addValue() hinzugefügt wird
  */
 function createValue(data) {
-    console.log('Properties updated!');
+    // console.log('Properties updated!');
     return Object.assign(data, { "timestamp": utils.isoTimestamp() });
 }
 
