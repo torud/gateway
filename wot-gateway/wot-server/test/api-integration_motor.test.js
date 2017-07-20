@@ -3,7 +3,7 @@ var expect = require('chai').expect,
   status = require('http-status'),
   util = require('util'),
   WebSocketClient = require('websocket').client;
-var token = 'fRfLNLe9aBix0mHyeCdI0PSzNeLpPPgu';
+var token = 'AfzUi=o0mZ-Vea-rrW8TS-UUUTZm5$K)';
 
 describe('Motor:', function () {
   var req;
@@ -183,7 +183,7 @@ describe('Motor:', function () {
               expect(info[5].id).to.equal('Seq. Version');
               done();
             });
-          }, 500);
+          }, 1500);
         });
     }, 1000);
   });
@@ -740,7 +740,7 @@ describe('Motor:', function () {
               expect(motorProperties.lastResponse).to.equal('ERROR 1');
               done();
             });
-          }, 2000);
+          }, 2500);
 
         });
       });

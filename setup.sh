@@ -220,3 +220,33 @@ sudo update-rc.d udhcpd enable
 sudo service hostapd start
 sudo service udhcpd start
 
+# Installations for client mode
+sudo apt-get -y -q install network-manager
+
+# Node.js
+cd /root
+wget https://nodejs.org/dist/v4.4.2/node-v4.4.2-linux-armv7l.tar.gz
+tar -xvf node-v4.4.2-linux-armv7l.tar.gz
+cd node-v4.4.2-linux-armv7l
+sudo cp -R * /usr/local/
+sudo cp -R * /usr/local/
+
+# install GitHub and clone repository
+cd /root
+mkdir WoT
+cd WoT/
+sudo apt-get install git
+git config --global user.name "joelthierry"
+git config --global user.email "thierry.durot@ntb.ch"
+git clone https://github.com/joelthierry/gateway --recursive
+cd gateway/
+
+# make shell-scripts executable
+cd /root/WoT/gateway/wot-gateway/auth/
+chmod +x changeWiFiDongleToHotspot.sh
+chmod +x changeWiFiDongleToClient.sh
+chmod +x checkWiFiConnection.sh
+
+# copy systemd-Files from repository into systemd-folder
+cp  WoT/gateway/wot-gateway/wotserver.service /etc/systemd/system
+$ cp  WoT/gateway/wot-gateway/authserver.service /etc/systemd/system

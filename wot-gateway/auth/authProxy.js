@@ -152,9 +152,9 @@ app.get('/login',
 
 if (useRedirects) {
   /**
- * Authentication if user interacts via browser
- * (uses redirects and flash messages)
- */
+   * Authentication if user interacts via browser
+   * (uses redirects and flash messages)
+   */
   app.post('/login',
     passport.authenticate('local', {
       successRedirect: '/profile', // redirect to the secure profile section
