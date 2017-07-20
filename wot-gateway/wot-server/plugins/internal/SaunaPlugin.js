@@ -94,14 +94,22 @@ function sendCommand(value) {
             });
         }
         else {
+            console.log('Payload is a single JSON command');
             // action is a single command
             updateProperty(action);
             sequenzArray.push(JSON.stringify(action));
         }
     }
     else {
+        console.log('Payload is a string');
         // the command is a string
         var stringAction = action.trim().replace(/ /g, '');
+        try {
+            var jsonAction = JSON.parse(stringAction);
+            updateProperty(jsonAction);
+        }
+        catch (e) {
+        }
         sequenzArray.push(stringAction);
     }
     commands = commands.concat(sequenzArray);

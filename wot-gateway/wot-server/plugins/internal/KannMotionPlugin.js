@@ -74,46 +74,17 @@ function sendCommand(value) {
     }
     if (typeof action !== 'string') {
         // action is a JSON-Object
-        if (action.par && action.par.cmd == 1) {
-            // setting a property for configuration, add to the property ressource
-            switch (action.par.id) {
-                case 0:
-                    properties.maxSpeed = action.par.val;
-                    break;
-                case 1:
-                    properties.maxAccel = action.par.val;
-                    break;
-                case 2:
-                    properties.maxDecel = action.par.val;
-                    break;
-                case 3:
-                    properties.intersectionSpeed = action.par.val;
-                    break;
-                case 4:
-                    properties.startGradient = action.par.val;
-                    break;
-                case 5:
-                    properties.endGradient = action.par.val;
-                    break;
-                case 6:
-                    properties.pwm = action.par.val;
-                    break;
-                default:
-                    properties[action.par.id] = action.par.val;
-                    console.log('Unknown Parameter-ID: ' + action.par.id);
-                    break;
-            }
-            myself.addValue(properties);
-        }
         if (action.constructor === Array) {
             // console.log('Payload is an array');
             // action is an array of commands
             action.forEach(function (element) {
+                updateProperty(element);
                 sequenzArray.push(JSON.stringify(element));
             });
         }
         else {
             // action is a single command
+            updateProperty(action);
             sequenzArray.push(JSON.stringify(action));
         }
     }
@@ -121,6 +92,12 @@ function sendCommand(value) {
         // console.log('Payload is a string');
         // action is a string
         var stringAction = action.trim().replace(/ /g, '');
+        try {
+            var jsonAction = JSON.parse(stringAction);
+            updateProperty(jsonAction);
+        }
+        catch (e) {
+        }
         sequenzArray.push(stringAction);
     }
     commands = commands.concat(sequenzArray);
@@ -130,6 +107,43 @@ function sendCommand(value) {
     // Update the status of the value object
     value.status = 'completed';
 } // sendCommand
+/**
+ * Updates the property if the parameter action is a set-property command or a start sauna command
+ * @param action
+ */
+function updateProperty(action) {
+    if (action.par && action.par.cmd == 1) {
+        // setting a property for configuration, add to the property ressource
+        switch (action.par.id) {
+            case 0:
+                properties.maxSpeed = action.par.val;
+                break;
+            case 1:
+                properties.maxAccel = action.par.val;
+                break;
+            case 2:
+                properties.maxDecel = action.par.val;
+                break;
+            case 3:
+                properties.intersectionSpeed = action.par.val;
+                break;
+            case 4:
+                properties.startGradient = action.par.val;
+                break;
+            case 5:
+                properties.endGradient = action.par.val;
+                break;
+            case 6:
+                properties.pwm = action.par.val;
+                break;
+            default:
+                properties[action.par.id] = action.par.val;
+                console.log('Unknown Parameter-ID: ' + action.par.id);
+                break;
+        }
+        myself.addValue(properties);
+    }
+} // updateProperty
 /**
  * Adds a timestamp to the data from the parameter
  * @param data
