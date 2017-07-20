@@ -85,64 +85,17 @@ function sendCommand(value) {
     }
     if (typeof action !== 'string') {
         // the command is a JSON-Object
-        if (action.par && action.par.rw == 1) {
-            console.log('setting property ' + action.par.id + ' to ' + action.par.val);
-            // setting a property for configuration, add to the property ressource
-            switch (action.par.id) {
-                case 0:
-                    properties.targetTemp = action.par.val;
-                    break;
-                case 1:
-                    properties.targetHum = action.par.val;
-                    break;
-                case 4:
-                    properties.duration = action.par.val;
-                    break;
-                case 5:
-                    properties.light = action.par.val;
-                    break;
-                case 6:
-                    properties.clock = action.par.val;
-                    break;
-                case 7:
-                    properties.relais = action.par.val;
-                    break;
-                case 2:
-                case 3:
-                case 8:
-                case 9:
-                case 10:
-                case 11:
-                case 12:
-                case 13:
-                case 14:
-                    console.log('Parameter-ID: ' + action.par.id + ' is not meant to be written');
-                    break;
-                default:
-                    properties[action.par.id] = action.par.val;
-                    console.log('Unknown Parameter-ID: ' + action.par.id);
-                    break;
-            }
-            addValue(properties);
-        }
-        else if (action.cmd && action.cmd.id == 0) {
-            if (action.cmd.temp)
-                properties.targetTemp = action.cmd.temp;
-            if (action.cmd.hum)
-                properties.targetHum = action.cmd.hum;
-            if (action.cmd.dur)
-                properties.duration = action.cmd.dur;
-            addValue(properties);
-        }
         if (action.constructor === Array) {
-            // console.log('Payload is an array');
+            console.log('Payload is an array');
             // action is an array of commands
             action.forEach(function (element) {
+                updateProperty(element);
                 sequenzArray.push(JSON.stringify(element));
             });
         }
         else {
             // action is a single command
+            updateProperty(action);
             sequenzArray.push(JSON.stringify(action));
         }
     }
@@ -158,6 +111,61 @@ function sendCommand(value) {
     // Update the status of the value object
     value.status = 'completed';
 } // sendCommand
+/**
+ * Updates the property if the parameter action is a set-property command or a start sauna command
+ * @param action
+ */
+function updateProperty(action) {
+    if (action.par && action.par.rw == 1) {
+        console.log('setting property ' + action.par.id + ' to ' + action.par.val);
+        // setting a property for configuration, add to the property ressource
+        switch (action.par.id) {
+            case 0:
+                properties.targetTemp = action.par.val;
+                break;
+            case 1:
+                properties.targetHum = action.par.val;
+                break;
+            case 4:
+                properties.duration = action.par.val;
+                break;
+            case 5:
+                properties.light = action.par.val;
+                break;
+            case 6:
+                properties.clock = action.par.val;
+                break;
+            case 7:
+                properties.relais = action.par.val;
+                break;
+            case 2:
+            case 3:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+                console.log('Parameter-ID: ' + action.par.id + ' is not meant to be written');
+                break;
+            default:
+                properties[action.par.id] = action.par.val;
+                console.log('Unknown Parameter-ID: ' + action.par.id);
+                break;
+        }
+        addValue(properties);
+    }
+    else if (action.cmd && action.cmd.id == 0) {
+        if (action.cmd.temp)
+            properties.targetTemp = action.cmd.temp;
+        if (action.cmd.hum)
+            properties.targetHum = action.cmd.hum;
+        if (action.cmd.dur)
+            properties.duration = action.cmd.dur;
+        addValue(properties);
+    }
+} // updateProperty
 /**
  * Adds a timestamp to the data from the parameter
  * @param data
