@@ -50,25 +50,6 @@ KannMotionPlugin.prototype.connectHardware = function () {
  * and sends the initial commands to the KannMotion control
  */
 function initPropertyValues() {
-    /**
-     * Ausgabe von console.log(Object.keys(model.values));:
-     * [ 'maxSpeed',
-        'maxAccel',
-        'maxDecel',
-        'intersectionSpeed',
-        'startGradient',
-        'endGradient',
-        'pwm',
-        'lastResponse',
-        'lastACK',
-        'isOnline',
-        'position',
-        'errorNumber',
-        'errorCounter',
-        'prodVersion',
-        'fwVersion',
-        'sequenceVersion' ]
-     */
     var propertyNames = Object.keys(model.values);
     propertyNames.forEach(function (propertyName) {
         properties[propertyName] = 'unknown';
@@ -82,7 +63,6 @@ function initPropertyValues() {
  *              /model.links.actions.resources.sendCommand.data),
  */
 function sendCommand(value) {
-    // console.log('value = ' + JSON.stringify(value));
     var action;
     if (value.command) {
         action = value.command;
@@ -92,7 +72,7 @@ function sendCommand(value) {
         action = value;
     }
     if (typeof action !== 'string') {
-        // the command is a JSON-Object
+        // action is a JSON-Object
         if (action.par && action.par.cmd == 1) {
             // setting a property for configuration, add to the property ressource
             switch (action.par.id) {
@@ -138,7 +118,7 @@ function sendCommand(value) {
     }
     else {
         // console.log('Payload is a string');
-        // the command is a string
+        // action is a string
         var stringAction = action.trim().replace(/ /g, '');
         sequenzArray.push(stringAction);
     }
@@ -148,17 +128,10 @@ function sendCommand(value) {
     processAnswer();
     // Update the status of the value object
     value.status = 'completed';
-    // console.log('Action after completion:');
-    // console.log(JSON.stringify(value));
 } // sendCommand
 /**
  * Adds a timestamp to the data from the parameter
  * @param data
- *
- * Wenn beim Plugin addValue() aufgerufen wird, wird im Core-Plugin addValue() aufgerufen
- * (sofern nicht hier drin schon selbst implementiert),
- * welches dann wieder die Methode createValue im Plugin selbst aufruft
- * data: das, was bei addValue() hinzugefügt wird
  */
 function createValue(data) {
     //console.log('Properties updated!');
@@ -201,6 +174,7 @@ function timeoutHandler(error) {
  * Sends the next command in the commands array if there is still something to send.
  */
 function processAnswer() {
+    // parse
     // Antwort des Motors auslesen und dem Model hinzufügen:
     // gesamtes answerArray abarbeiten und Antworten jeweils entfernen
     while (answerArray.length > 0) {
