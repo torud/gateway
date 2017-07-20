@@ -12,6 +12,10 @@
   width:100%;
 }
 
+.colClass {
+  background-color:#e6e4e4;
+}
+
 .displayText {
   background-color:#c6c6c6;
   border-radius:5px;
@@ -43,15 +47,7 @@
 .colClass {
   border:solid;
   border-color:#ffffff;
+  /*border-width:2px;*/
   border-radius:10px;
-  background-color:#e6e4e4;
-}
-
-.jsDropdown {
-  width:100%;
-}
-
-#seqCom {
-  margin-bottom:10px;
 }
 

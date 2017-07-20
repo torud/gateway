@@ -374,8 +374,8 @@ function createSequenceCommand(indexInArray, buttonIndex) {
  * @param {*} optionNames   an array of the elements in the dropdown menu
  */
 function getDropdownDiv(id, optionNames) {
-    var result = '<div class="col-md-4">' +
-        '<select class="form-control" id="' + id + '" style="margin:10px;width=500px;">';
+    var result = '<div class="jsDropdown">' +
+        '<select class="form-control" id="' + id + '">';
     for (var i = 0; i < optionNames.length; i++) {
         result = result.concat('<option value="option' + i + '">' + optionNames[i] + '</option>');
     }
@@ -394,10 +394,10 @@ function createInputFields(commandInputFields) {
         if (commandInputFields[j].constructor === Array) {   // input field is a dropdown menu
             inputFields[j] = $(getDropdownDiv('valueSeq' + j, commandInputFields[j]));
         } else {    // input field is a text input field
-            inputFields[j] = $('<input class="form-control" type="text" placeholder="' + commandInputFields[j] + '" id="valueSeq' + j + '" style="margin:10px;">');
+            inputFields[j] = $('<input class="form-control" type="text" placeholder="' + commandInputFields[j] + '" id="valueSeq' + j + '">');
         }
     } // for
-    inputFields.push($('<input class="form-control" type="text" placeholder="Kommentar" id="valueSeqComment" style="margin:10px;">'));
+    inputFields.push($('<input class="form-control" type="text" placeholder="Kommentar" id="valueSeqComment">'));
     inputFields.forEach(function (inputField, index) {
         inputField.appendTo('#seqInputFields');
     });

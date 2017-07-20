@@ -2,14 +2,12 @@
   width:49.6%;
 }
 
-@media (max-width:767px) {
-  .buttonHalf {
-    width:49.4%;
-  }
-}
-
 .buttonFull {
   width:100%;
+}
+
+.colClass {
+  background-color:#e6e4e4;
 }
 
 .displayText {
@@ -43,15 +41,7 @@
 .colClass {
   border:solid;
   border-color:#ffffff;
+  /*border-width:2px;*/
   border-radius:10px;
-  background-color:#e6e4e4;
-}
-
-.jsDropdown {
-  width:100%;
-}
-
-#seqCom {
-  margin-bottom:10px;
 }
 

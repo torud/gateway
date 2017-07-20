@@ -3,7 +3,7 @@ var expect = require('chai').expect,
   status = require('http-status'),
   util = require('util'),
   WebSocketClient = require('websocket').client;
-var token = 'fRfLNLe9aBix0mHyeCdI0PSzNeLpPPgu';
+var token = 'g=u2*4vltox6r9Gw2Af=dJzDbgvpG!e5';
 
 var numberOfTests = 3;
 var numberOfRandomTests = 5;
