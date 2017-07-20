@@ -3,7 +3,7 @@ var expect = require('chai').expect,
   status = require('http-status'),
   util = require('util'),
   WebSocketClient = require('websocket').client;
-var token = 'tJZb@N(Ed4QbaT0878eqV6J6-E-O)Wm4';
+var token = 'VhBW*0_qGNQ9YsI-7_aTl0b*048iHPDB';
 
 describe('Sauna:', function () {
   var req;
@@ -121,7 +121,6 @@ describe('Sauna:', function () {
         body: { "par": { "rw": 0, "id": 0 } }
       },
       function (err, res, body) {
-
         expect(err).to.be.null;
         expect(res.statusCode).to.equal(status.NO_CONTENT);
 
