@@ -3,7 +3,7 @@ var expect = require('chai').expect,
   status = require('http-status'),
   util = require('util'),
   WebSocketClient = require('websocket').client;
-var token = 'P^IDA°pChIwnY-WXAUYe72(Yj2WklO9T';
+var token = '8w2ak_I*G5shOzhNy°"rA!K(mLNFE9fg';
 
 describe('Sauna:', function () {
   var req;

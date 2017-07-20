@@ -68,7 +68,7 @@ exports.modelToResources = function (subModel, withValue) {
 // Generate a unique API Key
 exports.generateApiToken = function (length, chars) {
   if (!length) length = 32;
-  if (!chars) chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789°-_"*()=@!$^';
+  if (!chars) chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"*()=@!$^';
   var randomBytes = crypto.randomBytes(length);
   var result = new Array(length);
 
