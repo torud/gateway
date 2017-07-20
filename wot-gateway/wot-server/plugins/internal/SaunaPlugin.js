@@ -86,6 +86,7 @@ function sendCommand(value) {
     if (typeof action !== 'string') {
         // the command is a JSON-Object
         if (action.par && action.par.rw == 1) {
+            console.log('setting property ' + action.par.id + ' to ' + action.par.val);
             // setting a property for configuration, add to the property ressource
             switch (action.par.id) {
                 case 0:
