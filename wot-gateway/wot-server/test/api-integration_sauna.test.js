@@ -3,7 +3,7 @@ var expect = require('chai').expect,
   status = require('http-status'),
   util = require('util'),
   WebSocketClient = require('websocket').client;
-var token = 'fRfLNLe9aBix0mHyeCdI0PSzNeLpPPgu';
+var token = 'tJZb@N(Ed4QbaT0878eqV6J6-E-O)Wm4';
 
 describe('Sauna:', function () {
   var req;
@@ -256,7 +256,7 @@ describe('Sauna:', function () {
         body: { "par": { "rw": 1, "id": 0, "val": 42 } }
       },
       function (err, res, body) {
-        req.get(rootUrl + '/properties/sauna', function (err, res, properties) {
+        req.get(rootUrl + '/properties', function (err, res, properties) {
 
           expect(err).to.be.null;
           expect(res.statusCode).to.equal(status.OK);
@@ -264,10 +264,102 @@ describe('Sauna:', function () {
           // check the targetTemp value
           expect(properties).to.be.a('array');
           expect(properties).to.have.length.above(0);
-          expect(properties.pop()['targetTemp']).to.be.a('number');
-          expect(properties.pop()['targetTemp']).to.equal(42);
+          var saunaProperties = properties.pop();
+          expect(saunaProperties.values['targetTemp']).to.be.a('number');
+          expect(saunaProperties.values['targetTemp']).to.equal(42);
 
           done();
+        });
+      });
+  });
+
+  it('ensures a "set targetTemp" command as a string changes the targetTemp property', function (done) {
+    var uri = '/actions/sendCommand';
+    req.post(rootUrl + uri,
+      {
+        body: '{ "par": { "rw": 1, "id": 0, "val": 123456 } }'
+      },
+      function (err, res, body) {
+        req.get(rootUrl + '/properties', function (err, res, properties) {
+
+          expect(err).to.be.null;
+          expect(res.statusCode).to.equal(status.OK);
+
+          // check the targetTemp value
+          expect(properties).to.be.a('array');
+          expect(properties).to.have.length.above(0);
+          var saunaProperties = properties.pop();
+          expect(saunaProperties.values['targetTemp']).to.be.a('number');
+          expect(saunaProperties.values['targetTemp']).to.equal(123456);
+
+          done();
+        });
+      });
+  });
+
+  it('sends a array of set-property commands, which get set', function (done) {
+    var uri = '/actions/sendCommand';
+    req.post(rootUrl + uri,
+      {
+        body: [{ "par": { "rw": 1, "id": 0, "val": 43 } },
+        { "par": { "rw": 1, "id": 1, "val": 81 } },
+        { "par": { "rw": 1, "id": 4, "val": 901 } },
+        { "par": { "rw": 1, "id": 5, "val": 6 } },
+        { "par": { "rw": 1, "id": 6, "val": 25201 } },
+        { "par": { "rw": 1, "id": 7, "val": 64 } }]
+
+      },
+      function (err, res, body) {
+        var id = res.headers.location.split('/').pop();
+        req.get(rootUrl + uri, function (err, res, actions) {
+
+          expect(err).to.be.null;
+          expect(res.statusCode).to.equal(status.OK);
+          expect(actions).to.be.an('array');
+          expect(actions[0].id).to.equal(id);
+
+          req.get(rootUrl + uri + '/' + id, function (err, res, action) {
+            expect(err).to.be.null;
+            expect(res.statusCode).to.equal(status.OK);
+            expect(action).to.be.a('object');
+            expect(action.command).to.be.a('array');
+            expect(action.command).to.have.length(6);
+            for (var i = 0; i < 6; i++) {
+              expect(action.command[i]).to.be.a('object');
+              expect(action.command[i].par).to.be.a('object');
+              expect(action.command[i].par.rw).to.be.a('number');
+              expect(action.command[i].par.rw).to.equal(1);
+              expect(action.command[i].par.id).to.be.a('number');
+              expect(action.command[i].par.val).to.be.a('number');
+            }
+            expect(action.status).to.be.a('string');
+            expect(action.timestamp).to.be.a('string');
+            expect(action.status).to.equal('completed');
+
+            req.get(rootUrl + '/properties', function (err, res, properties) {
+
+              expect(err).to.be.null;
+              expect(res.statusCode).to.equal(status.OK);
+
+              // check the values
+              expect(properties).to.be.a('array');
+              expect(properties).to.have.length.above(0);
+              var saunaProperties = properties.pop();
+              expect(saunaProperties.values['targetTemp']).to.be.a('number');
+              expect(saunaProperties.values['targetTemp']).to.equal(43);
+              expect(saunaProperties.values['targetHum']).to.be.a('number');
+              expect(saunaProperties.values['targetHum']).to.equal(81);
+              expect(saunaProperties.values['duration']).to.be.a('number');
+              expect(saunaProperties.values['duration']).to.equal(901);
+              expect(saunaProperties.values['light']).to.be.a('number');
+              expect(saunaProperties.values['light']).to.equal(6);
+              expect(saunaProperties.values['clock']).to.be.a('number');
+              expect(saunaProperties.values['clock']).to.equal(25201);
+              expect(saunaProperties.values['relais']).to.be.a('number');
+              expect(saunaProperties.values['relais']).to.equal(64);
+              done();
+            });
+          });
         });
       });
   });

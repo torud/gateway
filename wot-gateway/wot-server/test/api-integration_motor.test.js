@@ -310,6 +310,102 @@ describe('Motor:', function () {
       });
   });
 
+  it('ensures a "set maxSpeed" command as a string changes the maxSpeed property', function (done) {
+    var uri = '/actions/sendCommand';
+    req.post(rootUrl + uri,
+      {
+        body: '{ "par": { "cmd": 1, "id": 0, "val": 2507 } }'
+      },
+      function (err, res, body) {
+        req.get(rootUrl + '/properties', function (err, res, properties) {
+
+          expect(err).to.be.null;
+          expect(res.statusCode).to.equal(status.OK);
+
+          // check the maxSpeed value
+          expect(properties).to.be.a('array');
+          expect(properties).to.be.of.length(1);
+          var motorProperties = properties.pop();
+          expect(motorProperties.values['maxSpeed']).to.be.a('number');
+          expect(motorProperties.values['maxSpeed']).to.equal(2507);
+
+          done();
+        });
+      });
+  });
+
+  it('sends a array of set-property commands which get set', function (done) {
+    var uri = '/actions/sendCommand';
+    req.post(rootUrl + uri,
+      {
+        body: [{ "par": { "cmd": 1, "id": 0, "val": 2500 } },
+        { "par": { "cmd": 1, "id": 1, "val": 10000 } },
+        { "par": { "cmd": 1, "id": 2, "val": 10000 } },
+        { "par": { "cmd": 1, "id": 3, "val": 152000 } },
+        { "par": { "cmd": 1, "id": 4, "val": 162 } },
+        { "par": { "cmd": 1, "id": 5, "val": 389 } },
+        { "par": { "cmd": 1, "id": 6, "val": 45000 } },
+        { "par": { "cmd": 1, "id": 7, "val": 0 } }]
+      },
+      function (err, res, body) {
+        var id = res.headers.location.split('/').pop();
+        req.get(rootUrl + uri, function (err, res, actions) {
+
+          expect(err).to.be.null;
+          expect(res.statusCode).to.equal(status.OK);
+          expect(actions).to.be.an('array');
+          expect(actions[0].id).to.equal(id);
+
+          req.get(rootUrl + uri + '/' + id, function (err, res, action) {
+            expect(err).to.be.null;
+            expect(res.statusCode).to.equal(status.OK);
+            expect(action).to.be.a('object');
+            expect(action.command).to.be.a('array');
+            expect(action.command).to.have.length(8);
+            for (var i = 0; i < 8; i++) {
+              expect(action.command[i]).to.be.a('object');
+              expect(action.command[i].par).to.be.a('object');
+              expect(action.command[i].par.cmd).to.be.a('number');
+              expect(action.command[i].par.cmd).to.equal(1);
+              expect(action.command[i].par.id).to.be.a('number');
+              expect(action.command[i].par.val).to.be.a('number');
+            }
+            expect(action.status).to.be.a('string');
+            expect(action.timestamp).to.be.a('string');
+            expect(action.status).to.equal('completed');
+
+            req.get(rootUrl + '/properties', function (err, res, properties) {
+
+              expect(err).to.be.null;
+              expect(res.statusCode).to.equal(status.OK);
+
+              // check the values
+              expect(properties).to.be.a('array');
+              expect(properties).to.have.length.above(0);
+              var motorProperties = properties.pop();
+              expect(motorProperties.values['maxSpeed']).to.be.a('number');
+              expect(motorProperties.values['maxSpeed']).to.equal(2500);
+              expect(motorProperties.values['maxAccel']).to.be.a('number');
+              expect(motorProperties.values['maxAccel']).to.equal(10000);
+              expect(motorProperties.values['maxDecel']).to.be.a('number');
+              expect(motorProperties.values['maxDecel']).to.equal(10000);
+              expect(motorProperties.values['intersectionSpeed']).to.be.a('number');
+              expect(motorProperties.values['intersectionSpeed']).to.equal(152000);
+              expect(motorProperties.values['startGradient']).to.be.a('number');
+              expect(motorProperties.values['startGradient']).to.equal(162);
+              expect(motorProperties.values['endGradient']).to.be.a('number');
+              expect(motorProperties.values['endGradient']).to.equal(389);
+              expect(motorProperties.values['pwm']).to.be.a('number');
+              expect(motorProperties.values['pwm']).to.equal(45000);
+              expect(motorProperties.values['7']).to.be.a('number');
+              expect(motorProperties.values['7']).to.equal(0);
+              done();
+            });
+          });
+        });
+      });
+  });
+
 
   // // JSONLD
   // it('returns the root page in JSON-LD', function (done) {
