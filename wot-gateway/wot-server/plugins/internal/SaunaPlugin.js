@@ -86,7 +86,7 @@ function sendCommand(value) {
     if (typeof action !== 'string') {
         // the command is a JSON-Object
         if (action.constructor === Array) {
-            console.log('Payload is an array');
+            // console.log('Payload is an array');
             // action is an array of commands
             action.forEach(function (element) {
                 updateProperty(element);
@@ -94,14 +94,14 @@ function sendCommand(value) {
             });
         }
         else {
-            console.log('Payload is a single JSON command');
+            // console.log('Payload is a single JSON command');
             // action is a single command
             updateProperty(action);
             sequenzArray.push(JSON.stringify(action));
         }
     }
     else {
-        console.log('Payload is a string');
+        // console.log('Payload is a string');
         // the command is a string
         var stringAction = action.trim().replace(/ /g, '');
         try {
@@ -125,7 +125,7 @@ function sendCommand(value) {
  */
 function updateProperty(action) {
     if (action.par && action.par.rw == 1) {
-        console.log('setting property ' + action.par.id + ' to ' + action.par.val);
+        // console.log('setting property ' + action.par.id + ' to ' + action.par.val);
         // setting a property for configuration, add to the property ressource
         switch (action.par.id) {
             case 0:

@@ -12,10 +12,6 @@ module.exports = function () {
         return res.status(401).send({ success: false, message: 'API token missing.' });
       } else {
         if (token != keys.apiToken) { //#D
-          console.log('token is incorrect:')
-          console.log(token)
-          console.log(keys.apiToken)
-          console.log(keys.apiToken == token)
           return res.status(403).send({ success: false, message: 'API token invalid.' });
         } else { //#E
           next();

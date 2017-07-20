@@ -45,10 +45,6 @@ exports.extractFields = function (fields, object, target) {
 };
 
 exports.isTokenValid = function (token) {
-  console.log('checking if token is valid:')
-  console.log(token)
-  console.log(keys.apiToken)
-  console.log(keys.apiToken == token)
   return keys.apiToken == token;
 };
 
