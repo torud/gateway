@@ -3,7 +3,7 @@ var CorePlugin = require('./../corePlugin').CorePlugin,
     util = require('util'),
     utils = require('./../../utils/utils.js');
 
-// default serial port over which the communication with the KannMotion control runs
+// serial port over which the communication with the KannMotion control runs
 var port = new SerialPort('/dev/ttyS1', {
     baudRate: 9600,
     parser: SerialPort.parsers.readline('\n')
@@ -48,7 +48,7 @@ KannMotionPlugin.prototype.connectHardware = function () {
         // because the motor stops if a { "par": { "cmd": 2 } } command is sent
         // --> just send a { "sys": 2 } command
         interval = setInterval(function () {
-            sendCommand({ "sys": 2 });
+            if (properties.isOnline && properties.isOnline == true) sendCommand({ "sys": 2 });
         }, 2000); // setInterval
     }); // port on open
 } // connectHardware
@@ -172,9 +172,7 @@ function timeoutHandler(error) {
  * Sends the next command in the commands array if there is still something to send.
  */
 function processAnswer() {
-    // parse
-    // Antwort des Motors auslesen und dem Model hinzufügen:
-    // gesamtes answerArray abarbeiten und Antworten jeweils entfernen
+    // remove every answer from the answerArray, parse it and add the information to the model
     while (answerArray.length > 0) {
         var answer: string = answerArray.shift();
         console.log('Answer received: ' + answer);
@@ -185,7 +183,8 @@ function processAnswer() {
                 properties.lastResponse = answer;
             }
             if (antwort.info) {
-                /** Variante 1: Antwort auf sys:2-Befehl
+                /**
+                 * answer possibility 1: answer to sys:2-command
                  * {"info":[
                  * {"id":"Position","val":"2855"},
                  * {"id":"Error Number","val":"0x00000000"},
@@ -208,20 +207,22 @@ function processAnswer() {
                             break;
                     }
                     if (index == antwort.info.length - 1) {
-                        // Properties wurden aktualisiert, können dem Model hinzugefügt werden
+                        // properties have been updated, they can be added to the model
                         myself.addValue(properties);
                     }
                 }) // forEach element in antwort.info
             } // antwort.info
             if (antwort.com && antwort.com.id == 'state') {
-                /** Variante 2: Antwort ist ein ACK oder NACK
+                /**
+                 * answer possibility 2: answer is a ACK or NACK
                  * {"com":{"id":"state","val":"ACK"}}
                  */
-                properties.lastACK = antwort.com.val;  // ACK or NACK
+                properties.lastACK = antwort.com.val;
                 myself.addValue(properties);
             } // antwort.com
             if (antwort.par) {
-                /** Variante 3: Antwort auf cmd:2-Befehl
+                /**
+                 * answer possibility 3: answer to cmd:2-command
                  * {"par":{"id":0,"cmd":0,"val":2500}}
                  * {"par":{"id":1,"cmd":0,"val":10000}}
                  * {"par":{"id":2,"cmd":0,"val":10000}}
@@ -230,7 +231,6 @@ function processAnswer() {
                  * {"par":{"id":5,"cmd":0,"val":389}}
                  * {"par":{"id":6,"cmd":0,"val":45000}}
                  * {"par":{"id":7,"cmd":0,"val":0}}
-                 * {"com":{"id":"state","val":"ACK"}}
                  */
                 switch (antwort.par.id) {
                     case 0: properties.maxSpeed = antwort.par.val; break;
@@ -241,6 +241,7 @@ function processAnswer() {
                     case 5: properties.endGradient = antwort.par.val; break;
                     case 6: properties.pwm = antwort.par.val; break;
                     default: console.log('Answer with unknown par id: ' + JSON.stringify(antwort.par.id));
+                        properties[antwort.par.id] = antwort.par.val;
                         break;
                 }
                 myself.addValue(properties);
@@ -280,11 +281,11 @@ port.on('data', function (data) {
     clearTimeout(timer);
     // Run the callback (i.e. set the isOnline property to true)
     timeoutHandler(false);
+    // add the received answer to the answerArray and process it
     answerArray.push(data.toString());
     processAnswer();
 }); // port on data
 
-// open errors will be emitted as an error event 
 port.on('error', function (err) {
     console.log('Error: ', err.message);
 }); // port on error

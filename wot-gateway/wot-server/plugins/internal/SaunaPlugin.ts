@@ -3,7 +3,7 @@ var CorePlugin = require('./../corePlugin').CorePlugin,
     util = require('util'),
     utils = require('./../../utils/utils.js');
 
-// default serial port over which the communication with the sauna runs
+// serial port over which the communication with the sauna runs
 var port = new SerialPort('/dev/ttyS1', {
     baudRate: 115200,
     parser: SerialPort.parsers.readline('\n')
@@ -66,26 +66,6 @@ SaunaPlugin.prototype.connectHardware = function () {
  * and sends the initial commands to the sauna
  */
 function sauna_initPropertyValues() {
-    /**
-     * Ausgabe von console.log(Object.keys(model.values));:
-     * [    "targetTemp",
-            "targetHum",
-            "currTemp",
-            "currHum",
-            "duration",
-            "light",
-            "clock",
-            "relais",
-            "state",
-            "error",
-            "inUse",
-            "bathOn",
-            "libVersion",
-            "puVersion",
-            "bridgeVersion",
-            "isOnline",
-            "lastResponse" ]
-     */
     var propertyNames = Object.keys(model.values);
     propertyNames.forEach(function (propertyName) {
         properties[propertyName] = 'unknown';
@@ -94,7 +74,7 @@ function sauna_initPropertyValues() {
     if (initialCommands && initialCommands != {}) {
         sendCommand(initialCommands);
     }
-} // sauan_initPropertyValues
+} // sauna_initPropertyValues
 
 
 /**
@@ -131,13 +111,13 @@ function sendCommand(value) {
             }
             addValue(properties);
         } else if (action.cmd && action.cmd.id == 0) {
-            console.log('start sauna command')
             if (action.cmd.temp) properties.targetTemp = action.cmd.temp;
             if (action.cmd.hum) properties.targetHum = action.cmd.hum;
             if (action.cmd.dur) properties.duration = action.cmd.dur;
             addValue(properties);
         }
         if (action.constructor === Array) {
+            // console.log('Payload is an array');
             // action is an array of commands
             action.forEach(function (element) {
                 sequenzArray.push(JSON.stringify(element));
