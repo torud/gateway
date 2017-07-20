@@ -39,7 +39,6 @@
   width:100%;
   border-radius:5px;
   color:#bb3a02;
-  /*font-family:'Advent Pro';*/
   border-width:thin;
   outline:0;
 }
@@ -50,7 +49,6 @@
 
 p {
   margin:0 auto;
-  /*font-family:'Advent Pro';*/
   font-size:16px;
 }
 
@@ -104,6 +102,10 @@ input[type=range] {
   align-items:center;
 }
 
+.col-md-12.col-xs-4{
+  vertical-align: middle;
+}
+
 .btn.btn-default {
   background-image:none;
   outline:0;
@@ -117,16 +119,6 @@ input[type=range] {
   outline-offset:-2px;
   outline:0;
 }
-
-/* * {
-  transform: #aaaa45; 
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-  transform: #b12345; 
-  font-family: Arial, Helvetica, sans-serif;
-} */
 
 @font-face {
   font-family: Arial, Helvetica, sans-serif;
