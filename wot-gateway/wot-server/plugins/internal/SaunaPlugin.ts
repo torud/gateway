@@ -143,11 +143,6 @@ function sendCommand(value) {
 /**
  * Adds a timestamp to the data from the parameter
  * @param data  
- * 
- * Wenn beim Plugin addValue() aufgerufen wird, wird im Core-Plugin addValue() aufgerufen
- * (sofern nicht hier drin schon selbst implementiert),
- * welches dann wieder die Methode createValue im Plugin selbst aufruft
- * data: das, was bei addValue() hinzugefügt wird
  */
 function createValue(data) {
     // console.log('Properties updated!');
@@ -161,7 +156,7 @@ function createValue(data) {
 function addValue(data) {
     // clone the data object, otherwise all model.data-array entries are the same
     var clonedData = JSON.parse(JSON.stringify(data));
-    utils.cappedPush(model.data, createValue(data));
+    utils.cappedPush(model.data, createValue(clonedData));
 }
 
 
@@ -193,8 +188,7 @@ function timeoutHandler(error) {
  * Sends the next command in the commands array if there is still something to send.
  */
 function sauna_processAnswer() {
-    // Antwort der Sauna auslesen und dem Model hinzufügen:
-    // gesamtes answerArray abarbeiten und Antworten jeweils entfernen
+    // remove every answer from the answerArray, parse it and add the information to the model
     while (answerArray.length > 0) {
         var answer: string = answerArray.shift();
         properties.lastResponse = answer;
@@ -202,7 +196,8 @@ function sauna_processAnswer() {
         try {
             var antwort = JSON.parse(answer.trim());
             if (antwort.par && antwort.par.id && antwort.par.val) {
-                /** Variante 1: Antwort auf ein Property get/set
+                /**
+                 * answer possibility 1: answer to a property get/set
                  * {"par":{"rw":0,"id":0,"val":42}}
                  */
                 switch (antwort.par.id) {
@@ -222,14 +217,16 @@ function sauna_processAnswer() {
                     case 13: properties.puVersion = antwort.par.val; break;
                     case 14: properties.bridgeVersion = antwort.par.val; break;
                     default: console.log('Answer with unknown par id: ' + JSON.stringify(antwort.par.id));
+                        properties[antwort.par.id] = antwort.par.val;
                         break;
                 }
                 addValue(properties);
             } // antwort.par
             if (antwort.cmd && antwort.cmd.id) {
-                /** Variante 2: Antwort auf ein Kommando (z.B. start, stop)
-                 * {"cmd":{"id":0,"temp":80,"hum":30,"dur":15,"state":"ACK"}} oder
-                 * {"cmd":{"id":1,"state":"ACK"}} oder
+                /**
+                 * answer possibility 2: answer to a command (e.g. start, stop)
+                 * {"cmd":{"id":0,"temp":80,"hum":30,"dur":15,"state":"ACK"}} or
+                 * {"cmd":{"id":1,"state":"ACK"}} or
                  * {"cmd":{"id":3,"val":"password","state":"ACK"}}
                  */
                 if (antwort.cmd.id == 0) {
@@ -272,11 +269,11 @@ port.on('data', function (data) {
     clearTimeout(timer);
     // Run the callback (i.e. set the isOnline property to true)
     timeoutHandler(false);
+    // add the received answer to the answerArray and process it
     answerArray.push(data.toString());
     sauna_processAnswer();
 }); // port on data
 
-// open errors will be emitted as an error event 
 port.on('error', function (err) {
     console.log('Error: ', err.message);
 });
