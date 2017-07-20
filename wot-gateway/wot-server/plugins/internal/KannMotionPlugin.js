@@ -17,7 +17,7 @@ var model;
 var timer;
 // time in ms after which the motor has to respond,
 // otherwise properties.isOnline will be set to false
-var timeoutTime = 5000;
+var timeoutTime = 1000;
 /**
  * Creates the KannMotion plugin and registers the method to be called at certain events
  */
