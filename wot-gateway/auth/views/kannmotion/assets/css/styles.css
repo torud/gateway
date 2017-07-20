@@ -20,6 +20,13 @@
 
 #currentSequence {
   min-height:100px;
+  overflow: auto;
+}
+
+#sentCommands {
+  overflow:auto;
+  max-height:200px;
+  min-height:200px;
 }
 
 .btn {
