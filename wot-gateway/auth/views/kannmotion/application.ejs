@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kannmotion_V1</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="kannmotion/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="kannmotion/assets/css/styles.css">
 </head>
 
 <body>
@@ -14,7 +14,7 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand navbar-link" href="#"><img src="assets/img/adlos_kannmotion.jpg"></a>
+                <a class="navbar-brand navbar-link" href="#"><img src="kannmotion/assets/img/adlos_kannmotion.jpg"></a>
                 <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
             </div>
             <div class="collapse navbar-collapse" id="navcol-1">
@@ -60,11 +60,13 @@
                             <div class="form-group">
                                 <form>
                                     <h2>Befehle </h2>
-                                    <p>Hier können die sich auf dem Motor befindliche Sequenz gelöscht werden oder die KannMotion Steuerung zurückgesetzt werden, was die aktuell auf dem Motor gespeicherte Sequenz ausführen lässt. </p>
-                                    <button class="btn btn-default buttonHalf"
-                                    type="button" id="buttonDelSeq">Sequenz löschen</button>
+                                    <p>Hier können die sich auf dem Motor befindliche Sequenz gelöscht werden oder die KannMotion
+                                        Steuerung zurückgesetzt werden, was die aktuell auf dem Motor gespeicherte Sequenz
+                                        ausführen lässt. </p>
+                                    <button class="btn btn-default buttonHalf" type="button" id="buttonDelSeq">Sequenz löschen</button>
                                     <button class="btn btn-default buttonHalf" type="button" id="buttonReset">Reset </button>
-                                    <p>Hier können komplette, syntaktisch korrekte Befehle im JSON Format eingegeben und gesendet werden: </p>
+                                    <p>Hier können komplette, syntaktisch korrekte Befehle im JSON Format eingegeben und gesendet
+                                        werden: </p>
                                     <input class="form-control" type="text" id="plainJSONSeq" placeholder="JSON-Befehl">
                                     <button class="btn btn-default buttonFull" type="button" id="buttonSendJSONCommand">Sende Befehl</button>
                                 </form>
@@ -76,8 +78,10 @@
                             <div class="form-group">
                                 <form id="sequences">
                                     <h2>Sequenzen </h2>
-                                    <p>Hier können Sequenzen für den Motor zusammengestellt werden. Aktion auswählen, Werte eintragen und dann hinzufügen. Wenn alle gewünschten Aktionen hinzugefügt sind, kann die Sequenz an den Motor gesendet werden.&lt;br&gt;Wenn
-                                        die Sequenz auf den Motor geladen wurde, kann die Sequenz ausgeführt werden. </p>
+                                    <p>Hier können Sequenzen für den Motor zusammengestellt werden. Aktion auswählen, Werte
+                                        eintragen und dann hinzufügen. Wenn alle gewünschten Aktionen hinzugefügt sind, kann
+                                        die Sequenz an den Motor gesendet werden.&lt;br&gt;Wenn die Sequenz auf den Motor
+                                        geladen wurde, kann die Sequenz ausgeführt werden. </p>
                                     <div id="sequenceInputs">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -131,9 +135,9 @@
             </div>
         </div>
     </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/KannMotionApplication.js"></script>
+    <script src="kannmotion/assets/js/jquery.min.js"></script>
+    <script src="kannmotion/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="kannmotion/assets/js/KannMotionApplication.js"></script>
 </body>
 
 </html>
