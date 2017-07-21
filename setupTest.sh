@@ -27,6 +27,7 @@ Yaler relais domain             $YALER_RELAIS_DOMAIN"
 
 
 sudo apt-get update
+sudo apt-get -y -q install avahi-daemon
 
 CHECKWIFICONNECTION=$AUTHSERVER_LOCATION"checkWiFiConnection.sh"
 cat <<EOT > $GITFOLDER'shellVariablesTest'
