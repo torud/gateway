@@ -10,7 +10,7 @@ ExecStartPre=/bin/sh -c 'exec /bin/echo "[`date`] Authorisation-Server Starting"
 ExecStopPost=/bin/sh -c 'exec /bin/echo "[`date`] Authorisation-Server Stopped" >> /var/log/authserverLog.log'
 
 
-ExecStart=/bin/sh -c 'exec /usr/local/bin/node /root/WoT/gateway/wot-gateway/auth/authProxy.js >> /var/log/authserve$
+ExecStart=/bin/sh -c 'exec /usr/local/bin/node /root/WoT/gateway/wot-gateway/auth/authProxy.js >> /var/log/authserverLog.log'
 #WorkingDirectory=/root/WoT/gateway/wot-gateway/auth/   # Required on some systems
 Restart=always
 # give up restarting if there are 10 restarts within 90 seconds
