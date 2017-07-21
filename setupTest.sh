@@ -8,8 +8,8 @@ USERNAME_GITHUB="joelthierry"
 EMAIL_GITHUB="thierry.durot@ntb.ch"
 URL_GITHUB="https://github.com/joelthierry/"
 REPOSITORY="gateway/"
-AUTHSERVER_LOCATION="wot-gateway/auth/"
-WOTSERVER_LOCATION="wot-gateway/wot-server/"
+AUTHSERVER_LOCATION=$GITFOLDER$REPOSITORY"wot-gateway/auth/"
+WOTSERVER_LOCATION=$GITFOLDER$REPOSITORY"wot-gateway/wot-server/"
 YALER_RELAIS_DOMAIN="gsiot-6p05-1srr"
 
 echo "setting up NanoPi NEO with following settings:
