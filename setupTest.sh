@@ -22,7 +22,7 @@ wot-server folder\t$WOTSERVER_LOCATION
 Yaler relais domain\t$YALER_RELAIS_DOMAIN"
 
 # setup network discovery with mDNS
-cat <<EOT > '/root/WoT/shellVariablesTest'
+cat <<EOT > '$GITFOLDERshellVariablesTest'
 127.0.0.1    localhost.localdomain localhost
 127.0.1.1    $GITFOLDER$REPOSITORY$AUTHSERVER_LOCATION
 EOT
