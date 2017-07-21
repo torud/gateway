@@ -5,18 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Küng Sauna</title>
-    <link rel="stylesheet" href="kuengsauna/assets/bootstrap/css/bootstrap.min.css">
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Advent+Pro"> -->
-    <link rel="stylesheet" href="kuengsauna/assets/css/styles.css">
-    <link rel="stylesheet" href="kuengsauna/assets/css/switch.css">
-    <link rel="manifest" href="kuengsauna/assets/manifest.json">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/switch.css">
+    <link rel="manifest" href="assets/manifest.json">
 </head>
 
 <body style="background-color:#222222;">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand navbar-link" href="#"><img src="kuengsauna/assets/img/kueng-logo2.png"></a>
+                <a class="navbar-brand navbar-link" href="#"><img src="assets/img/kueng-logo2.png"></a>
                 <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
             </div>
             <div class="collapse navbar-collapse" id="navcol-1">
@@ -28,7 +27,7 @@
     </nav>
     <div class="container">
         <div class="col-md-12 col-xs-12">
-            <div class="row">
+            <div class="row colLeftValign">
                 <div class="col-md-12 col-xs-4">
                     <p style="color:rgb(252,251,251);">Saunagang</p>
                 </div>
@@ -40,18 +39,18 @@
                     </select>
                 </div>
             </div>
-            <div class="row">
+            <div class="row colLeftValign">
                 <div class="col-md-12 col-xs-4">
-                    <p style="color:rgb(252,251,251);">Eigenschaft</p>
+                    <p class="textDesc" style="color:rgb(252,251,251);">Eigenschaft</p>
                 </div>
                 <div class="col-md-12 col-xs-4">
-                    <p class="colAlignCenter" style="color:rgb(252,251,251);">Aktuell</p>
+                    <p class="colAlignCenter textDesc" style="color:rgb(252,251,251);">Aktuell</p>
                 </div>
                 <div class="col-md-12 col-xs-4">
-                    <p class="colAlignCenter" style="color:rgb(252,251,251);">Soll </p>
+                    <p class="colAlignCenter textDesc" style="color:rgb(252,251,251);">Soll </p>
                 </div>
             </div>
-            <div class="row">
+            <div class="row colLeftValign">
                 <div class="col-md-12 col-xs-4">
                     <p style="color:rgb(252,251,251);">Temperatur in °C</p>
                 </div>
@@ -62,7 +61,7 @@
                     <input class="input-lg numInput" type="number" name="tempSet" min="50" max="100" step="5" id="targetTemp">
                 </div>
             </div>
-            <div class="row">
+            <div class="row colLeftValign">
                 <div class="col-md-12 col-xs-4">
                     <p style="color:rgb(252,251,251);">Luftfeuchtigkeit in %</p>
                 </div>
@@ -73,7 +72,7 @@
                     <input class="input-lg numInput" type="number" name="tempSet" min="0" max="100" step="5" id="targetHum">
                 </div>
             </div>
-            <div class="row">
+            <div class="row colLeftValign">
                 <div class="col-md-12 col-xs-4">
                     <p style="color:rgb(252,251,251);">Gangdauer in min</p>
                 </div>
@@ -84,7 +83,7 @@
                     <input class="input-lg numInput" type="number" name="tempSet" min="5" max="120" step="5" id="targetDur">
                 </div>
             </div>
-            <div class="row">
+            <div class="row colLeftValign">
                 <div class="col-md-12 col-xs-4">
                     <p style="color:rgb(252,251,251);">Lichtstufe</p>
                 </div>
@@ -92,7 +91,7 @@
                     <input type="range" value="0" min="0" max="8" step="1" id="levelLight">
                 </div>
             </div>
-            <div class="row">
+            <div class="row colLeftValign">
                 <div class="col-md-12 col-xs-4">
                     <p style="color:rgb(252,251,251);">Starten</p>
                 </div>
@@ -101,7 +100,7 @@
                     <label for="switchSauna">Toggle </label>
                 </div>
             </div>
-            <div class="row">
+            <div class="row colLeftValign">
                 <div class="col-md-12 col-xs-4">
                     <p style="color:rgb(252,251,251);">Status</p>
                 </div>
@@ -111,9 +110,9 @@
             </div>
         </div>
     </div>
-    <script src="kuengsauna/assets/js/jquery.min.js"></script>
-    <script src="kuengsauna/assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="kuengsauna/assets/js/KuengSaunaApplication.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/KuengSaunaApplication.js"></script>
 
 </body>
 

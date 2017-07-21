@@ -102,10 +102,6 @@ input[type=range] {
   align-items:center;
 }
 
-.col-md-12.col-xs-4{
-  vertical-align: middle;
-}
-
 .btn.btn-default {
   background-image:none;
   outline:0;
@@ -126,4 +122,14 @@ input[type=range] {
 
 #selectBtn {
   font-size: 16px;
+}
+
+.textDesc {
+  font-weight: bold;
+}
+
+.colLeftValign {
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
