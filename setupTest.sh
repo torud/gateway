@@ -36,7 +36,7 @@ ExecStartPre=/bin/sh -c 'exec /bin/echo "[`date`] WoT-Server Starting" > /var/lo
 ExecStopPost=/bin/sh -c 'exec /bin/echo "[`date`] WoT-Server Stopped" >> /var/log/wotserverLog.log'
 
 
-ExecStart=/bin/sh -c 'exec /usr/local/bin/node $WOTSERVER_LOCATIONwot.js >> /var/log/wotserverLog.log'
+ExecStart=/bin/sh -c 'exec /usr/local/bin/node $WOTSERVER_LOCATION wot.js >> /var/log/wotserverLog.log'
 #WorkingDirectory=$WOTSERVER_LOCATION   # Required on some systems
 Restart=always
 # give up restarting if there are 10 restarts within 90 seconds
