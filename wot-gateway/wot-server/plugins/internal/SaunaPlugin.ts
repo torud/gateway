@@ -9,6 +9,7 @@ var port = new SerialPort('/dev/ttyS1', {
     parser: SerialPort.parsers.readline('\n')
 });
 
+var myself;
 var answerArray = [];
 var commands = [];
 var sequenzArray = [];
@@ -33,7 +34,8 @@ var model;
 var timer;
 // time in ms after which the sauna has to respond,
 // otherwise properties.isOnline will be set to false
-var timeoutTime = 5000;
+var timeoutTime = 1000;
+var pollingInterval = 2000;
 
 /**
  * Creates the Sauna plugin and registers the method to be called at certain events
@@ -43,6 +45,7 @@ var SaunaPlugin = exports.SaunaPlugin = function (params) {
     CorePlugin.call(this, params, 'sauna', stop, null, ['sendCommand'], sendCommand);
     // model = links.properties.resources.sauna;
     model = this.model;
+    myself = this;
 } // SaunaPlugin
 
 util.inherits(SaunaPlugin, CorePlugin);
@@ -57,7 +60,7 @@ SaunaPlugin.prototype.connectHardware = function () {
         // Polling infos
         interval = setInterval(function () {
             if (properties.isOnline && properties.isOnline == true) sendCommand(initialCommands);
-        }, 2000); // setInterval
+        }, pollingInterval); // setInterval
     }); // port on open
 } // connectHardware
 
@@ -70,7 +73,7 @@ function sauna_initPropertyValues() {
     propertyNames.forEach(function (propertyName) {
         properties[propertyName] = 'unknown';
     });
-    addValue(properties);
+    myself.addValue(properties);
     if (initialCommands && initialCommands != {}) {
         sendCommand(initialCommands);
     }
@@ -148,12 +151,12 @@ function updateProperty(action) {
                 console.log('Unknown Parameter-ID: ' + action.par.id);
                 break;
         }
-        addValue(properties);
+        myself.addValue(properties);
     } else if (action.cmd && action.cmd.id == 0) {
         if (action.cmd.temp) properties.targetTemp = action.cmd.temp;
         if (action.cmd.hum) properties.targetHum = action.cmd.hum;
         if (action.cmd.dur) properties.duration = action.cmd.dur;
-        addValue(properties);
+        myself.addValue(properties);
     }
 } // updateProperty
 
@@ -170,7 +173,7 @@ function createValue(data) {
  * Adds a value to the model.data array (i.e. links.properties.resources.sauna.data array)
  * @param data  the data to add the model.data array
  */
-function addValue(data) {
+SaunaPlugin.prototype.addValue = function (data) {
     // clone the data object, otherwise all model.data-array entries are the same
     var clonedData = JSON.parse(JSON.stringify(data));
     utils.cappedPush(model.data, createValue(clonedData));
@@ -188,14 +191,14 @@ function timeoutHandler(error) {
         console.log('Oh boy, there has been a timeout!');
         if (properties.isOnline != false) {
             properties.isOnline = false;
-            addValue(properties);
+            myself.addValue(properties);
         }
         commands = [];
     } else {
         //console.log('Oh boy, the timeout has been cleared!');
         if (properties.isOnline != true) {
             properties.isOnline = true;
-            addValue(properties);
+            myself.addValue(properties);
         }
     }
 } // timeoutHandler
@@ -237,7 +240,7 @@ function sauna_processAnswer() {
                         properties[antwort.par.id] = antwort.par.val;
                         break;
                 }
-                addValue(properties);
+                myself.addValue(properties);
             } // antwort.par
             if (antwort.cmd && antwort.cmd.id) {
                 /**
@@ -250,7 +253,7 @@ function sauna_processAnswer() {
                     properties.targetTemp = antwort.cmd.temp;
                     properties.targetHum = antwort.cmd.hum;
                     properties.duration = antwort.cmd.dur;
-                    addValue(properties);
+                    myself.addValue(properties);
                 }
             } // antwort.cmd
         } catch (e) {

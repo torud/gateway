@@ -18,6 +18,7 @@ var timer;
 // time in ms after which the motor has to respond,
 // otherwise properties.isOnline will be set to false
 var timeoutTime = 1000;
+var pollingInterval = 2000;
 /**
  * Creates the KannMotion plugin and registers the method to be called at certain events
  */
@@ -43,7 +44,7 @@ KannMotionPlugin.prototype.connectHardware = function () {
         interval = setInterval(function () {
             if (properties.isOnline && properties.isOnline == true)
                 sendCommand({ "sys": 2 });
-        }, 2000); // setInterval
+        }, pollingInterval); // setInterval
     }); // port on open
 }; // connectHardware
 /**
