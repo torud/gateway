@@ -25,6 +25,8 @@ auth-server folder              $AUTHSERVER_LOCATION
 wot-server folder               $WOTSERVER_LOCATION
 Yaler relais domain             $YALER_RELAIS_DOMAIN"
 
+
+WOTSERVER_APPLICATION=$WOTSERVER_LOCATION"wot.js"
 # setup network discovery with mDNS
 cat <<EOT > $GITFOLDER'shellVariablesTest'
 [Unit]
@@ -36,7 +38,7 @@ ExecStartPre=/bin/sh -c 'exec /bin/echo "[`date`] WoT-Server Starting" > /var/lo
 ExecStopPost=/bin/sh -c 'exec /bin/echo "[`date`] WoT-Server Stopped" >> /var/log/wotserverLog.log'
 
 
-ExecStart=/bin/sh -c 'exec /usr/local/bin/node $WOTSERVER_LOCATIONwot.js >> /var/log/wotserverLog.log'
+ExecStart=/bin/sh -c 'exec /usr/local/bin/node $WOTSERVER_APPLICATION >> /var/log/wotserverLog.log'
 #WorkingDirectory=$WOTSERVER_LOCATION   # Required on some systems
 Restart=always
 # give up restarting if there are 10 restarts within 90 seconds
