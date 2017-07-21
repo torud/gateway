@@ -26,6 +26,8 @@ wot-server folder               $WOTSERVER_LOCATION
 Yaler relais domain             $YALER_RELAIS_DOMAIN"
 
 
+sudo apt-get update
+
 CHECKWIFICONNECTION=$AUTHSERVER_LOCATION"checkWiFiConnection.sh"
 cat <<EOT > $GITFOLDER'shellVariablesTest'
 [Unit]
