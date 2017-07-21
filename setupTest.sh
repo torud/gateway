@@ -10,16 +10,16 @@ AUTHSERVER_LOCATION="wot-gateway/auth/"
 WOTSERVER_LOCATION="wot-gateway/wot-server/"
 YALER_RELAIS_DOMAIN="gsiot-6p05-1srr"
 
-echo -e "setting up NanoPi NEO with following settings:
-mDNS-name                       \t$MDNS_NAME
-hotspot SSID                    \t$HOTSPOT_SSID
-hotspot password                \t$HOTSPOT_PWD
-folder to clone github in       \t$GITFOLDER
-github url                      \t$URL_GITHUB
-repository folder               \t$REPOSITORY
-auth-server folder              \t$AUTHSERVER_LOCATION
-wot-server folder               \t$WOTSERVER_LOCATION
-Yaler relais domain             \t$YALER_RELAIS_DOMAIN"
+echo "setting up NanoPi NEO with following settings:
+mDNS-name                       $MDNS_NAME
+hotspot SSID                    $HOTSPOT_SSID
+hotspot password                $HOTSPOT_PWD
+folder to clone github in       $GITFOLDER
+github url                      $URL_GITHUB
+repository folder               $REPOSITORY
+auth-server folder              $AUTHSERVER_LOCATION
+wot-server folder               $WOTSERVER_LOCATION
+Yaler relais domain             $YALER_RELAIS_DOMAIN"
 
 # setup network discovery with mDNS
 cat <<EOT > $GITFOLDER'shellVariablesTest'
