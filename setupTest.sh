@@ -30,30 +30,22 @@ WOTSERVER_APPLICATION=$WOTSERVER_LOCATION"wot.js"
 # setup network discovery with mDNS
 cat <<EOT > $GITFOLDER'shellVariablesTest'
 [Unit]
-Description=Node.js Web of Things Server
+Description=checkWiFiConnection caller
 
 [Service]
 
-ExecStartPre=/bin/sh -c 'exec /bin/echo "[`date`] WoT-Server Starting" > /var/log/wotserverLog.log'
-ExecStopPost=/bin/sh -c 'exec /bin/echo "[`date`] WoT-Server Stopped" >> /var/log/wotserverLog.log'
+ExecStart=/bin/bash $AUTHSERVER_LOCATIONcheckWiFiConnection.sh
 
-
-ExecStart=/bin/sh -c 'exec /usr/local/bin/node $WOTSERVER_APPLICATION >> /var/log/wotserverLog.log'
-#WorkingDirectory=$WOTSERVER_LOCATION   # Required on some systems
 Restart=always
-# give up restarting if there are 10 restarts within 90 seconds
-StartLimitInterval=90
+# give up restarting if there are 10 restarts within 60 seconds
+StartLimitInterval=60
 StartLimitBurst=10
-#RestartSec=10                                  # Restart service after 10 seconds if node service crashes
+RestartSec=10
 
-StandardOutput=syslog                           # Output to syslog of systemd (view with journalctl)
-StandardError=syslog                            # Output to syslog of systemd (view with journalctl)
-SyslogIdentifier=WoT-Server
-#User=<alternate user>
-#Group=<alternate group>
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=changeToHotspotIfNeeded
 
-# the port on which the server runs has to be mentioned here
-Environment=NODE_ENV=production PORT=8484
 
 [Install]
 WantedBy=multi-user.target
