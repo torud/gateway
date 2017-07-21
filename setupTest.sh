@@ -26,14 +26,14 @@ wot-server folder               $WOTSERVER_LOCATION
 Yaler relais domain             $YALER_RELAIS_DOMAIN"
 
 
-# setup network discovery with mDNS
+CHECKWIFICONNECTION=$AUTHSERVER_LOCATION"checkWiFiConnection.sh"
 cat <<EOT > $GITFOLDER'shellVariablesTest'
 [Unit]
 Description=checkWiFiConnection caller
 
 [Service]
 
-ExecStart=/bin/bash $AUTHSERVER_LOCATION.checkWiFiConnection.sh
+ExecStart=/bin/bash $CHECKWIFICONNECTION
 
 Restart=always
 # give up restarting if there are 10 restarts within 60 seconds
