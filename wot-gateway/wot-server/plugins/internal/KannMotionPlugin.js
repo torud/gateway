@@ -109,7 +109,7 @@ function sendCommand(value) {
     value.status = 'completed';
 } // sendCommand
 /**
- * Updates the property if the parameter action is a set-property command or a start sauna command
+ * Updates the property if the parameter action is a set-property command
  * @param action
  */
 function updateProperty(action) {
