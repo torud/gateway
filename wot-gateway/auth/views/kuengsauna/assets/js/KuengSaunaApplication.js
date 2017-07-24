@@ -7,13 +7,10 @@
 
 // -------------------------- global variables --------------------------
 var td = top.document;
-var selectedCommandIndex = -1;
-var saunaOn = false;
 var serverLocation = window.location;
 var postActionStatus = 204;
 var wsURL = '';
 var webSocket;
-var inputFields = [];
 
 var tarTemp;
 var tarHum;
@@ -21,10 +18,6 @@ var tarDur;
 
 // -------------------------- predefined sauna commands --------------------------
 var stopSauna = { "cmd": { "id": 1 } };
-var readCurrTemp = { "par": { "rw": 0, "id": 2 } };
-var readCurrHum = { "par": { "rw": 0, "id": 3 } };
-var readCurrDur = { "par": { "rw": 0, "id": 4 } };
-var readLight = { "par": { "rw": 0, "id": 5 } };
 
 // -------------------------- sauna commands --------------------------
 // choose type of sauna
@@ -49,7 +42,7 @@ $('#switchSauna').on('change', function () {
       }
 });
 
-// actualize target values while sauna running
+// update target values
 $('#targetTemp').on('change', function () {
       tarTemp = td.getElementById('targetTemp').value;
       var command = '{"par":{"rw":1,"id":0,"val":' + tarTemp + '}}';
@@ -68,7 +61,7 @@ $('#targetDur').on('change', function () {
       postSendCommand(command, 'start/stop sauna on change dur');
 });
 
-// change light over slider
+// change light via slider
 $('#levelLight').on('change', function () {
       var levLight = td.getElementById('levelLight').value;
       var command = '{"par":{"rw":1,"id":5,"val":' + levLight + '}}';
@@ -102,7 +95,6 @@ webSocket.onmessage = function (event) {
 webSocket.onerror = function (error) {
       console.error('WebSocket error!');
       console.error(error);
-      $('#answerStatus').html('WoT-Gateway-Server ist offline! Neustart des Sauna-Gateways erforderlich!');
 }
 
 
@@ -124,10 +116,9 @@ function postSendCommand(command, name, callback) {
             if (request.readyState === XMLHttpRequest.DONE) {
                   if (callback) callback(request.status === postActionStatus, request);
                   if (request.status === postActionStatus) {
-                        //$('#answerStatus').html(name + ' erfolgreich gesendet\n');
+                        // do nothing
                   } else {
-                        console.log(request);
-                        //$('#answerStatus').html(name + ' fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
+                        console.error(name + ' fehlgeschlagen! Status: ' + request.status + ' ' + request.statusText);
                   }
             }
       }
@@ -156,34 +147,36 @@ function displayVal(properties) {
             $('#isOnline').html('Offline');
             td.getElementById('isOnline').style.color = '#ff0000';
       }
-}
+} // displayVal
 
 /**
  * Get the selected option and display it in the specific fields
  */
 function getSelectedOption() {
-      var defTemp;
-      var defHum;
-      var defDur;
       var selectedOption = td.getElementById('selectBtn').value;
       switch (selectedOption) {
             case 'finarium':
-                  defTemp = 90;
-                  defHum = 15;
-                  defDur = 30;
+                  tarTemp = 90;
+                  tarHum = 15;
+                  tarDur = 30;
                   break;
             case 'dampfbad':
-                  defTemp = 50;
-                  defHum = 50;
-                  defDur = 30;
+                  tarTemp = 50;
+                  tarHum = 50;
+                  tarDur = 30;
                   break;
             case 'warmluftbad':
-                  defTemp = 45;
-                  defHum = 15;
-                  defDur = 30;
+                  tarTemp = 45;
+                  tarHum = 15;
+                  tarDur = 30;
+                  break;
+            default:
+                  tarTemp = 42;
+                  tarHum = 42;
+                  tarDur = 42;
                   break;
       }
-      td.getElementById('targetTemp').value = defTemp;
-      td.getElementById('targetHum').value = defHum;
-      td.getElementById('targetDur').value = defDur;
-}
+      td.getElementById('targetTemp').value = tarTemp;
+      td.getElementById('targetHum').value = tarHum;
+      td.getElementById('targetDur').value = tarDur;
+} // getSelectedOption
