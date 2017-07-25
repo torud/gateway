@@ -228,6 +228,7 @@ function sauna_processAnswer() {
         console.log('Answer received: ' + answer);
         try {
             var antwort = JSON.parse(answer.trim());
+            console.log(antwort.par && antwort.par.id && antwort.par.val);
             if (antwort.par && antwort.par.id && antwort.par.val) {
                 /**
                  * answer possibility 1: answer to a property get/set
