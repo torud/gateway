@@ -220,6 +220,7 @@ function sauna_processAnswer() {
                  * answer possibility 1: answer to a property get/set
                  * {"par":{"rw":0,"id":0,"val":42}}
                  */
+                console.log('setting property ' + antwort.par.id + ' to ' + antwort.par.val);
                 switch (antwort.par.id) {
                     case 0: properties.targetTemp = antwort.par.val; break;
                     case 1: properties.targetHum = antwort.par.val; break;
