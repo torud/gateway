@@ -229,7 +229,7 @@ function sauna_processAnswer() {
         try {
             var antwort = JSON.parse(answer.trim());
             console.log(antwort.par && antwort.par.id && antwort.par.val);
-            if (antwort.par && antwort.par.id && antwort.par.val) {
+            if (antwort.par) {
                 /**
                  * answer possibility 1: answer to a property get/set
                  * {"par":{"rw":0,"id":0,"val":42}}
