@@ -127,7 +127,7 @@ function sendCommand(value) {
  */
 function updateProperty(action) {
     if (action.par && action.par.rw == 1) {
-        // console.log('setting property ' + action.par.id + ' to ' + action.par.val);
+        console.log('setting property ' + action.par.id + ' to ' + action.par.val);
         // setting a property for configuration, add to the property ressource
         switch (action.par.id) {
             case 0:
