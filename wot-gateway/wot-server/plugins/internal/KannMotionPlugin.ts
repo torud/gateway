@@ -49,7 +49,7 @@ KannMotionPlugin.prototype.connectHardware = function () {
         // because the motor stops if a { "par": { "cmd": 2 } } command is sent
         // --> just send a { "sys": 2 } command
         interval = setInterval(function () {
-            if (properties.isOnline && properties.isOnline == true) sendCommand({ "sys": 2 });
+            sendCommand({ "sys": 2 });
         }, pollingInterval); // setInterval
     }); // port on open
 } // connectHardware

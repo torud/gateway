@@ -206,7 +206,6 @@ function timeoutHandler(error) {
         if (properties.isOnline != false) {
             properties.isOnline = false;
             myself.addValue(properties);
-            // clearInterval(interval);
         }
         commands = [];
     }
