@@ -59,7 +59,7 @@ SaunaPlugin.prototype.connectHardware = function () {
         sauna_initPropertyValues();
         // Polling infos
         interval = setInterval(function () {
-            if (properties.isOnline && properties.isOnline == true) sendCommand(initialCommands);
+            // if (properties.isOnline && properties.isOnline == true) sendCommand(initialCommands);
         }, pollingInterval); // setInterval
     }); // port on open
 } // connectHardware
@@ -165,7 +165,7 @@ function updateProperty(action) {
  * @param data  
  */
 function createValue(data) {
-    // console.log('Properties updated!');
+    console.log('Properties updated!');
     return Object.assign(data, { "timestamp": utils.isoTimestamp() });
 }
 
