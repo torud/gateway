@@ -32,6 +32,7 @@ var timer;
 // otherwise properties.isOnline will be set to false
 var timeoutTime = 1000;
 var pollingInterval = 2000;
+var interval;
 /**
  * Creates the Sauna plugin and registers the method to be called at certain events
  */
@@ -50,10 +51,6 @@ SaunaPlugin.prototype.connectHardware = function () {
     port.on('open', function () {
         console.log('Serial Port opened');
         sauna_initPropertyValues();
-        // Polling infos
-        interval = setInterval(function () {
-            // if (properties.isOnline && properties.isOnline == true) sendCommand(initialCommands);
-        }, pollingInterval); // setInterval
     }); // port on open
 }; // connectHardware
 /**
@@ -205,6 +202,7 @@ function timeoutHandler(error) {
         if (properties.isOnline != false) {
             properties.isOnline = false;
             myself.addValue(properties);
+            clearInterval(interval);
         }
         commands = [];
     }
@@ -213,6 +211,11 @@ function timeoutHandler(error) {
         if (properties.isOnline != true) {
             properties.isOnline = true;
             myself.addValue(properties);
+            // Polling infos
+            interval = setInterval(function () {
+                if (properties.isOnline && properties.isOnline == true)
+                    sendCommand(initialCommands);
+            }, pollingInterval); // setInterval
         }
     }
 } // timeoutHandler
