@@ -127,7 +127,7 @@ function sendCommand(value) {
  */
 function updateProperty(action) {
     if (action.par && action.par.rw == 1) {
-        console.log('setting property ' + action.par.id + ' to ' + action.par.val);
+        // console.log('setting property ' + action.par.id + ' to ' + action.par.val);
         // setting a property for configuration, add to the property ressource
         switch (action.par.id) {
             case 0:
@@ -181,7 +181,7 @@ function updateProperty(action) {
  * @param data
  */
 function createValue(data) {
-    console.log('Properties updated!');
+    // console.log('Properties updated!');
     return Object.assign(data, { "timestamp": utils.isoTimestamp() });
 }
 /**
@@ -228,13 +228,11 @@ function sauna_processAnswer() {
         console.log('Answer received: ' + answer);
         try {
             var antwort = JSON.parse(answer.trim());
-            console.log(antwort.par && antwort.par.id && antwort.par.val);
             if (antwort.par) {
                 /**
                  * answer possibility 1: answer to a property get/set
                  * {"par":{"rw":0,"id":0,"val":42}}
                  */
-                console.log('setting property ' + antwort.par.id + ' to ' + antwort.par.val);
                 switch (antwort.par.id) {
                     case 0:
                         properties.targetTemp = antwort.par.val;
