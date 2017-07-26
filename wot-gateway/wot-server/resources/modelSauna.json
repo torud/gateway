@@ -1,7 +1,7 @@
 {
   "id": "https://146.136.39.87:8484",
   "name": "WoT-Gateway Sauna",
-  "description": "A Web of Things Gateway for controlling a sauna from Küng AG.",
+  "description": "A Web of Things Gateway for controlling a sauna from Adlos AG.",
   "tags": [
     "Sauna",
     "NanoPi",
@@ -25,7 +25,7 @@
       "resources": {
         "sauna": {
           "name": "Sauna",
-          "description": "Sauna from Küng AG",
+          "description": "Sauna from Adlos AG",
           "values": {
             "targetTemp": {
               "name": "target temperature",
