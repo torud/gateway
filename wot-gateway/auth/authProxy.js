@@ -413,7 +413,7 @@ if (useRedirects) {
         res.sendFile(path.join(__dirname + '/multipage-application/index.html'));
       } else {
         // application is a single html page
-        res.render('sauna/application');
+        res.render('kannmotion/application');
       }
     }); // GET /application
 
