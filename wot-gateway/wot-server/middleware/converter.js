@@ -1,6 +1,6 @@
 var msgpack = require('msgpack5')(),
   encode = msgpack.encode,
-  jsonld = require('./../resources/piJsonLd.json');
+  model = require('./../resources/model');
 
 module.exports = function () {
   return function (req, res, next) {
@@ -36,7 +36,7 @@ module.exports = function () {
 
       if (req.accepts('application/ld+json')) {
         // console.info('JSON-ld representation selected!');
-        res.send(jsonld);
+        res.send(model);
         return;
       }
 

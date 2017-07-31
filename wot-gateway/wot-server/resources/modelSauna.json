@@ -1,5 +1,6 @@
 {
-  "id": "https://146.136.39.87:8484",
+  "@context": "http://schema.org/Product",
+  "@id": "https://sauna.local:8484",
   "name": "WoT-Gateway Sauna",
   "description": "A Web of Things Gateway for controlling a sauna from Adlos AG.",
   "tags": [
@@ -8,7 +9,7 @@
     "WoT"
   ],
   "customFields": {
-    "hostname": "146.136.39.87",
+    "hostname": "sauna.local",
     "port": 8484,
     "secure": true,
     "generateNewAPIToken": true,

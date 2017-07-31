@@ -3,10 +3,10 @@ var expect = require('chai').expect,
     status = require('http-status'),
     util = require('util'),
     WebSocketClient = require('websocket').client;
-var token = 'fRfLNLe9aBix0mHyeCdI0PSzNeLpPPgu';
+var token = 'w5tlEjRQlgtDs!@^Hg)dDWC1kR^hpAHR';
 
 var waitingTimeBetween = 300;
-var waitingTimeToGET = 500;
+var waitingTimeToGET = 300;
 
 describe('SCommands:', function () {
     var req;
