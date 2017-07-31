@@ -226,6 +226,7 @@ function sauna_processAnswer() {
     while (answerArray.length > 0) {
         var answer = answerArray.shift();
         properties.lastResponse = answer;
+        myself.addValue(properties);
         console.log('Answer received: ' + answer);
         try {
             var antwort = JSON.parse(answer.trim());
