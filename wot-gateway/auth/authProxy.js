@@ -34,6 +34,7 @@ var useRedirects = true;
 /**
  * If the application is integrated in the auth-server, this changes the behaviour if the client
  * GETs the /application ressource. Set to true if your application has mutliple HTML Files.
+ * The application has to be in the folder multipage-application.
  */
 var appHasMultipleHTMLFiles = false;
 
@@ -257,7 +258,8 @@ app.get('/startHotspot',
  */
 function changeWiFiDongleToClient(ssid, password, callback) {
   console.log('Running script to change wifi dongle to client');
-  shell.exec('/root/WoT/gateway/wot-gateway/auth/changeWiFiDongleToClient.sh', function (code, stdout, stderr) {
+  var scriptFilePath = path.join(__dirname, 'changeWiFiDongleToClient.sh');
+  shell.exec(scriptFilePath, function (code, stdout, stderr) {
     console.log('Exit code:', code);
     console.log('Program output:', stdout);
     console.log('Program stderr:', stderr);
@@ -290,7 +292,8 @@ function changeWiFiDongleToClient(ssid, password, callback) {
  */
 function changeWiFiDongleToHotspot(callback) {
   console.log('Running script to change wifi dongle to hotspot');
-  shell.exec('/root/WoT/gateway/wot-gateway/auth/changeWiFiDongleToHotspot.sh', function (code, stdout, stderr) {
+  var scriptFilePath = path.join(__dirname, 'changeWiFiDongleToHotspot.sh');
+  shell.exec(scriptFilePath, function (code, stdout, stderr) {
     console.log('Exit code:', code);
     console.log('Program output:', stdout);
     console.log('Program stderr:', stderr);

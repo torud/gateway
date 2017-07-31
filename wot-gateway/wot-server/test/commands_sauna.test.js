@@ -3,7 +3,7 @@ var expect = require('chai').expect,
     status = require('http-status'),
     util = require('util'),
     WebSocketClient = require('websocket').client;
-var token = 'fRfLNLe9aBix0mHyeCdI0PSzNeLpPPgu';
+var token = 'wAmQTSb(rSZ)@"d"(jmEtEWUskgco2f=';
 
 var waitingTimeBetween = 200;
 
@@ -61,12 +61,12 @@ describe('SCommands:', function () {
     ];
     var answers = [
         // write property answers
-        { "par": { "rw": 1, "id": 0, "val": 42, "state": "ACK" } },
-        { "par": { "rw": 1, "id": 1, "val": 80, "state": "ACK" } },
-        { "par": { "rw": 1, "id": 4, "val": 900, "state": "ACK" } },
-        { "par": { "rw": 1, "id": 5, "val": 50, "state": "ACK" } },
-        { "par": { "rw": 1, "id": 6, "val": 25200, "state": "ACK" } },
-        { "par": { "rw": 1, "id": 7, "val": 63, "state": "ACK" } },
+        { "par": { "rw": 1, "id": 0, "val": 42 } },
+        { "par": { "rw": 1, "id": 1, "val": 80 } },
+        { "par": { "rw": 1, "id": 4, "val": 900 } },
+        { "par": { "rw": 1, "id": 5, "val": 50 } },
+        { "par": { "rw": 1, "id": 6, "val": 25200 } },
+        { "par": { "rw": 1, "id": 7, "val": 63 } },
         // read property answers
         { "par": { "rw": 0, "id": 0, "val": 42 } },
         { "par": { "rw": 0, "id": 1, "val": 80 } },
@@ -84,7 +84,7 @@ describe('SCommands:', function () {
         { "par": { "rw": 0, "id": 13, "val": 105 } },
         { "par": { "rw": 0, "id": 14, "val": 105 } },
         // answers to commands
-        { "cmd": { "id": 0, "temp": 80, "hum": 30, "dur": 15, "state": "ACK" } },
+        { "cmd": { "id": 0, "temp": 80, "hum": 30, "dur": 15 } },
         { "cmd": { "id": 1, "state": "ACK" } },
         { "cmd": { "id": 2, "state": "ACK" } },
         { "cmd": { "id": 3, "val": "password", "state": "ACK" } }
@@ -107,8 +107,9 @@ describe('SCommands:', function () {
 
                             expect(properties).to.be.a('array');
                             expect(properties).to.have.length.above(0);
-                            expect(properties.pop()['lastResponse']).to.be.a('string');
-                            expect(properties.pop()['lastResponse']).to.equal(answer);
+                            var mostRecentProperties = properties.pop();
+                            expect(mostRecentProperties['lastResponse']).to.be.a('string');
+                            expect(mostRecentProperties['lastResponse']).to.equal(JSON.stringify(answer));
 
                             done();
                         });
