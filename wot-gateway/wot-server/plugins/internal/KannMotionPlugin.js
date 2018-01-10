@@ -10,6 +10,7 @@ var answerArray = [];
 var commands = [];
 var sequenzArray = [];
 var initialCommands = [{ "sys": 2 }, { "par": { "cmd": 2 } }];
+//var initialCommands = [{ "sys": [2,0] }, { "par": { "cmd": 2 } }];
 var interval;
 var properties = {};
 var model;
@@ -41,9 +42,10 @@ KannMotionPlugin.prototype.connectHardware = function () {
         // --> just sending the initialCommands doesn't work very well with the KannMotion control,
         // because the motor stops if a { "par": { "cmd": 2 } } command is sent
         // --> just send a { "sys": 2 } command
-        interval = setInterval(function () {
-            sendCommand({ "sys": 2 });
-        }, pollingInterval); // setInterval
+       // interval = setInterval(function () {
+       //    sendCommand({ "sys": 2 });
+	   // sendCommand({ "sys": [2,0] });
+       // }, pollingInterval); // setInterval
     }); // port on open
 }; // connectHardware
 /**
@@ -78,7 +80,8 @@ function sendCommand(value) {
             // console.log('Payload is an array');
             // action is an array of commands
             action.forEach(function (element) {
-                updateProperty(element);
+                console.log("Element of command array: ", element);
+		updateProperty(element);
                 sequenzArray.push(JSON.stringify(element));
             });
         }
